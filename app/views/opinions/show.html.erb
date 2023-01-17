@@ -1,0 +1,9 @@
+<%= render @opinion %>
+
+<div>
+  <%= link_to "Edit this opinion", edit_opinion_path(@opinion) %> |
+  <%= link_to "Back to opinions", opinions_path %>
+
+  <!-- <%= button_to "Destroy this opinion", @opinion, method: :delete %> -->
+</div>
+<p style="color: green"><%= notice %></p>

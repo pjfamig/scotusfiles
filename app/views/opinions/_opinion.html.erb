@@ -1,0 +1,61 @@
+<div id="<%= dom_id opinion %>">
+  <p>
+    <h3><%= opinion.title %>
+</h3>
+  </p>
+
+<div>
+	<p id="holding">
+    <strong>Holding:</strong>
+    <%= opinion.holding %>
+  </p>
+</div>
+  
+    <p>
+	    <i class="fa fa-file-text-o" style="font-size:24px"></i>
+	    <% opinion.files.each do |file| %>
+	      <%= link_to "Full Decision", rails_blob_path(file, disposition: :inline), :target => '_blank' %>
+	    <% end %>
+    </p>
+
+  <p>
+    <strong>Summary:</strong>
+    <%= opinion.full_decision %>
+  </p>
+  
+  <p>
+    <strong>Decision date:</strong>
+    <%= opinion.decision_date %>
+  </p>
+
+</div>
+
+<script>
+	var paragraph = document.getElementById("full_decision");
+	var text = paragraph.innerText;
+	var sentences = text.match(/[^\.!\?]+[\.!\?]+/g);
+	var newHTML = "";
+	for (let i = 0; i < sentences.length; i++) {
+	     if(!isAcronym(sentences[i])){
+	       newHTML += `<span class="sentence">${sentences[i]}</span>`;
+	     }else{
+	       newHTML += sentences[i];
+	     }
+	}
+	paragraph.innerHTML = newHTML;
+
+	var sentenceElements = paragraph.getElementsByClassName("sentence");
+	for (let i = 0; i < sentenceElements.length; i++) {
+	  sentenceElements[i].addEventListener("mouseover", event => {
+	    event.target.style.backgroundColor = "yellow";
+	  });
+	  sentenceElements[i].addEventListener("mouseout", event => {
+	    event.target.style.backgroundColor = "white";
+	  });
+	}
+	
+	function isAcronym(sentence) {
+	  var acronymRegex = /(^|[\s])[A-Z]\./g;
+	  return acronymRegex.test(sentence);
+	}
+</script>

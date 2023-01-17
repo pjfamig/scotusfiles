@@ -1,0 +1,28 @@
+<h2>Published Opinions</h2>
+
+<div id="opinions">
+  <% @opinions.each do |opinion| %>
+
+	<div class="paper">
+    <p><strong><%= link_to opinion.title, opinion %>
+    </strong></p>
+    
+    <p>
+      <strong>Holding:</strong>
+      <%= opinion.holding %>
+    </p>
+    <p>
+	    <i class="fa fa-file-text-o" style="font-size:24px"></i>
+	    <% opinion.files.each do |file| %>
+	      <%= link_to "Full Decision", rails_blob_path(file, disposition: :inline), :target => '_blank' %>
+	    <% end %>
+    </p>
+    
+</div>
+  <% end %>
+</div>
+
+<%= link_to "New opinion", new_opinion_path %>
+
+<p style="color: green"><%= notice %></p>
+

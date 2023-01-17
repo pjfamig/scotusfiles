@@ -1,0 +1,53 @@
+<%= form_with(model: opinion) do |form| %>
+  <% if opinion.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(opinion.errors.count, "error") %>:</h2>
+
+      <ul>
+        <% opinion.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, style: "display: block" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :holding, style: "display: block" %>
+    <%= form.text_area :holding %>
+  </div>
+
+  <div>
+    <%= form.label :full_decision, style: "display: block" %>
+    <%= form.rich_text_area :full_decision %>
+  </div>
+
+  <div>
+    <%= form.label :decision_date, style: "display: block" %>
+    <%= form.date_field :decision_date %>
+  </div>
+  
+  <div>
+	  <strong>Attachments:</strong>
+  <ul>
+  <% @opinion.files.each do |file| %>
+    <li>
+      <%= link_to file.filename, rails_blob_path(file, disposition: :attachment) %>
+    </li>
+  <% end %>
+  </ul>
+  </div>
+  
+  <div>
+       <%= form.label :files %>
+       <%= form.file_field :files, multiple: true %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
