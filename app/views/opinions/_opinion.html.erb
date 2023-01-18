@@ -12,9 +12,9 @@
 </div>
   
     <p>
-	    <i class="fa fa-file-text-o" style="font-size:24px"></i>
 	    <% opinion.files.each do |file| %>
-	      <%= link_to "Full Decision", rails_blob_path(file, disposition: :inline), :target => '_blank' %>
+	    <i class="fa fa-file-text-o" style="font-size:24px"></i>
+	      <%= link_to file.filename, rails_blob_path(file, disposition: :inline), :target => '_blank' %><br>
 	    <% end %>
     </p>
 

@@ -34,9 +34,11 @@
   <div>
 	  <strong>Attachments:</strong>
   <ul>
-  <% @opinion.files.each do |file| %>
+  <% opinion.files.each do |file| %>
     <li>
       <%= link_to file.filename, rails_blob_path(file, disposition: :attachment) %>
+	 <%= link_to 'Remove', delete_file_opinion_url(file.id), data: { "turbo-method": :delete, confirm: 'Are you sure?' } %>
+	 
     </li>
   <% end %>
   </ul>

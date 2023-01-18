@@ -61,7 +61,7 @@ class OpinionsController < ApplicationController
   def delete_file
     file = ActiveStorage::Attachment.find(params[:id])
     file.purge
-    redirect_back(fallback_location: opinion_path)
+    redirect_back(fallback_location: opinions_path)
   end
 
   private
