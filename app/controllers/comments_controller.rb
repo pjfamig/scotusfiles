@@ -4,7 +4,8 @@ class CommentsController < ApplicationController
   
   def create
     params[:comment][:user_id] = current_user.id
-    @opinion.comments.create! params.required(:comment).permit(:content, :user_id)  
+    comment = @opinion.comments.create! params.required(:comment).permit(:content, :user_id)  
+    CommentsMailer.submitted(comment).deliver_later
     redirect_to @opinion
   end
 

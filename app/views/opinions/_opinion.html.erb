@@ -30,7 +30,7 @@
   
   <p>
     Posted: <%= time_tag opinion.created_at, "data-local": "time-ago" %>
-  </p>
+  - <i><%= opinion.user.email if opinion.user %></i></p>
 
 </div>
 

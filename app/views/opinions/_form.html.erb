@@ -31,6 +31,9 @@
     <%= form.date_field :decision_date %>
   </div>
   
+  <%= form.hidden_field :user_id, value: current_user.id %>
+  
+  
   <div>
 	  <strong>Attachments:</strong>
   <ul>

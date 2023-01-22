@@ -1,7 +1,6 @@
 class OpinionsController < ApplicationController
-  before_action :set_opinion, only: %i[ show edit update destroy ]
   before_action :authenticate_user!, :except => [:index, :show]
-
+  before_action :set_opinion, only: %i[ show edit update destroy ]
 
   # GET /opinions or /opinions.json
   def index
@@ -23,8 +22,10 @@ class OpinionsController < ApplicationController
 
   # POST /opinions or /opinions.json
   def create
-    @opinion = Opinion.new(opinion_params)
+    params[:opinion][:user_id] = current_user.id
 
+    @opinion = Opinion.new(opinion_params)
+      
     respond_to do |format|
       if @opinion.save
         format.html { redirect_to opinion_url(@opinion), notice: "Opinion was successfully created." }
@@ -38,6 +39,8 @@ class OpinionsController < ApplicationController
 
   # PATCH/PUT /opinions/1 or /opinions/1.json
   def update
+    params[:opinion][:user_id] = current_user.id
+    
     respond_to do |format|
       if @opinion.update(opinion_params)
         format.html { redirect_to opinion_url(@opinion), notice: "Opinion was successfully updated." }
@@ -74,6 +77,6 @@ class OpinionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def opinion_params
-      params.require(:opinion).permit(:title, :holding, :full_decision, :decision_date, files: [])
+      params.require(:opinion).permit(:title, :holding, :full_decision, :decision_date, :user_id, files: [])
     end
 end
