@@ -43,3 +43,7 @@ h1 a:visited {
 .highlight {
   background-color: yellow;
 }
+
+#comments {
+	border-top: solid 1px gray;
+}

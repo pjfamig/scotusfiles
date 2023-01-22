@@ -16,7 +16,17 @@
   <h1><a href="../">SCOTUS<mark>files</mark></a></h1>
 
   <body>
+	  
+	  <% if user_signed_in? %> 
+	   <div><font style="color: green"> Welcome <%= current_user.email %> </font></div> 
+	    <%= button_to "Sign out", destroy_user_session_path, method: :delete %> 
+	  <% else %>
+	    <%= link_to "Sign in", new_user_session_path %> 
+	  <% end %>
+	  
     <%= yield %>
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
     
   </body>
 </html>

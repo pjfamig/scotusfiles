@@ -27,6 +27,10 @@
     <strong>Decision date:</strong>
     <%= opinion.decision_date %>
   </p>
+  
+  <p>
+    Posted: <%= time_tag opinion.created_at, "data-local": "time-ago" %>
+  </p>
 
 </div>
 
