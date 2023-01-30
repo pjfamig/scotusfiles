@@ -1,13 +1,19 @@
 <%= turbo_stream_from @opinion %>
 	  
 <%= render @opinion %>
-<%= render "opinions/comments", opinion: @opinion %>
-
 
 <div>
-  <%= link_to "Edit this opinion", edit_opinion_path(@opinion) %> |
+<p>  <% if user_signed_in? %> 
+	  <%= link_to "Edit this opinion", edit_opinion_path(@opinion) %> | <%= link_to "Delete this opinion", @opinion, method: :delete  %> |  
+  <% end %>
   <%= link_to "Back to opinions", opinions_path %>
-
- <%= button_to "Destroy this opinion", @opinion, method: :delete %> 
+</p>
 </div>
-<p style="color: green"><%= notice %></p>
+
+<div><h3>Suggested cases (table)</h3>
+	<p></p>
+</div>
+
+<div id="#comments">
+<%= render "opinions/comments", opinion: @opinion %>
+</div>

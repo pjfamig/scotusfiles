@@ -1,5 +1,6 @@
 class Opinion < ApplicationRecord
-  validates_presence_of :title, :holding, :decision_date 
+  validates :title, :holding, presence: true
+  
   has_rich_text :full_decision     # Styling for full decisions
   has_many_attached :files         # Use has_many_attached for multiple files allowed
   
