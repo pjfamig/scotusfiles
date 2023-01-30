@@ -1,6 +1,7 @@
-<h2>Published Opinions</h2>
+<h3>Opinions</h3>
 
 <div id="opinions">
+		
   <% @opinions.each do |opinion| %>
 
 	<div class="paper">
@@ -23,7 +24,6 @@
   <% end %>
 </div>
 
-<%= link_to "New opinion", new_opinion_path %>
-
-<p style="color: green"><%= notice %></p>
-
+<% if user_signed_in? %> 
+	<%= link_to "New opinion", new_opinion_path %>
+<% end %>
