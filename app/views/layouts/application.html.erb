@@ -16,7 +16,8 @@
   <h1><a href="../">SCOTUS<mark>files</mark></a></h1>
 
   <body>
-	  
+
+<% unless user_signed_in? %> 	  
 	  <div class="signup">
 	 <form name="gform" id="gform" enctype="text/plain" action="https://docs.google.com/forms/d/e/1FAIpQLScAxJkpdCCjS1AMKawak8KO2putXXow38HD-dYQmlKMMs1JFg/formResponse?" target="hidden_iframe" onsubmit="submitted=true;">
 
@@ -26,6 +27,8 @@
 	 	 </form>
 	 	<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
   </div>
+<% end %>
+  
 	 <p> 	  
 	  <% if user_signed_in? %> 
 	 Welcome <%= current_user.email %></div> 
@@ -38,6 +41,9 @@
      <div class="alert"><%= alert %></div>
 	 
     <%= yield %>
+
+<script async src="//static.getclicky.com/101395978.js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101395978ns.gif" /></p></noscript>
 
   </body>
 </html>
