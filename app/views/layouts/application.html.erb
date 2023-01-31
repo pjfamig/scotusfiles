@@ -19,12 +19,16 @@
 
 <% unless user_signed_in? %> 	  
 	  <div class="signup">
-	 <form name="gform" id="gform" enctype="text/plain" action="https://docs.google.com/forms/d/e/1FAIpQLScAxJkpdCCjS1AMKawak8KO2putXXow38HD-dYQmlKMMs1JFg/formResponse?" target="hidden_iframe" onsubmit="submitted=true;">
+	 <form name="gform" id="gform" enctype="text/plain" action="https://docs.google.com/forms/d/e/1FAIpQLSe_FMpNJh1qgqsOw2yhxKHbi3aa117Z6XHC0rLYYJ-HMvnhnQ/formResponse?" target="hidden_iframe" onsubmit="submitted=true;">
+
 
 	  <strong>Sign up to receive updates!</strong>
-	  	  <input type="email" name="entry.892820949" id="entry.892820949" placeholder="Please enter your email address" size="45" class="textbox" maxlength="24" required>
+	  	  <input type="email" name="entry.1674987373" id="entry.1674987373" placeholder="Please enter your email address" size="45" class="textbox" required>
 	 	   <input type="submit" value="Sign Up"> 
 	 	 </form>
+		 
+		 <p id="thanks"></p>
+		 
 	 	<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
   </div>
 <% end %>
@@ -45,5 +49,15 @@
 <script async src="//static.getclicky.com/101395978.js"></script>
 <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101395978ns.gif" /></p></noscript>
 
+
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js"></script>
+	<script type="text/javascript">var submitted=false;</script>
+	<script type="text/javascript">
+	$('#gform').on('submit', function(e) {
+	  $('#gform *').fadeOut(800);
+	  $('#thanks').prepend("You're signed up. Thanks!");  
+  });
+	</script>
+	  
   </body>
 </html>

@@ -44,6 +44,11 @@ h3 {
 .field {
 }
 
+#thanks {
+	color: green;
+	font-size: 28px;
+}
+
 .paper {
 	padding: 20px;
 }
