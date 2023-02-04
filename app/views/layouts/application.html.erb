@@ -18,7 +18,7 @@
   <body>
 
 <% unless user_signed_in? %> 	  
-	  <div class="signup">
+	  <div id="signup">
 	 <form name="gform" id="gform" enctype="text/plain" action="https://docs.google.com/forms/d/e/1FAIpQLSe_FMpNJh1qgqsOw2yhxKHbi3aa117Z6XHC0rLYYJ-HMvnhnQ/formResponse?" target="hidden_iframe" onsubmit="submitted=true;">
 
 
@@ -27,24 +27,34 @@
 	 	   <input type="submit" value="Sign Up"> 
 	 	 </form>
 		 
-		 <p id="thanks"></p>
+		 <span id="thanks"></span>
 		 
 	 	<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
   </div>
 <% end %>
-  
-	 <p> 	  
-	  <% if user_signed_in? %> 
-	 Welcome <%= current_user.email %></div> 
-	    <%= button_to "sign out", destroy_user_session_path, method: :delete %>
-	  <% else %>
-	   <%= link_to "Sign in", new_user_session_path %> | <%= link_to "Sign up", new_user_registration_path %>
-	  <% end %>
-	</p>
+  	
      <div class="notice"><%= notice %></div>
      <div class="alert"><%= alert %></div>
 	 
     <%= yield %>
+    
+    <br><br>
+  
+  <div id="login">  
+  <hr>
+
+ <p> 	  
+  <% if user_signed_in? %> 
+ Welcome <%= current_user.email %></div> 
+    <%= button_to "sign out", destroy_user_session_path, method: :delete %>
+  <% else %>
+   <%= link_to "Sign in", new_user_session_path %> | <%= link_to "Sign up", new_user_registration_path %>
+  <% end %>
+</p>
+</div>
+
+    <br><br>
+    <br><br>
 
 <script async src="//static.getclicky.com/101395978.js"></script>
 <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101395978ns.gif" /></p></noscript>

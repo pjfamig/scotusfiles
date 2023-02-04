@@ -19,6 +19,16 @@ mark {
   color: white;
 }
 
+h1 {
+	font-size: 2.6em;
+	margin-bottom: 20px;
+}
+
+p {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
 h1 a:link {
 	text-decoration:none;
 	color: #000000;
@@ -29,16 +39,26 @@ h1 a:visited {
 	color: #000000;
 }
 
-.signup {
-	background-color: #EFEFEF; 
+#signup {
+	text-align: center;
+	margin-top: 10px;
+	margin-bottom: 20px;
+	background-color: #d4edda; 
 	border: solid 1px;
 	border-radius: 5px;
-	padding: 20px;
-	margin-bottom: 20px;
+	padding: 15px;
+}
+
+h2 {
+	font-size: 1.9em;
+	margin-top: 5px;
+	margin-bottom: 5px;	
 }
 
 h3 {
-	margin: 10px;
+	font-size: 1.5em;
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 
 .field {
@@ -50,8 +70,13 @@ h3 {
 }
 
 .paper {
-	padding: 20px;
+	padding: 10px;
 }
+
+article {
+	border: none;
+}
+
 .paper:hover {
 	background-color: #F5F5F5;
 }

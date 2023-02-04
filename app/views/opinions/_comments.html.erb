@@ -1,7 +1,6 @@
 <div id="comments">
 	<p>
-		<strong><%= pluralize opinion.comments.count, "comment" %>
-		</strong>
+		<h3>Comments (<%= opinion.comments.count  %>)</h3>
 	</p>
 	<%# Expands to render partial: "comments/comment", collection: decision.comments %>
 	
@@ -10,3 +9,4 @@
 </div>
 
 <%= render "comments/new", opinion: opinion %>
+<br>

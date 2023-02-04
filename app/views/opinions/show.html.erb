@@ -1,5 +1,5 @@
 <%= turbo_stream_from @opinion %>
-	  
+
 <%= render @opinion %>
 
 <div>
@@ -9,11 +9,23 @@
   <%= link_to "Back to opinions", opinions_path %>
 </p>
 </div>
-
-<div><h3>Suggested cases (table)</h3>
-	<p></p>
-</div>
-
+<br><br>
 <div id="#comments">
 <%= render "opinions/comments", opinion: @opinion %>
+</div>
+
+<div><h3>Suggested cases</h3>
+	<table>
+	  <tbody>
+	    <tr>
+	      <td>Jackie</td>
+	      <td>012345</td>
+	    </tr>
+	    <tr>
+	      <td>Lucy</td>
+	      <td>112346</td>
+	    </tr>
+
+	  </tbody>
+	</table>
 </div>

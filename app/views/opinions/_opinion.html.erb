@@ -15,6 +15,12 @@
 	      <%= link_to file.filename, rails_blob_path(file, disposition: :inline), :target => '_blank' %><br>
 	    <% end %>
     </p>
+    
+    <br>
+    <div id="case-nav">
+    	<%= link_to "Summary", @opinion %> | <%= link_to "Holding", @opinion %> | <%= link_to "Full Text", @opinion %>
+	
+    </div>
 
   <p>
     <strong>Summary:</strong>
