@@ -13,7 +13,7 @@
     
   </head>
   
-  <h1><a href="../">SCOTUS<mark>files</mark></a></h1>
+  <center><h1><a href="../">SCOTUS<mark>files</mark></a></h1></center>
 
   <body>
 
@@ -22,9 +22,9 @@
 	 <form name="gform" id="gform" enctype="text/plain" action="https://docs.google.com/forms/d/e/1FAIpQLSe_FMpNJh1qgqsOw2yhxKHbi3aa117Z6XHC0rLYYJ-HMvnhnQ/formResponse?" target="hidden_iframe" onsubmit="submitted=true;">
 
 
-	  <strong>Sign up to receive updates!</strong>
-	  	  <input type="email" name="entry.1674987373" id="entry.1674987373" placeholder="Please enter your email address" size="45" class="textbox" required>
-	 	   <input type="submit" value="Sign Up"> 
+		 <p>Subscribe to receive future cases by email!</p>
+	  	  <input type="email" name="entry.1674987373" id="entry.1674987373" placeholder="Type your email..." size="30" class="textbox" required>
+	 	   <input type="submit" value="Subscribe"> 
 	 	 </form>
 		 
 		 <span id="thanks"></span>
@@ -39,23 +39,21 @@
 </div>
   
 <% end %>
-  	
+
      <div class="notice"><%= notice %></div>
      <div class="alert"><%= alert %></div>
-	 
+	
     <%= yield %>
     
     <br><br>
   
   <div id="login">  
-  <hr>
-
  <p> 	  
   <% if user_signed_in? %> 
  Welcome <%= current_user.email %></div> 
     <%= button_to "sign out", destroy_user_session_path, method: :delete %>
   <% else %>
-   <%= link_to "Sign in", new_user_session_path %> | <%= link_to "Sign up", new_user_registration_path %>
+   <%= link_to "Login", new_user_session_path %> | <%= link_to "Sign up", new_user_registration_path %>
   <% end %>
 </p>
 </div>
@@ -71,7 +69,7 @@
 	<script type="text/javascript">var submitted=false;</script>
 	<script type="text/javascript">
 	$('#gform').on('submit', function(e) {
-	  $('#gform *').fadeOut(800);
+	  $('#gform *').fadeOut(500);
 	  $('#thanks').prepend("You're signed up. Thanks!");  
   });
 	</script>

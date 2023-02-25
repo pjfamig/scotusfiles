@@ -1,29 +1,25 @@
-<h3>Opinions</h3>
 
-<div id="opinions">
+<div id="feed">
 		
   <% @opinions.each do |opinion| %>
 
-<article>
-	<div class="paper">
+	<div class="feed-item">
+		<p class="decision-date">Decided <%= opinion.decision_date.strftime('%B %d, %Y') %></p>
     <p><strong><%= link_to opinion.title, opinion %>
     </strong></p>
     
     <p>
-      <strong>Holding:</strong>
       <%= opinion.holding %>
     </p>
     <p>
 	    <% opinion.files.each do |file| %>
 
-	    <i class="fa fa-file-text-o" style="font-size:24px"></i>
+	    <i class="fa fa-file-text-o" style="font-size:20px"></i>
 	      <%= link_to file.filename, rails_blob_path(file, disposition: :inline), :target => '_blank' %>
 	    <% end %>
     </p>
     
 </div>
-
-</article>
 
   <% end %>
 </div>

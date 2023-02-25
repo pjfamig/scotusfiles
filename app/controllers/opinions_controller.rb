@@ -10,6 +10,10 @@ class OpinionsController < ApplicationController
 
   # GET /opinions/1 or /opinions/1.json
   def show
+    @opinion = Opinion.find(params[:id])
+
+    # Read the content of the HTML file
+    @full_decision = File.read(Rails.root.join('public', 'opinions', @opinion.filename))
   end
 
   # GET /opinions/new
@@ -26,9 +30,18 @@ class OpinionsController < ApplicationController
     params[:opinion][:user_id] = current_user.id
 
     @opinion = Opinion.new(opinion_params)
-      
+    puts "Files before save: #{opinion_params[:files].inspect}"
+    
+    
+    # Save the content of the opinion to a separate HTML file
+    filename = "#{Time.now.strftime('%Y%m%d%H%M%S')}.html"
+    File.write(Rails.root.join('public', 'opinions', filename), @opinion.full_decision)
+
+    @opinion.filename = filename
+
     respond_to do |format|
       if @opinion.save
+        puts "Files after save: #{opinion_params[:files].inspect}"
         format.html { redirect_to opinion_url(@opinion), notice: "Opinion was successfully created." }
         format.json { render :show, status: :created, location: @opinion }
       else
@@ -78,6 +91,6 @@ class OpinionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def opinion_params
-      params.require(:opinion).permit(:title, :holding, :full_decision, :decision_date, :user_id, files: [])
+      params.require(:opinion).permit(:title, :holding, :full_decision, :filename, :decision_date, :user_id, files: [])
     end
 end

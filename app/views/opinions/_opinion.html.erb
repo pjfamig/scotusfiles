@@ -4,28 +4,21 @@
   
 <div>
 	<p id="holding">
-    <strong>Holding:</strong>
     <%= opinion.holding %>
   </p>
 </div>
   
     <p>
 	    <% opinion.files.each do |file| %>
-	    <i class="fa fa-file-text-o" style="font-size:24px"></i>
+	    <i class="fa fa-file-text-o" style="font-size:20px"></i>
 	      <%= link_to file.filename, rails_blob_path(file, disposition: :inline), :target => '_blank' %><br>
 	    <% end %>
     </p>
     
-    <br>
-    <div id="case-nav">
-    	<%= link_to "Summary", @opinion %> | <%= link_to "Holding", @opinion %> | <%= link_to "Full Text", @opinion %>
-	
-    </div>
-
-  <p>
-    <strong>Summary:</strong>
-    <%= opinion.full_decision %>
-  </p>
+  
+  <h4>Full Decision:</h4>
+<%= raw @full_decision %>
+ 
   
   <p>
     <strong>Decision date:</strong>
