@@ -11,10 +11,10 @@
 	    <% opinion.files.each do |file| %>
 
 	    <i class="fa fa-file-text-o" style="font-size:20px"></i>
-	      <%= link_to "Local download", rails_blob_path(file, disposition: :inline), :target => '_blank' %>
+	      <%= link_to "Full Opinion", rails_blob_path(file, disposition: :inline), :target => '_blank' %>
 	    <% end %>
     </p>
-<p> <i class="fa fa-file-text-o" style="font-size:20px"></i> <%= link_to "SCOTUS download", opinion.scotus_filename %></p>
+<p> <i class="fa fa-file-text-o" style="font-size:20px"></i> <%= link_to opinion.scotus_filename, opinion.scotus_filename %></p>
 </div>
 
 <div class="full-decision">
