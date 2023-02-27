@@ -15,14 +15,14 @@
 	    <% opinion.files.each do |file| %>
 
 	    <i class="fa fa-file-text-o" style="font-size:20px"></i>
-	      <%= link_to file.filename, rails_blob_path(file, disposition: :inline), :target => '_blank' %>
+	      <%= link_to "Local download", rails_blob_path(file, disposition: :inline), :target => '_blank' %>
 	    <% end %>
     </p>
-    
+<p> <i class="fa fa-file-text-o" style="font-size:20px"></i> <%= link_to "SCOTUS download", opinion.scotus_filename %></p>
 </div>
-
   <% end %>
 </div>
+
 
 <% if user_signed_in? %> 
 	<%= link_to "New opinion", new_opinion_path %>

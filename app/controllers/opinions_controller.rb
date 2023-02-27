@@ -5,7 +5,7 @@ class OpinionsController < ApplicationController
 
   # GET /opinions or /opinions.json
   def index
-    @opinions = Opinion.order(created_at: :desc)
+    @opinions = Opinion.order(id: :asc)
   end
 
   # GET /opinions/1 or /opinions/1.json
@@ -13,7 +13,7 @@ class OpinionsController < ApplicationController
     @opinion = Opinion.find(params[:id])
 
     # Read the content of the HTML file
-    @full_decision = File.read(Rails.root.join('public', 'opinions', @opinion.filename))
+    # @full_decision = File.read(Rails.root.join('public', 'opinions', @opinion.filename))
   end
 
   # GET /opinions/new

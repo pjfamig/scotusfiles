@@ -1,34 +1,26 @@
 <div id="<%= dom_id opinion %>">
   
-<h3><%= opinion.title %></h3>
-  
-<div>
-	<p id="holding">
-    <%= opinion.holding %>
-  </p>
-</div>
-  
+	<div class="feed-item">
+		<p class="decision-date">Decided <%= opinion.decision_date.strftime('%B %d, %Y') %></p>
+    <p><strong><%= opinion.title %></strong></p>
+    
+    <p>
+      <%= opinion.holding %>
+    </p>
     <p>
 	    <% opinion.files.each do |file| %>
+
 	    <i class="fa fa-file-text-o" style="font-size:20px"></i>
-	      <%= link_to file.filename, rails_blob_path(file, disposition: :inline), :target => '_blank' %><br>
+	      <%= link_to "Local download", rails_blob_path(file, disposition: :inline), :target => '_blank' %>
 	    <% end %>
     </p>
-    
-  
-  <h4>Full Decision:</h4>
-<%= raw @full_decision %>
- 
-  
-  <p>
-    <strong>Decision date:</strong>
-    <%= opinion.decision_date %>
-  </p>
-  
-  <p>
-    Posted: <%= time_tag opinion.created_at, "data-local": "time-ago" %>
-  - <i><%= opinion.user.email if opinion.user %></i></p>
+<p> <i class="fa fa-file-text-o" style="font-size:20px"></i> <%= link_to "SCOTUS download", opinion.scotus_filename %></p>
+</div>
 
+<div class="full-decision">
+  <p><strong>Full Decision:</strong></p>
+
+<%= opinion.full_decision %>
 </div>
 
 <script>

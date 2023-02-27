@@ -1,7 +1,8 @@
 <%= turbo_stream_from @opinion %>
 
 <div id="feed">
-<%= render @opinion %>
+	<%= render @opinion %>
+</div>
 
 <div>
 <p>  <% if user_signed_in? && current_user.admin? %> 
@@ -10,7 +11,9 @@
   <%= link_to "Back to opinions", opinions_path %>
 </p>
 </div>
+
 <br><br>
+
 <div id="#comments">
 <%= render "opinions/comments", opinion: @opinion %>
 </div>
@@ -29,6 +32,4 @@
 
 	  </tbody>
 	</table>
-</div>
-
 </div>
