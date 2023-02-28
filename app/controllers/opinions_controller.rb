@@ -5,7 +5,7 @@ class OpinionsController < ApplicationController
 
   # GET /opinions or /opinions.json
   def index
-    @opinions = Opinion.order(id: :asc)
+    @opinions = Opinion.order(decision_date: :desc)
   end
 
   # GET /opinions/1 or /opinions/1.json
@@ -32,11 +32,13 @@ class OpinionsController < ApplicationController
     @opinion = Opinion.new(opinion_params)
     puts "Files before save: #{opinion_params[:files].inspect}"
     
+    # Convert the rich text content to HTML format
+      full_decision_html = @opinion.full_decision.body.to_html
+  
+      # Save the HTML content to a separate file
+      filename = "#{Time.now.strftime('%Y%m%d%H%M%S')}.html"
+      File.write(Rails.root.join('public', 'opinions', filename), full_decision_html)
     
-    # Save the content of the opinion to a separate HTML file
-    filename = "#{Time.now.strftime('%Y%m%d%H%M%S')}.html"
-    File.write(Rails.root.join('public', 'opinions', filename), @opinion.full_decision)
-
     @opinion.filename = filename
 
     respond_to do |format|
@@ -57,6 +59,12 @@ class OpinionsController < ApplicationController
     
     respond_to do |format|
       if @opinion.update(opinion_params)
+        # Convert the updated rich text content to HTML format
+        full_decision_html = @opinion.full_decision.body.to_html
+  
+        # Save the HTML content to the existing file
+        File.write(Rails.root.join('public', 'opinions', @opinion.filename), full_decision_html)
+
         format.html { redirect_to opinion_url(@opinion), notice: "Opinion was successfully updated." }
         format.json { render :show, status: :ok, location: @opinion }
       else

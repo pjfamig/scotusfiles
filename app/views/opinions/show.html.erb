@@ -4,7 +4,7 @@
 	<%= render @opinion %>
 </div>
 
-<div>
+<div id="sign-in">
 <p>  <% if user_signed_in? && current_user.admin? %> 
 	  <%= link_to "Edit this opinion", edit_opinion_path(@opinion) %> | <%= link_to "Delete this opinion", @opinion, method: :delete  %> |  
   <% end %>
@@ -16,7 +16,6 @@
 
 <div id="#comments">
 <%= render "opinions/comments", opinion: @opinion %>
-</div>
 
 <div><h3>Suggested cases</h3>
 	<table>
@@ -33,3 +32,6 @@
 	  </tbody>
 	</table>
 </div>
+
+</div>
+
