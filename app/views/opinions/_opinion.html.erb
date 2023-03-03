@@ -1,31 +1,38 @@
 <div id="<%= dom_id opinion %>">
   
-	<div class="feed-item">
+	<div class="">
 		<p class="decision-date">Decided <%= opinion.decision_date.strftime('%B %d, %Y') %></p>
     <p><strong><%= opinion.title %></strong></p>
     
     <p>
-      <%= opinion.holding %>
+      Holding: <%= opinion.holding %>
     </p>
-    <p>
-	    <% opinion.files.each do |file| %>
+ <!--   <p>
+	     <% opinion.files.each do |file| %>
 
 	    <i class="fa fa-file-text-o" style="font-size:20px"></i>
 	      <%= link_to "Full Opinion", rails_blob_path(file, disposition: :inline), :target => '_blank' %>
-	    <% end %>
-    </p>
-<p> <i class="fa fa-file-text-o" style="font-size:20px"></i> <%= link_to opinion.scotus_filename, opinion.scotus_filename %></p>
+	    <% end %> 
+		    
+    </p>-->
+<p><i class="fa fa-file-text-o" style="font-size:20px"></i> <%= link_to "PDF of opinion", opinion.scotus_filename %></p>
 </div>
 
 <div class="full-decision">
 
-<p>Full Decision |
-	<% if user_signed_in? && current_user.admin? %> 
-	  <%= link_to "Edit this opinion", edit_opinion_path(@opinion) %> | <%= link_to "Delete this opinion", @opinion, method: :delete  %> |  
-  <% end %>
-  <%= link_to "Back to opinions", opinions_path %>
-</p>
+<div class="case-navigation"><p><%= link_to_unless_current "Full Decision", opinion_path(@opinion) %> |
+	<%= link_to_unless_current "Syllabus", "#syllabus" %> |
+	<%= link_to_unless_current "Holding", "#holding" %> |
+	<%= link_to_unless_current "Majority Decision", "#majority" %> |
+	<%= link_to_unless_current "Dissent", "#dissent" %> | 
+     <%= link_to "Back to opinions", opinions_path %>
+<br>	
 
+<% if user_signed_in? && current_user.admin? %> 
+	<%= link_to "Edit this opinion", edit_opinion_path(@opinion) %> | <%= link_to "Delete this opinion", @opinion, method: :delete  %>  
+  <% end %>
+</p>
+</div>
 
 <div id="full-decision-text"><%= raw opinion.full_decision %></div>
 
@@ -34,6 +41,7 @@
 <script>
 	var paragraph = document.getElementById("full-decision-text");
 	var text = paragraph.innerText;
+	
 	var sentences = text.match(/[^\.!\?]+[\.!\?]+/g);
 	var newHTML = "";
 	for (let i = 0; i < sentences.length; i++) {
@@ -48,10 +56,10 @@
 	var sentenceElements = paragraph.getElementsByClassName("sentence");
 	for (let i = 0; i < sentenceElements.length; i++) {
 	  sentenceElements[i].addEventListener("mouseover", event => {
-	    event.target.style.backgroundColor = "yellow";
+	    event.target.style.backgroundColor = "";
 	  });
 	  sentenceElements[i].addEventListener("mouseout", event => {
-	    event.target.style.backgroundColor = "white";
+	    event.target.style.backgroundColor = "";
 	  });
 	}
 	

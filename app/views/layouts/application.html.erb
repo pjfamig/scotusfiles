@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js"></script>
+    
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -13,31 +15,28 @@
     
   </head>
   
-  <center><h1><a href="../">SCOTUS<mark>files</mark></a></h1></center>
+  <center><h1><a href="../">SCOTUS <mark>files</mark></a></h1></center>
 
   <body>
+<div id="signup">
+	<p id="typed-text"></p>
+</div>
 
 <% unless user_signed_in? %> 	  
 	  <div id="signup">
+	  	<script type="text/javascript">
+	  	var submitted;
+		</script>
 	 <form name="gform" id="gform" enctype="text/plain" action="https://docs.google.com/forms/d/e/1FAIpQLSe_FMpNJh1qgqsOw2yhxKHbi3aa117Z6XHC0rLYYJ-HMvnhnQ/formResponse?" target="hidden_iframe" onsubmit="submitted=true;">
 
-
-		 <p>Subscribe to receive future cases by email!</p>
-	  	  <input type="email" name="entry.1674987373" id="entry.1674987373" placeholder="Type your email..." size="30" class="textbox" required>
-	 	   <input type="submit" value="Subscribe"> 
+	  	  <input type="email" name="entry.1674987373" id="entry.1674987373" placeholder="Subscribe to receive cases by email" size="35" class="textbox" required>
+	 	   <input type="submit" value="Go!"> 
 	 	 </form>
 		 
 		 <span id="thanks"></span>
 		 
 	 	<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
-  </div>
-  
-  <% else %>
-  
-<div id="signup">
-  Web-friendly SCOTUS decisions with inline commenting
-</div>
-  
+  </div>  
 <% end %>
 
      <div class="notice"><%= notice %></div>
@@ -59,18 +58,39 @@
 
     <br><br>
 
+<script>
+     // Check if the user has already viewed the typing animation
+     var hasViewedTyping = localStorage.getItem('hasViewedTyping');
+
+     // Only show the typing animation if the user hasn't viewed it before
+     if (!hasViewedTyping) {
+       // If the flag is not set, initialize the Typed.js plugin and show the typing animation
+       var options = {
+         strings: ['The best way to read Supreme Court decisions online.'],
+         typeSpeed: 30,
+         showCursor: false
+       };
+       var typed = new Typed('#typed-text', options);
+
+       // Set a flag in local storage to indicate that the user has viewed the animation
+       localStorage.setItem('hasViewedTyping', true);
+     } else {
+       // If the flag is set, simply display the text string
+       document.getElementById('typed-text').textContent = 'The best way to read Supreme Court decisions online.';
+     }
+</script>
+
 <script async src="//static.getclicky.com/101399487.js"></script>
 <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101399487ns.gif" /></p></noscript>
 
-
-	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js"></script>
-	<script type="text/javascript">var submitted=false;</script>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js"></script>
 	<script type="text/javascript">
+	var submitted=false;
 	$('#gform').on('submit', function(e) {
 	  $('#gform *').fadeOut(500);
 	  $('#thanks').prepend("You're signed up. Thanks!");  
   });
-	</script>
+</script>
 	  
   </body>
 </html>

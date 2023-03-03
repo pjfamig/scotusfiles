@@ -17,7 +17,7 @@
 body {
     color: var(--text);
     background-color: var(--bg);
-    font-size: 1.15rem;
+    font-size: 18px;
     line-height: 1.5;
     display: grid;
     grid-template-columns: 1fr min(65rem,90%) 1fr;
@@ -30,7 +30,7 @@ mark {
 }
 
 h1 {
-	font-size: 30px;
+	font-size: 24px;
 	margin-top: 40px;
 	margin-bottom: 20px;
 }
@@ -58,8 +58,14 @@ h1 a:visited {
 	margin-bottom: 20px;
 }
 
+#signup p {
+	font-size: 34px;
+	margin: 0px;
+}
+
 #feed, #login {
 	border-top: 1px dotted;
+	
 }
  
 
@@ -89,6 +95,7 @@ h3 {
 
 .feed-item {
 	padding: 20px;
+	
 }
 
 .feed-item:hover {
@@ -96,7 +103,6 @@ h3 {
 }
 
 .full-decision {
-	padding: 0px 20px 0px 20px;
 }
 
 .decision-date {
@@ -104,16 +110,23 @@ h3 {
 	color: #808080;
 }
 
-article {
-	border: none;
+aside {
 }
 
 .sentence {
-  background-color: white;
 }
 
 .highlight {
-  background-color: yellow;
+}
+
+.case-navigation {
+	background-color: #F5F5F5;
+	border: 1px solid #F5F5F5;
+	border-radius: 5px;
+	padding: 6px;
+	margin: 20px 0px 20px 0px;
+	text-align: center;
+	max-width: 950px;
 }
 
 #comments {
@@ -126,15 +139,66 @@ article {
 }
 
 #full-decision-text {
-	border: 1px solid gray;
+	border: 1px solid #DCDCDC;
 	padding: 20px;
 	border-radius: 5px;
+	max-width: 950px;
+}
+
+#full-decision-text h2 {
+	font-size: 20px;
 }
 
 #full-decision-text p {
-	margin: 10px;
+	margin: 20px 0px 20px 0px;
+	text-align: justify;
 }
 
 .highlighted-sentence {
   background-color: yellow;
+}
+
+.footnote {
+	border-radius: 5px;
+	color: #696969;
+	font-size: 12px;
+	padding: 8px;
+}
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  font-size: 14px;
+  visibility: hidden;
+  width: 250px;
+  background-color: gray;
+  color: #fff;
+  padding: 8px;
+  border-radius: 5px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.tooltip .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
 }

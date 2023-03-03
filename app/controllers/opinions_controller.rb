@@ -10,7 +10,7 @@ class OpinionsController < ApplicationController
 
   # GET /opinions/1 or /opinions/1.json
   def show
-    @opinion = Opinion.find(params[:id])
+    @opinion = Opinion.friendly.find(params[:id])
 
     # Read the content of the HTML file
     # @full_decision = File.read(Rails.root.join('public', 'opinions', @opinion.filename))
@@ -94,7 +94,7 @@ class OpinionsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_opinion
-      @opinion = Opinion.find(params[:id])
+      @opinion = Opinion.friendly.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
