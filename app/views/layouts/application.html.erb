@@ -30,7 +30,7 @@
 	 <form name="gform" id="gform" enctype="text/plain" action="https://docs.google.com/forms/d/e/1FAIpQLSe_FMpNJh1qgqsOw2yhxKHbi3aa117Z6XHC0rLYYJ-HMvnhnQ/formResponse?" target="hidden_iframe" onsubmit="submitted=true;">
 
 	  	  <input type="email" name="entry.1674987373" id="entry.1674987373" placeholder="Subscribe to receive cases by email" size="35" class="textbox" required>
-	 	   <input type="submit" value="Go!"> 
+	 	   <input type="submit" value="Go!">
 	 	 </form>
 		 
 		 <span id="thanks"></span>
@@ -43,9 +43,11 @@
      <div class="alert"><%= alert %></div>
 	
     <%= yield %>
-    <br><br>  
-    <p></p>
-  <div id="login">  
+    
+  
+    
+<div id="login">  
+<center><h3>Follow <a href="https://twitter.com/scotusfiles">@scotusfiles</a> for updates</h3>
  <p> 	  
   <% if user_signed_in? %> 
  Welcome <%= current_user.email %></div> 
@@ -55,6 +57,8 @@
   <% end %>
 </p>
 </div>
+
+
 
     <br><br>
 
