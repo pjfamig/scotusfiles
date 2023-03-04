@@ -5,19 +5,24 @@
 </div>
 
 <div id="sign-in">
-<p>  <% if user_signed_in? && current_user.admin? %> 
-	  <%= link_to "Edit this opinion", edit_opinion_path(@opinion) %> | <%= link_to "Delete this opinion", @opinion, method: :delete  %> |  
-  <% end %>
-  <%= link_to "Back to opinions", opinions_path %>
-</p>
+  <% if user_signed_in? && current_user.admin? %> 
+	  <p><%= link_to "Edit this opinion", edit_opinion_path(@opinion) %> | <%= link_to "Delete this opinion", @opinion, method: :delete  %></p>  
+  <% end %> 
 </div>
 
-<br><br>
 
-<div id="#comments">
-<%= render "opinions/comments", opinion: @opinion %>
-
-
-
+<div id="comments">
+	<% if user_signed_in? %>
+		<%= render "opinions/comments", opinion: @opinion %>
+	<% else %>
+		<%= link_to "Login", new_user_session_path %> or <%= link_to "Sign Up", new_user_registration_path %> to comment.
+	<% end %>
 </div>
+
+<br>
+<div>
+	<a href="#">Back to Top</a>
+</div>
+
+<br>
 

@@ -47,7 +47,8 @@
   
     
 <div id="login">  
-<center><h3>Follow <a href="https://twitter.com/scotusfiles">@scotusfiles</a> for updates</h3>
+	
+<center><h4>Follow <a href="https://twitter.com/scotusfiles">@scotusfiles</a> for updates</h4>
  <p> 	  
   <% if user_signed_in? %> 
  Welcome <%= current_user.email %></div> 
@@ -56,6 +57,7 @@
    <%= link_to "Login", new_user_session_path %> | <%= link_to "Sign up", new_user_registration_path %>
   <% end %>
 </p>
+<br><br>
 </div>
 
 
@@ -70,7 +72,7 @@
      if (!hasViewedTyping) {
        // If the flag is not set, initialize the Typed.js plugin and show the typing animation
        var options = {
-         strings: ['The best way to read Supreme Court decisions online.'],
+         strings: ['The better way to read Supreme Court decisions.'],
          typeSpeed: 30,
          showCursor: false
        };
@@ -80,7 +82,7 @@
        localStorage.setItem('hasViewedTyping', true);
      } else {
        // If the flag is set, simply display the text string
-       document.getElementById('typed-text').textContent = 'The best way to read Supreme Court decisions online.';
+       document.getElementById('typed-text').textContent = 'The better way to read Supreme Court decisions.';
      }
 </script>
 

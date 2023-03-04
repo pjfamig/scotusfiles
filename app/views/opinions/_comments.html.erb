@@ -1,12 +1,6 @@
-<div id="comments">
-	<p>
-		<h3>Comments (<%= opinion.comments.count  %>)</h3>
-	</p>
+	<strong>Comments</strong>
 	<%# Expands to render partial: "comments/comment", collection: decision.comments %>
 	
 	<%= render opinion.comments %>
 	<br>	
-</div>
-
 <%= render "comments/new", opinion: opinion %>
-<br>
