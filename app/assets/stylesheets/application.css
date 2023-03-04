@@ -20,7 +20,7 @@ body {
     font-size: 18px;
     line-height: 1.5;
     display: grid;
-    grid-template-columns: 1fr min(65rem,90%) 1fr;
+    grid-template-columns: 1fr min(60rem,90%) 1fr;
     margin: 0;
 }
 
@@ -163,42 +163,4 @@ aside {
 	color: #696969;
 	font-size: 12px;
 	padding: 8px;
-}
-
-/* Tooltip container */
-.tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-}
-
-/* Tooltip text */
-.tooltip .tooltiptext {
-  font-size: 14px;
-  visibility: hidden;
-  width: 250px;
-  background-color: gray;
-  color: #fff;
-  padding: 8px;
-  border-radius: 5px;
- 
-  /* Position the tooltip text - see examples below! */
-  position: absolute;
-  z-index: 1;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-}
-
-.tooltip .tooltiptext::after {
-  content: " ";
-  position: absolute;
-  top: 100%; /* At the bottom of the tooltip */
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: black transparent transparent transparent;
 }

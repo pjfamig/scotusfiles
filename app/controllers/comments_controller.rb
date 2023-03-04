@@ -11,6 +11,6 @@ class CommentsController < ApplicationController
 
   private
   def set_opinion
-    @opinion = Opinion.find(params[:opinion_id])
+    @opinion = Opinion.friendly.find(params[:opinion_id])
   end
 end

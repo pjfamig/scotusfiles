@@ -9,10 +9,19 @@
     </strong></p>
     
     <p>
-      <%= opinion.holding %>
+      <u>Holding</u>: <%= opinion.holding %>
     </p>
 
-<p> <i class="fa fa-file-text-o" style="font-size:20px"></i> <%= link_to "PDF of opinion", opinion.scotus_filename %></p>
+<p> 
+	<i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i> 
+	<%= link_to "Full Decision", opinion_path(opinion) %> &nbsp;|&nbsp;
+	<i class="fa fa-file" style="font-size:16px; color: #CB4335;"></i> 
+	<%= link_to "PDF", opinion.scotus_filename %> &nbsp;|&nbsp; 
+	<i class="fa fa-commenting" aria-hidden="true" style="font-weight: bold; color: #4169E1;"></i>
+	<%= link_to "Comments", opinion_path(opinion, anchor: "comments") %>
+	(<%= opinion.comments.count  %>)
+</p>
+
 </div>
   <% end %>
 </div>
