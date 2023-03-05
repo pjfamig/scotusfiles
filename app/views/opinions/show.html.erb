@@ -6,7 +6,7 @@
 
 <div id="sign-in">
   <% if user_signed_in? && current_user.admin? %> 
-	  <p><%= link_to "Edit this opinion", edit_opinion_path(@opinion) %> | <%= link_to "Delete this opinion", @opinion, method: :delete  %></p>  
+	  <p><%= link_to "Edit this opinion", edit_opinion_path(@opinion) %> | <%= button_to "Delete this opinion", @opinion, method: :delete  %></p>  
   <% end %> 
 </div>
 

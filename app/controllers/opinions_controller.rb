@@ -44,7 +44,7 @@ class OpinionsController < ApplicationController
     respond_to do |format|
       if @opinion.save
         puts "Files after save: #{opinion_params[:files].inspect}"
-        format.html { redirect_to opinion_url(@opinion), notice: "Opinion was successfully created." }
+        format.html { redirect_to opinion_url(@opinion), notice: "Opinion successfully created!" }
         format.json { render :show, status: :created, location: @opinion }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -65,7 +65,7 @@ class OpinionsController < ApplicationController
         # Save the HTML content to the existing file
         File.write(Rails.root.join('public', 'opinions', @opinion.filename), full_decision_html)
 
-        format.html { redirect_to opinion_url(@opinion), notice: "Opinion was successfully updated." }
+        format.html { redirect_to opinion_url(@opinion), notice: "Opinion successfully updated!" }
         format.json { render :show, status: :ok, location: @opinion }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -79,7 +79,7 @@ class OpinionsController < ApplicationController
     @opinion.destroy
 
     respond_to do |format|
-      format.html { redirect_to opinions_url, notice: "Opinion was successfully destroyed." }
+      format.html { redirect_to opinions_url, alert: "Opinion destroyed." }
       format.json { head :no_content }
     end
   end
