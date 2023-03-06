@@ -32,7 +32,7 @@ class OpinionsController < ApplicationController
     @opinion = Opinion.new(opinion_params)
     puts "Files before save: #{opinion_params[:files].inspect}"
     
-    # Convert the rich text content to HTML format
+    # Convert full_decision to html_safe text in preparation for saving
     full_decision_html = @opinion.full_decision.html_safe
   
     # Save the HTML content to a separate file
