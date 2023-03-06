@@ -14,6 +14,14 @@
     <%= javascript_importmap_tags %>
     
   </head>
+
+<header id="custom-header" style="display:none;">
+  <% if defined?(@opinion) && @opinion.present? %>
+    <h1><%= @opinion.title %></h1>
+  <% else %>
+    <h1><a href="../">SCOTUS <mark>files</mark></a></h1>
+  <% end %>
+</header>
   
   <center><h1><a href="../">SCOTUS <mark>files</mark></a></h1></center>
 
@@ -61,12 +69,11 @@
   <% end %>
 </p>
 <br><br>
+
 </div>
 
-
-
-    <br><br>
-
+<br><br>
+	
 <script>
      // Check if the user has already viewed the typing animation
      var hasViewedTyping = localStorage.getItem('hasViewedTyping');

@@ -1,7 +1,5 @@
 require 'csv'
 
-# Populate topics database
-
 CSV.foreach(Rails.root.join('lib/seeds/2022_decisions_index.csv'), headers: true) do |row|
   # Construct full URL for PDF file
     pdf_url = "https://www.supremecourt.gov/opinions/22pdf/#{row["scotus_filename"]}"
@@ -13,6 +11,8 @@ CSV.foreach(Rails.root.join('lib/seeds/2022_decisions_index.csv'), headers: true
   # Save PDF file to local file system
   file_path = Rails.root.join('tmp', file_name)
   File.write(file_path, pdf_data)
+  
+  # Add code to generate HTML file for full_decision
   
  opinion = Opinion.new({
    user_id: "1",
@@ -32,6 +32,3 @@ CSV.foreach(Rails.root.join('lib/seeds/2022_decisions_index.csv'), headers: true
 end
 
 p "All #{Opinion.count} Opinions successfully added to the database!"
-
-
-# need to add command to upload PDF file for each case and fix show page for full_decision text

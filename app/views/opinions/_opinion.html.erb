@@ -34,37 +34,11 @@
 </p>
 </div>
 
-<div id="full-decision-text"><%= raw opinion.full_decision %></div>
+
+
+<strong>No More Rich Text</strong>
+
+<div id="full-decision-text"><%= @full_decision.html_safe %></div>
 
 </div>
 
-<script>
-	var paragraph = document.getElementById("full-decision-text");
-	var text = paragraph.innerText;
-	
-	var sentences = text.match(/[^\.!\?]+[\.!\?]+/g);
-	var newHTML = "";
-	for (let i = 0; i < sentences.length; i++) {
-	     if(!isAcronym(sentences[i])){
-	       newHTML += `<span class="sentence">${sentences[i]}</span>`;
-	     }else{
-	       newHTML += sentences[i];
-	     }
-	}
-	paragraph.innerHTML = newHTML;
-
-	var sentenceElements = paragraph.getElementsByClassName("sentence");
-	for (let i = 0; i < sentenceElements.length; i++) {
-	  sentenceElements[i].addEventListener("mouseover", event => {
-	    event.target.style.backgroundColor = "";
-	  });
-	  sentenceElements[i].addEventListener("mouseout", event => {
-	    event.target.style.backgroundColor = "";
-	  });
-	}
-	
-	function isAcronym(sentence) {
-	  var acronymRegex = /(^|[\s])[A-Z]\./g;
-	  return acronymRegex.test(sentence);
-	}
-</script>

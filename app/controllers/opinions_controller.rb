@@ -12,8 +12,8 @@ class OpinionsController < ApplicationController
   def show
     @opinion = Opinion.friendly.find(params[:id])
 
-    # Read the content of the HTML file
-    # @full_decision = File.read(Rails.root.join('public', 'opinions', @opinion.filename))
+    # Find and load HTML file for opinion
+    @full_decision = File.read(Rails.root.join('public', 'opinions', @opinion.filename))
   end
 
   # GET /opinions/new
@@ -33,11 +33,11 @@ class OpinionsController < ApplicationController
     puts "Files before save: #{opinion_params[:files].inspect}"
     
     # Convert the rich text content to HTML format
-      full_decision_html = @opinion.full_decision.body.to_html
+    full_decision_html = @opinion.full_decision.html_safe
   
-      # Save the HTML content to a separate file
-      filename = "#{Time.now.strftime('%Y%m%d%H%M%S')}.html"
-      File.write(Rails.root.join('public', 'opinions', filename), full_decision_html)
+    # Save the HTML content to a separate file
+    filename = "#{@opinion.title.parameterize}-#{Time.now.strftime('%Y%m%d%H%M%S')}.html"
+    File.write(Rails.root.join('public', 'opinions', filename), full_decision_html)
     
     @opinion.filename = filename
 
@@ -60,7 +60,7 @@ class OpinionsController < ApplicationController
     respond_to do |format|
       if @opinion.update(opinion_params)
         # Convert the updated rich text content to HTML format
-        full_decision_html = @opinion.full_decision.body.to_html
+        full_decision_html = @opinion.full_decision.html_safe
   
         # Save the HTML content to the existing file
         File.write(Rails.root.join('public', 'opinions', @opinion.filename), full_decision_html)

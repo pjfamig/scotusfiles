@@ -14,6 +14,16 @@
  *= require_self
  */
 
+#custom-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  z-index: 9999;
+  height: 60px;
+}
+
 body {
     color: var(--text);
     background-color: var(--bg);
