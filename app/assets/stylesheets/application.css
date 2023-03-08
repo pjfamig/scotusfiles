@@ -75,9 +75,12 @@ h1 a:visited {
 
 #feed, #login {
 	border-top: 1px dotted;
-	
 }
- 
+
+#feed-nav {
+	padding: 2px 28px 2px 28px;
+	font-size: 16px;
+} 
 
 h2 {
 	font-size: 1.9em;
@@ -105,22 +108,54 @@ h3 {
 
 .feed-item {
 	padding: 20px;
+	border-left: 2px solid #fff;
 	
 }
 
+.feed-item p:link {
+	font-style: none;
+}
+
 .feed-item:hover {
-	background-color: #F5F5F5;
+	background-color: #F8F8F8;
+	border-left: 2px solid gray;
+	cursor: pointer;
+}
+
+.feed-item-selected {
+	padding: 20px;
+	border-left: 2px solid blue;
 }
 
 .full-decision {
 }
 
+.holding, .links {
+  text-decoration: none;
+  color: black;
+}
+
+.holding:hover, .links:hover {
+  text-decoration: none;
+  color: black;
+}
+
+
 .decision-date {
 	font-size: 16px;
 	color: #808080;
+      text-decoration: none;	
+}
+
+.toggle-section {
 }
 
 aside {
+	width: 100%;
+}
+
+details {
+	background-color: #fff;
 }
 
 .sentence {
@@ -130,13 +165,11 @@ aside {
 }
 
 .case-navigation {
-	background-color: #F5F5F5;
-	border: 1px solid #F5F5F5;
-	border-radius: 5px;
+	background-color: #F8F8F8;
+	border-radius: 4px;
 	padding: 6px;
-	margin: 20px 0px 20px 0px;
+	margin: 10px 0px 20px 0px;
 	text-align: center;
-	max-width: 950px;
 }
 
 .notice {
@@ -171,7 +204,8 @@ aside {
 	background-color: #F5F5F5;
 	padding: 20px;
 	color: #505050;
-	border-radius: 20px;
+	border-radius: 10px;
+	margin-top: 30px;
 }
 
 #sign-in {
@@ -179,7 +213,7 @@ aside {
 }
 
 #full-decision-text {
-	border: 1px solid #DCDCDC;
+	border: 0px solid #DCDCDC;
 	padding: 20px;
 	border-radius: 5px;
 	max-width: 950px;
@@ -198,9 +232,21 @@ aside {
   background-color: yellow;
 }
 
-.footnote {
-	border-radius: 5px;
+#footnotes {
 	color: #696969;
-	font-size: 12px;
+	font-size: 14px;
+	text-align: left;	
+	background-color: #f5f7ff;
 	padding: 8px;
+	border-radius: 5px;
+}
+
+#footnotes p {
+	margin: 0px;
+}
+
+#footnotes p {
+}
+
+.footnote {
 }

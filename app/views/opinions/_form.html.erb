@@ -23,9 +23,24 @@
 
   <div>
     <%= form.label :full_decision, style: "display: block" %>
-    <%= form.text_area :full_decision %>
+    <%= form.text_area :full_decision, style: "width: 100%; height: 20em;" %>
   </div>
 
+
+  <div>
+    <%= form.label :syllabus, style: "display: block" %>
+    <%= form.text_area :syllabus, style: "width: 100%; height: 10em;" %>
+  </div>
+  
+  <div>
+    <%= form.label :majority_opinion, style: "display: block" %>
+    <%= form.text_area :majority_opinion, style: "width: 100%; height: 10em;" %>
+  </div>
+  
+  <div>
+    <%= form.label :dissent, style: "display: block" %>
+    <%= form.text_area :dissent, style: "width: 100%; height: 10em;" %>
+  </div>
   <div>
     <%= form.label :decision_date, style: "display: block" %>
     <%= form.date_field :decision_date %>

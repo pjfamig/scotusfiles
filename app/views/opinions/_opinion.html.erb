@@ -1,12 +1,9 @@
 <div id="<%= dom_id opinion %>">
   
-	<div class="">
-		<p class="decision-date">Decided <%= opinion.decision_date.strftime('%B %d, %Y') %></p>
-    <p><strong><%= opinion.title %></strong></p>
-    
-    <p>
-      Holding: <%= opinion.holding %>
-    </p>
+<div class="feed-item-selected">
+<p class="decision-date">Decided <%= opinion.decision_date.strftime('%B %d, %Y') %></p>
+<p><h3><%= opinion.title %></h3></p> 
+<p>Holding: <%= opinion.holding %></p>
  <!--   <p>
 	     <% opinion.files.each do |file| %>
 
@@ -15,30 +12,63 @@
 	    <% end %> 
 		    
     </p>-->
-<p><i class="fa fa-file-text-o" style="font-size:20px"></i> <%= link_to "PDF of opinion", opinion.scotus_filename %> | <%= link_to "Comments", "#comments" %>
-	(<%= opinion.comments.count  %>)</p>
+	 
+	<p> 
+		<i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i> 
+		<%= link_to "Full Decision", "#full-decision" %> | <i class="fa fa-file-text-o" style="font-size:16px; color: #CB4335;"></i> 
+		<%= link_to "View PDF", opinion.scotus_filename %> | <i class="fa fa-commenting-o" aria-hidden="true" style="color: #4169E1;"></i>
+		<%= link_to "Comments", "#comments" %>
+	</p>
+	<p>
+		<span style='font-size:14px;'>&#8618;</span>
+	<%= link_to_unless_current "Syllabus", "#syllabus" %> |
+	<%= link_to_unless_current "Majority Opinion", "#majority" %> |
+	<%= link_to_unless_current "Dissenting Opinion", "#dissent" %><br>	
+	</p>
 </div>
 
 <div class="full-decision">
 
-<div class="case-navigation"><p><%= link_to_unless_current "Full Decision", opinion_path(@opinion) %> |
-	<%= link_to_unless_current "Summary", "#syllabus" %> |
-	<%= link_to_unless_current "Majority Opinion", "#majority" %> |
-	<%= link_to_unless_current "Dissenting Opinion", "#dissent" %><br>	
 
 <% if user_signed_in? && current_user.admin? %> 
-     <%= link_to "Back to opinions", opinions_path %> | 
+<div class="case-navigation"><p>
+     Admin options: 
+	<%= link_to "Back to opinions", opinions_path %> | 
 	<%= link_to "Edit this opinion", edit_opinion_path(@opinion) %> | 
 	<%= link_to "Delete this opinion", @opinion, method: :delete  %>  
-  <% end %>
 </p>
 </div>
+  <% end %>
 
 
+  <br>
 
-<strong>No More Rich Text</strong>
+<details>
+	<summary><a id="full-decision"></a><strong>Full Decision</strong></summary>
+<div id="full-decision-text">
+    <%= opinion.full_decision.html_safe %>
+</div>
+</details>
 
-<div id="full-decision-text"><%= @full_decision.html_safe %></div>
+<details>
+	<summary><a id="syllabus"></a><strong>Syllabus</strong></summary>
+<div id="full-decision-text">
+     <%= opinion.syllabus.html_safe %>
+</div>
+</details>
+
+<details>
+<summary><a id="majority"></a><strong>Majority Opinion</strong></summary>
+<div id="full-decision-text">
+     <%= opinion.majority_opinion.html_safe %>
+</div>
+</details>
+
+<details>
+<summary><a id="dissent"></a><strong>Dissent</strong></summary>
+<div id="full-decision-text">
+     <%= opinion.dissent.html_safe %>
+</div>
+</details>
 
 </div>
-

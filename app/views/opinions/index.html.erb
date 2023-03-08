@@ -1,29 +1,41 @@
 
 <div id="feed">
-		
+  
   <% @opinions.each do |opinion| %>
-
-	<div class="feed-item">
-		<p class="decision-date">Decided <%= opinion.decision_date.strftime('%B %d, %Y') %></p>
-    <p><strong><%= link_to opinion.title, opinion %>
-    </strong></p>
+  
+    <%= link_to opinion_path(opinion) do %>
     
-    <p>
-      <u>Holding</u>: <%= opinion.holding %>
-    </p>
-
-<p> 
-	<i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i> 
-	<%= link_to "Full Decision", opinion_path(opinion) %> &nbsp;&nbsp;
-	<i class="fa fa-file-text-o" style="font-size:16px; color: #CB4335;"></i> 
-	<%= link_to "View PDF", opinion.scotus_filename %> &nbsp;&nbsp; 
-	<i class="fa fa-commenting-o" aria-hidden="true" style="color: #4169E1;"></i>
-	<%= link_to "Comments", opinion_path(opinion, anchor: "comments") %>
-</p>
-
+<div class="feed-item">
+  
+  <p class="decision-date">Decided <%= opinion.decision_date.strftime('%B %d, %Y') %></p>
+  
+  <h3><%= link_to opinion.title, opinion %></h3>
+  
+  <p class="holding"><u>Holding</u>: <%= opinion.holding %></p>
+  
+  <p class="links">
+    
+    <i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i> 
+    
+    <%= link_to "Full Decision", opinion_path(opinion) %>&nbsp;&nbsp;
+    
+    <i class="fa fa-file-text-o" style="font-size:16px; color: #CB4335;"></i> 
+    
+    <%= link_to "View PDF", opinion.scotus_filename %>&nbsp;&nbsp;
+    
+    <i class="fa fa-commenting-o" aria-hidden="true" style="color: #4169E1;"></i>
+    
+    <%= link_to "Comments", opinion_path(opinion, anchor: "comments") %>
+  </p>
 </div>
+
+    <% end %>
+    
   <% end %>
+  
 </div>
+
+<%= paginate @opinions %>
 
 <p>
 <% if user_signed_in? && current_user.admin? %> 
