@@ -27,23 +27,17 @@
 	</p>
 </div>
 
+<br>
 <div class="full-decision">
-
-
 <% if user_signed_in? && current_user.admin? %> 
 <div class="case-navigation"><p>
-     Admin options: 
-	<%= link_to "Back to opinions", opinions_path %> | 
-	<%= link_to "Edit this opinion", edit_opinion_path(@opinion) %> | 
-	<%= link_to "Delete this opinion", @opinion, method: :delete  %>  
+     <%= link_to "Edit this opinion (Admin Only)", edit_opinion_path(@opinion) %> 
 </p>
 </div>
   <% end %>
 
 
-  <br>
-
-<details>
+<details open>
 	<summary><a id="full-decision"></a><strong>Full Decision</strong></summary>
 <div id="full-decision-text">
     <%= opinion.full_decision.html_safe %>
@@ -64,11 +58,13 @@
 </div>
 </details>
 
+<% if opinion.dissent.present? %>
 <details>
 <summary><a id="dissent"></a><strong>Dissent</strong></summary>
 <div id="full-decision-text">
      <%= opinion.dissent.html_safe %>
 </div>
 </details>
+<% end %>
 
 </div>

@@ -63,6 +63,10 @@ h1 a:visited {
 	color: #000000;
 }
 
+input {
+  padding: 10px;
+}
+
 #signup {
 	text-align: center;
 	margin-bottom: 20px;
@@ -109,6 +113,7 @@ h3 {
 .feed-item {
 	padding: 20px;
 	border-left: 2px solid #fff;
+	border-top: 1px solid gray;
 	
 }
 
@@ -166,7 +171,7 @@ details {
 
 .case-navigation {
 	background-color: #F8F8F8;
-	border-radius: 4px;
+	border-radius: 5px;
 	padding: 6px;
 	margin: 10px 0px 20px 0px;
 	text-align: center;
@@ -201,10 +206,10 @@ details {
 }
 
 #comments {
-	background-color: #F5F5F5;
+	background-color: #F8F8F8;
 	padding: 20px;
 	color: #505050;
-	border-radius: 10px;
+	border-radius: 5px;
 	margin-top: 30px;
 }
 
@@ -250,3 +255,7 @@ details {
 
 .footnote {
 }
+
+table {
+}
+    

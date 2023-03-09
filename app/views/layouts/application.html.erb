@@ -38,7 +38,7 @@
 	 <form name="gform" id="gform" enctype="text/plain" action="https://docs.google.com/forms/d/e/1FAIpQLSe_FMpNJh1qgqsOw2yhxKHbi3aa117Z6XHC0rLYYJ-HMvnhnQ/formResponse?" target="hidden_iframe" onsubmit="submitted=true;">
 
 	  	  <input type="email" name="entry.1674987373" id="entry.1674987373" placeholder="Subscribe to receive cases by email" size="35" class="textbox" required>
-	 	   <input type="submit" value="Go!">
+	 	   <input type="submit" value="Subscribe">
 	 	 </form>
 		 
 		 <span id="thanks"></span>
@@ -60,14 +60,14 @@
 <div id="login">  
 	
 <center><h4>Follow <a href="https://twitter.com/scotusfiles">@scotusfiles</a> for updates</h4>
- <p> 	  
+ <!-- <p> 	  
   <% if user_signed_in? %> 
  Welcome <%= current_user.email %></div> 
     <%= button_to "sign out", destroy_user_session_path, method: :delete %>
   <% else %>
    <%= link_to "Login", new_user_session_path %> | <%= link_to "Sign up", new_user_registration_path %>
   <% end %>
-</p>
+</p> -->
 <br><br>
 
 </div>
@@ -82,7 +82,7 @@
      if (!hasViewedTyping) {
        // If the flag is not set, initialize the Typed.js plugin and show the typing animation
        var options = {
-         strings: ['The better way to read Supreme Court decisions.'],
+         strings: ['A better way to read and discuss Supreme Court decisions'],
          typeSpeed: 30,
          showCursor: false
        };
@@ -92,7 +92,7 @@
        localStorage.setItem('hasViewedTyping', true);
      } else {
        // If the flag is set, simply display the text string
-       document.getElementById('typed-text').textContent = 'The better way to read Supreme Court decisions.';
+       document.getElementById('typed-text').textContent = 'A better way to read and discuss Supreme Court decisions';
      }
 </script>
 

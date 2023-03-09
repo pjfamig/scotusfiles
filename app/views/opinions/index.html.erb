@@ -1,9 +1,45 @@
 
-<div id="feed">
+<!-- new test feed 
+
+<div id="">
+<table style="border-radius: 5px;">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Decision Date</th>
+      <th>Holding</th>
+      <th>Links</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @opinions.each do |opinion| %>
+      <tr>
+        <td><%= link_to opinion.title, opinion %></td>
+        <td><%= opinion.decision_date.strftime('%B %d, %Y') %></td>
+        <td><%= opinion.holding %></td>
+        <td>
+          <i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i>
+          <%= link_to "Full Decision", opinion_path(opinion) %>
+          &nbsp;&nbsp;
+          <i class="fa fa-file-text-o" style="font-size:16px; color: #CB4335;"></i>
+          <%= link_to "View PDF", opinion.scotus_filename %>
+          &nbsp;&nbsp;
+          <i class="fa fa-commenting-o" aria-hidden="true" style="color: #4169E1;"></i>
+          <%= link_to "Comments", opinion_path(opinion, anchor: "comments") %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>	
+</div>
+
+-->
+
+
+<div id="">
   
   <% @opinions.each do |opinion| %>
   
-    <%= link_to opinion_path(opinion) do %>
     
 <div class="feed-item">
   
@@ -28,14 +64,14 @@
     <%= link_to "Comments", opinion_path(opinion, anchor: "comments") %>
   </p>
 </div>
-
-    <% end %>
     
   <% end %>
   
 </div>
+<br>
 
 <%= paginate @opinions %>
+
 
 <p>
 <% if user_signed_in? && current_user.admin? %> 

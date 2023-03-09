@@ -14,12 +14,14 @@
 	<% end %>
 </div>
 
-<div id="sign-in">
-	<p>
+<div id="">
+
   <% if user_signed_in? && current_user.admin? %> 
-	  Admin options: <%= link_to "Edit this opinion", edit_opinion_path(@opinion) %>
+	<div class="case-navigation">
+	  <%= link_to "Edit this opinion (Admin Only)", edit_opinion_path(@opinion) %>
 	  <%= button_to "Delete this opinion", @opinion, method: :delete  %>
-  <% end %> </p>
+  	</div>
+  <% end %> 
   
 <p><a href="#">Back to Top</a></p>  
 
