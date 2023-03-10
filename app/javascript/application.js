@@ -27,3 +27,19 @@ $(window).on('load', function() {
   }
 });
 
+
+$(document).on('click', '.sentence', function() {
+  var sentenceId = $(this).attr('id');
+  
+  // Remove all existing comment-boxes
+  $('.comment-box').remove();
+
+  // Create a new container for the comment-box and append it after the selected sentence
+  var commentContainer = $('<div>');
+  var commentBox = $('<div class="comment-box"><form action="/comments" method="POST"><input type="hidden" name="sentence_id" value="' + sentenceId + '"><textarea name="content"></textarea><button type="submit">Submit</button></form></div>');
+  commentContainer.append(commentBox);
+  $(this).parent().after(commentContainer.html());
+});
+
+
+

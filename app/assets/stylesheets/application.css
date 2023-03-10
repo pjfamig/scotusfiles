@@ -112,9 +112,12 @@ h3 {
 
 .feed-item {
 	padding: 20px;
-	border-left: 2px solid #fff;
-	border-top: 1px solid gray;
-	
+	border-left: 1px dotted gray;
+	border-top: 1px dotted gray;
+	border-right: 1px solid gray;
+	border-bottom: 1px solid gray;
+	border-radius: 5px;
+	margin-bottom: 10px;
 }
 
 .feed-item p:link {
@@ -123,16 +126,23 @@ h3 {
 
 .feed-item:hover {
 	background-color: #F8F8F8;
-	border-left: 2px solid gray;
 	cursor: pointer;
 }
 
 .feed-item-selected {
 	padding: 20px;
-	border-left: 2px solid blue;
+	border-left: 1px dotted gray;
+	border-right: 1px solid gray;
+	border-bottom: 1px solid gray;
+	border-top: 1px dotted gray;
+	border-radius: 5px;
 }
 
-.full-decision {
+#full-decision {
+	margin-top: 15px;
+}
+
+.decision-holder {
 }
 
 .holding, .links {
@@ -145,6 +155,10 @@ h3 {
   color: black;
 }
 
+
+.hidden {
+  display: none;
+}
 
 .decision-date {
 	font-size: 16px;
@@ -250,12 +264,8 @@ details {
 	margin: 0px;
 }
 
-#footnotes p {
-}
-
-.footnote {
-}
-
-table {
+.sentence:hover {
+  background-color: yellow;
+  cursor: pointer;
 }
     
