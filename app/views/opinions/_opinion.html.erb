@@ -27,7 +27,7 @@
 <% if params[:view].present? && params[:view] == "PDF" %>
 
 <div id="pdf-viewer" style="margin-top: 15px;">
-    <embed src="<%= rails_blob_path(opinion.files.first, disposition: :inline) %>" type="application/pdf" width="100%" height="1120px" />
+  <embed src="<%= opinion.scotus_filename %>" type="application/pdf" width="100%" height="1120px" />
 </div>
 
 <% else %>
@@ -80,7 +80,7 @@
 
 
 <div id="pdf-viewer" style="display: none; margin-top: 15px;">
-    <embed src="<%= rails_blob_path(opinion.files.first, disposition: :inline) %>" type="application/pdf" width="100%" height="800px" />
+  <embed src="<%= opinion.scotus_filename %>" type="application/pdf" width="100%" height="1120px" />
 </div>
 
 
