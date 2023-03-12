@@ -77,6 +77,10 @@ input {
 	margin: 0px;
 }
 
+#footer {
+	margin: 40px 0px 100px 0px;
+}
+
 #feed, #login {
 	border-top: 1px dotted;
 }
@@ -185,10 +189,12 @@ details {
 
 .case-navigation {
 	background-color: #F8F8F8;
+	border: 1px solid #ccc;
 	border-radius: 5px;
-	padding: 6px;
-	margin: 10px 0px 20px 0px;
+	padding: 8px;
+	width: 50%;
 	text-align: center;
+	margin: auto;
 }
 
 .notice {

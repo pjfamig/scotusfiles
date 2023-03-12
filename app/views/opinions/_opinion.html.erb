@@ -14,13 +14,12 @@
     </p>-->
 	 
 	<p> 
-		<i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i> 
-		<%= link_to_unless_current "Full Decision", "?view=HTML" %>&nbsp;&nbsp;
-		<i class="fa fa-file-text-o" style="font-size:16px; color: #CB4335;"></i> 
-  <%= link_to_unless_current "View PDF", "?view=PDF", onclick: "embedPDF('#{opinion.scotus_filename}')", id: "pdf-link" %>&nbsp;&nbsp;
-  <i class="fa fa-commenting-o" aria-hidden="true" style="color: #4169E1;"></i>
-		<%= link_to "Comments", "#comments" %>
-	</p>
+		View: <i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i> 
+		<%= link_to "HTML", "?view=HTML" %>&nbsp;&nbsp;
+		<i class="fa fa-file-pdf-o" style="font-size:16px; color: #CB4335;"></i> 
+  <%= link_to "PDF", "?view=PDF", onclick: "embedPDF('#{opinion.scotus_filename}')", id: "pdf-link" %>
+  
+  	</p>
 </div>
 
 
@@ -31,8 +30,8 @@
 </div>
 
 <% else %>
-	<div id="full-decision">
 
+<div id="full-decision">
 <% if user_signed_in? && current_user.admin? %> 
 <div class="case-navigation"><p>
      <%= link_to "Edit this opinion (Admin Only)", edit_opinion_path(@opinion) %> 
@@ -44,6 +43,10 @@
 <details open>
 	<summary><a id="full-decision"></a><strong>Full Decision</strong></summary>
 
+<div class="case-navigation">
+<a href="#syllabus">Syllabus</a> | <a href="#majority">Majority Opinion</a> | <a href="#dissent">Dissent</a>
+</div>
+
 <div id="full-decision-text">
     <% opinion.full_decision.split('.').each_with_index do |sentence, i| %>
       <span class="sentence" id="sentence-<%= i %>"><%= sentence.html_safe %>.</span>
@@ -53,35 +56,19 @@
 </details>
 
 <details>
-	<summary><a id="syllabus"></a><strong>Syllabus</strong></summary>
-<div id="full-decision-text">
-     <%= opinion.syllabus.html_safe %>
-</div>
+	<summary><strong>PDF</strong></summary>
+	
+	<div id="" style="margin-top: 15px;">
+	  <embed src="<%= opinion.scotus_filename %>" type="application/pdf" width="100%" height="1120px" />
+	</div>
+	
 </details>
 
-<details>
-<summary><a id="majority"></a><strong>Majority Opinion</strong></summary>
-<div id="full-decision-text">
-     <%= opinion.majority_opinion.html_safe %>
 </div>
-</details>
 
-<% if opinion.dissent.present? %>
-<details>
-<summary><a id="dissent"></a><strong>Dissent</strong></summary>
-<div id="full-decision-text">
-     <%= opinion.dissent.html_safe %>
-</div>
-</details>
-<% end %>
-
-</div>
 <% end %>
 
 
-<div id="pdf-viewer" style="display: none; margin-top: 15px;">
-  <embed src="<%= opinion.scotus_filename %>" type="application/pdf" width="100%" height="1120px" />
-</div>
 
 
 <script>

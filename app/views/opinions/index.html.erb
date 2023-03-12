@@ -36,12 +36,11 @@
 -->
 
 
-<div id="">
+<div>
   
   <% @opinions.each do |opinion| %>
   
-    
-<div class="feed-item">
+	<div class="feed-item">
   
   <p class="decision-date">Decided <%= opinion.decision_date.strftime('%B %d, %Y') %></p>
   
@@ -49,29 +48,23 @@
   
   <p class="holding"><u>Holding</u>: <%= opinion.holding %></p>
   
-  <p class="links">
-    
-    <i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i> 
-    
-    <%= link_to "Full Decision", opinion_path(opinion) %>&nbsp;&nbsp;
-    
-    <i class="fa fa-file-text-o" style="font-size:16px; color: #CB4335;"></i> 
-    
-    <%= link_to "View PDF", opinion_path(opinion, view: "PDF") %>&nbsp;&nbsp;
-    
-    <i class="fa fa-commenting-o" aria-hidden="true" style="color: #4169E1;"></i>
-    
-    <%= link_to "Comments", opinion_path(opinion, anchor: "comments") %>
-  </p>
+	<p> 
+		View: <i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i> 
+		<%= link_to "HTML", "/opinions/#{opinion.slug}?view=HTML" %>&nbsp;&nbsp;
+		<i class="fa fa-file-pdf-o" style="font-size:16px; color: #CB4335;"></i> 
+  <%= link_to "PDF", "/opinions/#{opinion.slug}?view=PDF", onclick: "embedPDF('#{opinion.scotus_filename}')", id: "pdf-link" %>
+  
+  	</p>
 </div>
-    
+
   <% end %>
   
 </div>
+
+
 <br>
 
 <%= paginate @opinions %>
-
 
 <p>
 <% if user_signed_in? && current_user.admin? %> 
