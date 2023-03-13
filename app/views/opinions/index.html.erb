@@ -1,14 +1,12 @@
 
-<!-- new test feed 
 
 <div id="">
-<table style="border-radius: 5px;">
+<center><table style="border-radius: 25px; width: 80%;">
   <thead>
     <tr>
-      <th>Title</th>
+      <th>Current Term</th>
       <th>Decision Date</th>
-      <th>Holding</th>
-      <th>Links</th>
+      <th>Files</th>
     </tr>
   </thead>
   <tbody>
@@ -16,26 +14,22 @@
       <tr>
         <td><%= link_to opinion.title, opinion %></td>
         <td><%= opinion.decision_date.strftime('%B %d, %Y') %></td>
-        <td><%= opinion.holding %></td>
         <td>
           <i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i>
-          <%= link_to "Full Decision", opinion_path(opinion) %>
-          &nbsp;&nbsp;
-          <i class="fa fa-file-text-o" style="font-size:16px; color: #CB4335;"></i>
-          <%= link_to "View PDF", opinion.scotus_filename %>
-          &nbsp;&nbsp;
-          <i class="fa fa-commenting-o" aria-hidden="true" style="color: #4169E1;"></i>
-          <%= link_to "Comments", opinion_path(opinion, anchor: "comments") %>
+          <%= link_to "HTML", "/opinions/#{opinion.slug}?view=HTML" %>&nbsp;
+          <i class="fa fa-file-pdf-o" style="font-size:16px; color: #CB4335;"></i>
+          <%= link_to "PDF", "/opinions/#{opinion.slug}?view=PDF" %>
+		
         </td>
       </tr>
     <% end %>
   </tbody>
-</table>	
+</table>	</center>
 </div>
 
--->
 
 
+<!--
 <div>
   
   <% @opinions.each do |opinion| %>
@@ -60,7 +54,7 @@
   <% end %>
   
 </div>
-
+-->
 
 <br>
 

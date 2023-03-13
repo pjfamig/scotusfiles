@@ -45,6 +45,9 @@ h1 {
 	margin-bottom: 20px;
 }
 
+table {
+}
+
 p {
 	margin-top: 10px;
 	margin-bottom: 10px;
@@ -78,7 +81,7 @@ input {
 }
 
 #footer {
-	margin: 40px 0px 100px 0px;
+	margin: 10px 0px 80px 0px;
 }
 
 #feed, #login {

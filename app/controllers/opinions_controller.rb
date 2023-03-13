@@ -5,7 +5,7 @@ class OpinionsController < ApplicationController
 
   # GET /opinions or /opinions.json
   def index
-    @opinions = Opinion.order(decision_date: :desc).page(params[:page]).per(5)
+    @opinions = Opinion.order(decision_date: :desc).page(params[:page]).per(10)
   end
 
   # GET /opinions/1 or /opinions/1.json
