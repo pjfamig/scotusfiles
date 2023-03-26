@@ -11,6 +11,7 @@ class OpinionsController < ApplicationController
   # GET /opinions/1 or /opinions/1.json
   def show
     @opinion = Opinion.friendly.find(params[:id])
+    @opinions = Opinion.order(decision_date: :desc).page(params[:page]).per(10)
 
     # Find and load HTML file for opinion
     # @full_decision = File.read(Rails.root.join('public', 'opinions', @opinion.filename))
