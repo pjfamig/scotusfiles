@@ -1,10 +1,10 @@
 <%= turbo_stream_from @opinion %>
 
-<div id="">
+<div>
 	<%= render @opinion %>
 </div>
 
-<div id="">
+<div>
 <center><table style="width: 100%;">
   <thead>
     <tr>
@@ -31,7 +31,7 @@
 </table>	</center>
 </div>
 
-<!--
+
 <div id="comments">
 	<strong>Comments</strong>
 	<p>
@@ -41,16 +41,16 @@
 		<p><%= link_to "Login", new_user_session_path %> or <%= link_to "Sign Up", new_user_registration_path %> to comment.</p>
 	<% end %>
 </div>
--->
+<br>
 
-<div id="">
+<div>
 
   <% if user_signed_in? && current_user.admin? %> 
 	<div class="case-navigation">
 	  <%= link_to "Edit this opinion (Admin Only)", edit_opinion_path(@opinion) %>
     <%= button_to "sign out", destroy_user_session_path, method: :delete %>
-	  <%= button_to "Delete this opinion", @opinion, method: :delete  %>
   	</div>
   <% end %> 
   
 </div>
+

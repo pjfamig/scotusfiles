@@ -1,6 +1,4 @@
-
-
-<div id="">
+<div>
 <center><table style="width: 90%;">
   <thead>
     <tr>
@@ -26,35 +24,6 @@
   </tbody>
 </table>	</center>
 </div>
-
-
-
-<!--
-<div>
-  
-  <% @opinions.each do |opinion| %>
-  
-	<div class="feed-item">
-  
-  <p class="decision-date">Decided <%= opinion.decision_date.strftime('%B %d, %Y') %></p>
-  
-  <h3><%= link_to opinion.title, opinion %></h3>
-  
-  <p class="holding"><u>Holding</u>: <%= opinion.holding %></p>
-  
-	<p> 
-		View: <i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i> 
-		<%= link_to "HTML", "/opinions/#{opinion.slug}?view=HTML" %>&nbsp;&nbsp;
-		<i class="fa fa-file-pdf-o" style="font-size:16px; color: #CB4335;"></i> 
-  <%= link_to "PDF", "/opinions/#{opinion.slug}?view=PDF", onclick: "embedPDF('#{opinion.scotus_filename}')", id: "pdf-link" %>
-  
-  	</p>
-</div>
-
-  <% end %>
-  
-</div>
--->
 
 <br>
 

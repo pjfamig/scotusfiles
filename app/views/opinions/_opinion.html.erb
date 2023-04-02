@@ -3,21 +3,15 @@
 <div class="feed-item-selected">
 <p class="decision-date">Decided <%= opinion.decision_date.strftime('%B %d, %Y') %></p>
 <p><h3><%= opinion.title %></h3></p> 
-<p>Holding: <%= opinion.holding %></p>
- <!--   <p>
-	     <% opinion.files.each do |file| %>
-
-	    <i class="fa fa-file-text-o" style="font-size:20px"></i>
-	      <%= link_to "Full Opinion", rails_blob_path(file, disposition: :inline), :target => '_blank' %>
-	    <% end %> 
-		    
-    </p>-->
-	 
-	<p> 
-		Files: <i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i> 
+<p><%= opinion.holding %></p>
+<p><i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i> 
 		<%= link_to "HTML", "?view=HTML" %>&nbsp;
 		<i class="fa fa-file-pdf-o" style="font-size:16px; color: #CB4335;"></i> 
   <%= link_to "PDF", "?view=PDF", onclick: "embedPDF('#{opinion.scotus_filename}')", id: "pdf-link" %>
+  
+<% if user_signed_in? && current_user.admin? %> 
+  <p><%= link_to "Edit this opinion (Admin Only)", edit_opinion_path(@opinion) %></p>
+<% end %>
   
   	</p>
 </div>
@@ -32,16 +26,12 @@
 <% else %>
 
 <div id="full-decision">
-<% if user_signed_in? && current_user.admin? %> 
-<div class="case-navigation"><p>
-     <%= link_to "Edit this opinion (Admin Only)", edit_opinion_path(@opinion) %> 
-</p>
-</div>
-<% end %>
+<details open>
+	<summary>
 
+<a id="full-decision"></a><strong>Full Decision</strong>
 
-<details>
-	<summary><a id="full-decision"></a><strong>Full Decision</strong></summary>
+</summary>
 
 <div class="case-navigation">
 <a href="#syllabus">Syllabus</a> | <a href="#majority">Majority Opinion</a> | <a href="#dissent">Dissent</a>
@@ -49,27 +39,15 @@
 
 <div id="full-decision-text">
     <% opinion.full_decision.split('.').each_with_index do |sentence, i| %>
-      <span class="sentence" id="sentence-<%= i %>"><%= sentence.html_safe %>.</span>
+      <span class="sentence" data-sentence-id="<%= i %>"><%= sentence.html_safe %>.</span>
     <% end %>
 </div>
 
 </details>
-
-
 
 </div>
 
 <% end %>
 
 
-
-
-<script>
-function embedPDF(filename) {
-    var fullDecision = document.querySelector('#full-decision');
-    var pdfViewer = document.querySelector('#pdf-viewer');
-    fullDecision.style.display = 'none';
-    pdfViewer.style.display = 'block';
-}
-</script>
 

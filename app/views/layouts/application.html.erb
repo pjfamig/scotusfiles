@@ -27,8 +27,7 @@
 
   <body>
 <div id="signup">
-	<p id="typed-text"></p>
-</div>
+<p>A better way to read and discuss Supreme Court decisions</p></div>
 
 <% unless user_signed_in? %> 	  
 	  <div id="signup">
@@ -64,34 +63,13 @@
 </div>
 
 
-	
-<script>
-     // Check if the user has already viewed the typing animation
-     var hasViewedTyping = localStorage.getItem('hasViewedTyping');
-
-     // Only show the typing animation if the user hasn't viewed it before
-     if (!hasViewedTyping) {
-       // If the flag is not set, initialize the Typed.js plugin and show the typing animation
-       var options = {
-         strings: ['A better way to read and discuss Supreme Court decisions'],
-         typeSpeed: 30,
-         showCursor: false
-       };
-       var typed = new Typed('#typed-text', options);
-
-       // Set a flag in local storage to indicate that the user has viewed the animation
-       localStorage.setItem('hasViewedTyping', true);
-     } else {
-       // If the flag is set, simply display the text string
-       document.getElementById('typed-text').textContent = 'A better way to read and discuss Supreme Court decisions';
-     }
-</script>
 
 <script async src="//static.getclicky.com/101399487.js"></script>
 <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101399487ns.gif" /></p></noscript>
 
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js"></script>
-	<script type="text/javascript">
+
+<script type="text/javascript">
 	var submitted=false;
 	$('#gform').on('submit', function(e) {
 	  $('#gform *').fadeOut(500);
