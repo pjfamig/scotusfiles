@@ -5,7 +5,7 @@ CSV.foreach(Rails.root.join('lib/seeds/2022_scotus_index.csv'), headers: true) d
   pdf_url = row["url"]
   
   # Download PDF file
-  pdf_data = URI.open(pdf_url)
+  # pdf_data = URI.open(pdf_url)
   # file_name = File.basename(row["url"])
   
 
