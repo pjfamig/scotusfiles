@@ -5,7 +5,7 @@ class OpinionsController < ApplicationController
 
   # GET /opinions or /opinions.json
   def index
-    @opinions = Opinion.order(decision_date: :desc).page(params[:page]).per(10)
+    @opinions = Opinion.order(decision_date: :desc).page(params[:page]).per(50)
   end
 
   # GET /opinions/1 or /opinions/1.json
@@ -32,16 +32,20 @@ class OpinionsController < ApplicationController
     params[:opinion][:user_id] = current_user.id
 
     @opinion = Opinion.new(opinion_params)
-    puts "Files before save: #{opinion_params[:files].inspect}"
-    
-    # Convert full_decision to html_safe text in preparation for saving
-    # full_decision_html = @opinion.full_decision.html_safe
-  
-    # Save the HTML content to a separate file
-    # filename = "#{@opinion.title.parameterize}-#{Time.now.strftime('%Y%m%d%H%M%S')}.html"
-    # File.write(Rails.root.join('public', 'opinions', filename), full_decision_html)
-    
-    # @opinion.filename = filename
+
+    # Define the escape_inner_double_quotes method
+    def escape_inner_double_quotes(input)
+      input.gsub('"', '\"')
+    end
+
+    # Split the full_decision text into sentences
+    escaped_decision = escape_inner_double_quotes(@opinion.full_decision)
+    sentences = escaped_decision.split(/(?<=[.!?])\s+/)
+
+    # Create a separate record in the "quotes" database for each sentence
+    sentences.each do |sentence|
+      Quote.create(content: sentence, opinion_id: @opinion.id)
+    end
 
     respond_to do |format|
       if @opinion.save
@@ -54,6 +58,7 @@ class OpinionsController < ApplicationController
       end
     end
   end
+ 
 
   # PATCH/PUT /opinions/1 or /opinions/1.json
   def update

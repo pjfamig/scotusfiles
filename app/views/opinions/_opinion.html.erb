@@ -1,49 +1,31 @@
 <div id="<%= dom_id opinion %>">
   
 <div class="feed-item-selected">
-<p class="decision-date">Decided <%= opinion.decision_date.strftime('%B %d, %Y') %></p>
-<p><h3><%= opinion.title %></h3></p> 
-<p><%= opinion.holding %></p>
-<p><i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i> 
-		<%= link_to "HTML", "?view=HTML" %>&nbsp;
-		<i class="fa fa-file-pdf-o" style="font-size:16px; color: #CB4335;"></i> 
-  <%= link_to "PDF", "?view=PDF", onclick: "embedPDF('#{opinion.scotus_filename}')", id: "pdf-link" %>
-  
+<h3><%= opinion.title %> <span style="font-size:16px;"><i class="fa fa-file-pdf-o" style="color: #CB4335;"></i> 
+  <%= link_to "PDF", "?view=PDF", onclick: "embedPDF('#{opinion.scotus_filename}')", id: "pdf-link" %></span></h3>
+<p>Decided: <%= opinion.decision_date.strftime('%B %d, %Y') %></p>
 <% if user_signed_in? && current_user.admin? %> 
   <p><%= link_to "Edit this opinion (Admin Only)", edit_opinion_path(@opinion) %></p>
 <% end %>
-  
-  	</p>
+
 </div>
 
 
 <% if params[:view].present? && params[:view] == "PDF" %>
 
-<div id="pdf-viewer" style="margin-top: 15px;">
-  <embed src="<%= opinion.scotus_filename %>" type="application/pdf" width="100%" height="1120px" />
+<div id="pdf-viewer" style="margin-top: 10px;">
+  <embed src="<%= opinion.scotus_filename %>" type="application/pdf" width="100%" height="1125px" />
 </div>
 
 <% else %>
 
-<div id="full-decision">
-<details open>
-	<summary>
-
-<a id="full-decision"></a><strong>Full Decision</strong>
-
-</summary>
-
-<div class="case-navigation">
-<a href="#syllabus">Syllabus</a> | <a href="#majority">Majority Opinion</a> | <a href="#dissent">Dissent</a>
-</div>
-
 <div id="full-decision-text">
-    <% opinion.full_decision.split('.').each_with_index do |sentence, i| %>
-      <span class="sentence" data-sentence-id="<%= i %>"><%= sentence.html_safe %>.</span>
-    <% end %>
+  <% @opinion.quotes.order(:id).each_with_index do |quote, i| %>
+    <span class="sentence" data-sentence-id="<%= i %>"><%= quote.content.html_safe %></span>
+  <% end %>
 </div>
 
-</details>
+
 
 </div>
 

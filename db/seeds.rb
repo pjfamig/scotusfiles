@@ -1,19 +1,16 @@
 require 'csv'
 
-CSV.foreach(Rails.root.join('lib/seeds/2022_decisions_index.csv'), headers: true) do |row|
+CSV.foreach(Rails.root.join('lib/seeds/2022_scotus_index.csv'), headers: true) do |row|
   # Construct full URL for PDF file
-  pdf_url = row["scotus_filename"]
+  pdf_url = row["url"]
   
   # Download PDF file
   pdf_data = URI.open(pdf_url)
-  file_name = File.basename(row["scotus_filename"])
+  # file_name = File.basename(row["url"])
   
-  # Save PDF file to local file system
-  # file_path = Rails.root.join('tmp', file_name)
-  # File.write(file_path, pdf_data)
-  
+
   # Add code to generate HTML file for full_decision
-  temporary_text = "<h2>Coming soon!</h2>".html_safe
+  temporary_text = "<h2>Opinion coming soon!</h2>".html_safe
   
   # Save the PDF file to S3
   # don't need this because Active Storage already set up to use S3
@@ -32,9 +29,9 @@ CSV.foreach(Rails.root.join('lib/seeds/2022_decisions_index.csv'), headers: true
    user_id: "1",
    title: row["title"], 
    scotus_filename: pdf_url, 
-   holding: row["holding"],
+   holding: temporary_text,
    full_decision: temporary_text,
-   decision_date: Date.strptime(row["decision_date"], "%m/%d/%Y"),
+   decision_date: Date.strptime(row["date"], "%m/%d/%Y"),
    # filename: filename,
    syllabus: temporary_text,
    majority_opinion: temporary_text,
@@ -43,8 +40,8 @@ CSV.foreach(Rails.root.join('lib/seeds/2022_decisions_index.csv'), headers: true
    updated_at: Time.zone.now
  })
   
- opinion.files.attach(io: pdf_data, filename: file_name) # Attach PDF file using Active Storage
- p "#{file_name} saved to S3"
+ # opinion.files.attach(io: pdf_data, filename: file_name) # Attach PDF file using Active Storage
+ # p "#{file_name} saved to S3"
  
  opinion.save!
  

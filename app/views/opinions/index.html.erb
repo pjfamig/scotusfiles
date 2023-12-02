@@ -1,8 +1,8 @@
 <div>
-<center><table style="width: 90%;">
+<center><table style="width: 100%">
   <thead>
     <tr>
-      <th>Current Term</th>
+      <th>Case</th>
       <th>Decision Date</th>
       <th>Files</th>
     </tr>
@@ -16,7 +16,7 @@
           <i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i>
           <%= link_to "HTML", "/opinions/#{opinion.slug}?view=HTML" %>&nbsp;
           <i class="fa fa-file-pdf-o" style="font-size:16px; color: #CB4335;"></i>
-          <%= link_to "PDF", "/opinions/#{opinion.slug}?view=PDF" %>
+          <%= link_to "PDF", opinion.scotus_filename %>
 		
         </td>
       </tr>
@@ -25,12 +25,29 @@
 </table>	</center>
 </div>
 
-<br>
-
 <%= paginate @opinions %>
 
-<p>
+
 <% if user_signed_in? && current_user.admin? %> 
-	<%= link_to "New opinion", new_opinion_path %>
+	<p><%= link_to "New opinion", new_opinion_path %></p>
 <% end %>
-</p>
+
+<br>
+<% unless user_signed_in? %>
+<div class="row">
+Sign up for updates!
+  <%= form_with url: new_user_registration_path, method: :get, id: 'sign_up_form', local: true do %>
+    <%= email_field_tag :email, nil, placeholder: "test@mailbox.com", class: "", id: "exampleEmailInput" %>
+    
+    <%= submit_tag "Submit", class: "button-primary" %>
+  <% end %>
+</div>
+
+<script>
+  document.getElementById('sign_up_form').addEventListener('submit', function(e) {
+    var email = document.getElementById('exampleEmailInput').value;
+    this.action = '<%= new_user_registration_path %>' + '?user[email]=' + encodeURIComponent(email);
+  });
+</script>
+
+<% end %>

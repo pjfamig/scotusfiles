@@ -8,8 +8,8 @@
 <center><table style="width: 100%;">
   <thead>
     <tr>
-      <th>Current Term</th>
-      <th>Decision Date</th>
+      <th>Other recent cases...</th>
+      <th>Date</th>
       <th>Files</th>
     </tr>
   </thead>
@@ -29,28 +29,16 @@
     <% end %>
   </tbody>
 </table>	</center>
+<p><%= link_to "View more", opinions_path %></p>
+
 </div>
 
 
-<div id="comments">
-	<strong>Comments</strong>
-	<p>
+<div>
+	<h5>Comments</h5>
 	<% if user_signed_in? %>
 		<%= render "opinions/comments", opinion: @opinion %>
 	<% else %>
-		<p><%= link_to "Login", new_user_session_path %> or <%= link_to "Sign Up", new_user_registration_path %> to comment.</p>
+	    <%= link_to "Login", new_user_session_path %> or <%= link_to "Sign Up", new_user_registration_path %> to comment.
 	<% end %>
 </div>
-<br>
-
-<div>
-
-  <% if user_signed_in? && current_user.admin? %> 
-	<div class="case-navigation">
-	  <%= link_to "Edit this opinion (Admin Only)", edit_opinion_path(@opinion) %>
-    <%= button_to "sign out", destroy_user_session_path, method: :delete %>
-  	</div>
-  <% end %> 
-  
-</div>
-

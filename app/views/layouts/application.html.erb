@@ -3,8 +3,11 @@
   <head>
     <title>SCOTUSfiles</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <%= stylesheet_link_tag 'skeleton.css' %>
+    <%= stylesheet_link_tag 'normalize.css' %>
+    
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js"></script>
     
     <%= csrf_meta_tags %>
@@ -15,67 +18,32 @@
     
   </head>
 
-<header id="custom-header" style="display:none;">
-  <% if defined?(@opinion) && @opinion.present? %>
-    <h1><%= @opinion.title %></h1>
-  <% else %>
-    <h1><a href="../">SCOTUS <mark>files</mark></a></h1>
-  <% end %>
-</header>
+
+
   
-  <center><h1><a href="../">SCOTUS <mark>files</mark></a></h1></center>
-
-  <body>
-<div id="signup">
-<p>A better way to read and discuss Supreme Court decisions</p></div>
-
-<% unless user_signed_in? %> 	  
-	  <div id="signup">
-	  	<script type="text/javascript">
-	  	var submitted;
-		</script>
-	 <form name="gform" id="gform" enctype="text/plain" action="https://docs.google.com/forms/d/e/1FAIpQLSe_FMpNJh1qgqsOw2yhxKHbi3aa117Z6XHC0rLYYJ-HMvnhnQ/formResponse?" target="hidden_iframe" onsubmit="submitted=true;">
-
-	  	  <input type="email" name="entry.1674987373" id="entry.1674987373" placeholder="Subscribe to receive cases by email" size="35" class="textbox" required>
-	 	   <input type="submit" value="Subscribe">
-	 	 </form>
-		 
-		 <span id="thanks"></span>
-		 
-	 	<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
-  </div>  
-<% end %>
-
-<% if notice.present? %>
-     <div class="notice"><p><%= notice %></p></div>
-<% end %>
-
-<% if alert.present? %>
-     <div class="alert"><p><%= alert %></p></div>
-<% end %>
-
-<%= yield %>  
-    
-<div id="footer">  
+<body>
+     <div class="container">
 	
-<center><h3>Follow <a href="https://twitter.com/scotusfiles">@scotusfiles</a> for updates</h3>
+	  <div class="row">
+         <div class="two-thirds column" style="margin-top: 10px">
+		    <h1><a href="../">SCOTUS files</a> <span style="font-size: 18px">A better way to read and discuss Supreme Court opinions</span></h1>
+	    </div>
+	    <div class="one-third column" style="margin-top: 26px; text-align: right;">
+		<% if user_signed_in? %>
+    <%= button_to "sign out", destroy_user_session_path, method: :delete %>
+		<% else %>
+			<%= link_to "sign in", new_user_session_path, class: "button" %>  <%= link_to "sign up", new_user_registration_path, class: "button button-primary" %>
+		<% end %>
+	    </div>
+       </div>	 
+	<%= yield %>  
+	
 
-</div>
-
-
-
-<script async src="//static.getclicky.com/101399487.js"></script>
+     </div>
+	   
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js"></script>
+<script async data-id="101399487" src="//static.getclicky.com/js"></script>
 <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101399487ns.gif" /></p></noscript>
 
-<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js"></script>
-
-<script type="text/javascript">
-	var submitted=false;
-	$('#gform').on('submit', function(e) {
-	  $('#gform *').fadeOut(500);
-	  $('#thanks').prepend("You're signed up. Thanks!");  
-  });
-</script>
-	  
   </body>
 </html>
