@@ -1,17 +1,22 @@
 <div id="<%= dom_id opinion %>">
+
+<h3><%= opinion.title %> 
+	<span style="font-size:16px;"><i class="fa fa-file-pdf-o" style="color: #CB4335;"></i> 
+  <%= link_to "PDF", "?view=PDF", onclick: "embedPDF('#{opinion.scotus_filename}')", id: "pdf-link" %>
+	<% if user_signed_in? && current_user.admin? %> 
+	  | <i class="fa fa-pencil" aria-hidden="true"></i> <%= link_to "Edit opinion", edit_opinion_path(@opinion) %>
+	<% end %>
+	
+	</span>
+</h3>
   
-<div class="feed-item-selected">
-<h3><%= opinion.title %> <span style="font-size:16px;"><i class="fa fa-file-pdf-o" style="color: #CB4335;"></i> 
-  <%= link_to "PDF", "?view=PDF", onclick: "embedPDF('#{opinion.scotus_filename}')", id: "pdf-link" %></span></h3>
 <p>Decided: <%= opinion.decision_date.strftime('%B %d, %Y') %></p>
-<% if user_signed_in? && current_user.admin? %> 
-  <p><%= link_to "Edit this opinion (Admin Only)", edit_opinion_path(@opinion) %></p>
-<% end %>
+	
+<div class="row">
 
-</div>
+	<div class="ten columns">
 
-
-<% if params[:view].present? && params[:view] == "PDF" %>
+<!--<% if params[:view].present? && params[:view] == "PDF" %>
 
 <div id="pdf-viewer" style="margin-top: 10px;">
   <embed src="<%= opinion.scotus_filename %>" type="application/pdf" width="100%" height="1125px" />
@@ -19,17 +24,30 @@
 
 <% else %>
 
-<div id="full-decision-text">
+<div id="full-decision-text" style="min-height: 200px">
   <% @opinion.quotes.order(:id).each_with_index do |quote, i| %>
     <span class="sentence" data-sentence-id="<%= i %>"><%= quote.content.html_safe %></span>
   <% end %>
 </div>
 
+<% end %>-->
+		
+<div id="pdf-viewer" style="margin-top: 10px; background-color: #444">
+  <embed src="<%= opinion.scotus_filename %>" type="application/pdf" width="100%" height="1080px" />
+</div>
+		
 
+</div> 
+
+	<div class="two columns">
+			<h5>Comments</h5>
+			<% if user_signed_in? %>
+				<%= render "opinions/comments", opinion: @opinion %>
+			<% else %>
+			    <%= link_to "Login", new_user_session_path %> or <%= link_to "Sign Up", new_user_registration_path %> to comment.
+			<% end %>
+	</div>
 
 </div>
 
-<% end %>
-
-
-
+</div>

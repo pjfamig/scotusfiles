@@ -1,24 +1,11 @@
-# SCOTUSfiles.com
+# SCOTUSfiles
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A better way to read and discuss Supreme Court decisions! 
 
-Things you may want to cover:
+Check it out: https://www.scotusfiles.com.
 
-* Ruby version
+* Free and open source
 
-* System dependencies
+* Community-first
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Get notified as soon as an opinion is published

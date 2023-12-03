@@ -4,7 +4,7 @@
 	<%= render @opinion %>
 </div>
 
-<div>
+<div style="margin: 30px 0px;">
 <center><table style="width: 100%;">
   <thead>
     <tr>
@@ -33,12 +33,21 @@
 
 </div>
 
-
-<div>
-	<h5>Comments</h5>
-	<% if user_signed_in? %>
-		<%= render "opinions/comments", opinion: @opinion %>
-	<% else %>
-	    <%= link_to "Login", new_user_session_path %> or <%= link_to "Sign Up", new_user_registration_path %> to comment.
-	<% end %>
+<% unless user_signed_in? %>
+<div class="row">
+Sign up for updates!
+  <%= form_with url: new_user_registration_path, method: :get, id: 'sign_up_form', local: true do %>
+    <%= email_field_tag :email, nil, placeholder: "test@mailbox.com", class: "", id: "exampleEmailInput" %>
+    
+    <%= submit_tag "Submit", class: "button-primary" %>
+  <% end %>
 </div>
+
+<script>
+  document.getElementById('sign_up_form').addEventListener('submit', function(e) {
+    var email = document.getElementById('exampleEmailInput').value;
+    this.action = '<%= new_user_registration_path %>' + '?user[email]=' + encodeURIComponent(email);
+  });
+</script>
+
+<% end %>
