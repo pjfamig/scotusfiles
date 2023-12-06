@@ -1,3 +1,14 @@
+		<div id="info">
+			<p style="text-align: center; font-size: 20px">A better way to read and discuss Supreme Court opinions!</p>
+			
+		<p style="text-align: center">
+			  <%= form_with url: new_user_registration_path, method: :get, id: 'sign_up_form', local: true do %>
+			    <%= email_field_tag :email, nil, placeholder: "Sign up to receive updates!", class: "", id: "exampleEmailInput" %>
+    
+			    <%= submit_tag "Submit", class: "button-primary" %>
+			  <% end %></p>
+  		</div>
+		
 <div>
 <center><table style="width: 100%">
   <thead>

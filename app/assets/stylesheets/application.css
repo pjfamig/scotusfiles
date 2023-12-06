@@ -7,3 +7,36 @@ h1 a {
 h1 a:hover {
 	
 }
+
+#alert {
+      background-color: #e6f9e6;
+      padding: 12px;
+	border-radius: 4px;
+	margin: auto;
+	margin-bottom: 10px;
+      color: #006400; /* dark green color */
+      box-shadow: 0 1px 3px rgba(0,0,0,.1); /* adding a little shadow */
+      border: 1px solid #4caf50; /* green color */
+}
+
+
+#info {
+      background-color: #cff4fc;
+      padding: 20px 24px;
+	border-radius: 6px;
+	margin: auto;
+	margin-bottom: 10px;
+      color: #055160; /* dark green color */
+	text-align: center;	
+}
+
+.sticky {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    margin-top: 45px;
+    top: 0; /* Adjust this value based on your requirements */
+}
+
+#exampleEmailInput {
+	width: 320px;
+}

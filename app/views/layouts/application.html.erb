@@ -18,15 +18,14 @@
     
   </head>
 
-
-
-  
 <body>
      <div class="container">
 	
+	
 	  <div class="row">
          <div class="two-thirds column" style="margin-top: 10px">
-		    <h1><a href="../">SCOTUS files</a> <span style="font-size: 18px">A better way to read and discuss Supreme Court opinions</span></h1>
+		    <h1><a href="../"><i class="fa fa-balance-scale" aria-hidden="true"></i>
+ SCOTUSfiles</a></h1>
 	    </div>
 	    <div class="one-third column" style="margin-top: 26px; text-align: right;">
 		<% if user_signed_in? %>
@@ -36,8 +35,11 @@
 		<% end %>
 	    </div>
        </div>	 
-	<%= yield %>  
+	  
+
 	
+	  
+	<%= yield %>  
 
      </div>
 	   
