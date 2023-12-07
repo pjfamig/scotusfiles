@@ -19,21 +19,32 @@
     </tr>
   </thead>
   <tbody>
-    <% @opinions.each do |opinion| %>
+    <% @opinions.each_with_index do |opinion, index| %>
       <tr>
-        <td><%= link_to opinion.title, opinion %></td>
+        <td>
+
+
+          <%= link_to opinion.title, opinion %>
+          <% if index == 0 %> 
+            <span class="badge">New!</span>
+          <% end %> 
+		
+        </td>
         <td><%= opinion.decision_date.strftime('%B %d, %Y') %></td>
         <td>
           <i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i>
           <%= link_to "HTML", "/opinions/#{opinion.slug}?view=HTML" %>&nbsp;
           <i class="fa fa-file-pdf-o" style="font-size:16px; color: #CB4335;"></i>
-          <%= link_to "PDF", opinion.scotus_filename %>
+          <%= link_to "PDF", "/opinions/#{opinion.slug}?view=PDF" %>
+		
+		
 		
         </td>
       </tr>
     <% end %>
   </tbody>
-</table>	</center>
+</table></center>
+
 </div>
 
 <%= paginate @opinions %>

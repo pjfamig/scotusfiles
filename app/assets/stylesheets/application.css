@@ -19,14 +19,26 @@ h1 a:hover {
       border: 1px solid #4caf50; /* green color */
 }
 
+.badge {
+      background-color: #e6f9e6;
+      padding: 2px;
+	border-radius: 4px;
+	margin: auto;
+	margin-bottom: 10px;
+      color: #006400; 
+      box-shadow: 0 1px 3px rgba(0,0,0,.1);
+      border: 1px solid #4caf50;
+	font-weight: bold;
+	font-size: 12px;
+}
 
 #info {
-      background-color: #cff4fc;
+      background-color: #253b47;
       padding: 20px 24px;
 	border-radius: 6px;
 	margin: auto;
 	margin-bottom: 10px;
-      color: #055160; /* dark green color */
+      color: #FFF; /* dark green color */
 	text-align: center;	
 }
 

@@ -5,7 +5,7 @@ class OpinionsController < ApplicationController
 
   # GET /opinions or /opinions.json
   def index
-    @opinions = Opinion.order(decision_date: :desc).page(params[:page]).per(50)
+    @opinions = Opinion.order(decision_date: :desc).page(params[:page]).per(40)
   end
 
   # GET /opinions/1 or /opinions/1.json
@@ -108,6 +108,6 @@ class OpinionsController < ApplicationController
     def opinion_params
       params.require(:opinion).permit(:title, :holding, :full_decision, 
       :filename, :decision_date, :user_id, :syllabus, :majority_opinion, 
-      :dissent, files: [])
+      :dissent, :concurrence, files: [])
     end
 end
