@@ -1,0 +1,4 @@
+<h1>Users#index</h1>
+<% @users.each do |user| %>
+	<p><%= user.email %> - <%= time_ago_in_words(user.created_at) %> ago</p>
+<% end %>

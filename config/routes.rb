@@ -7,5 +7,7 @@ Rails.application.routes.draw do
     member do
       delete :delete_file
     end
-  end  
+  end 
+  
+  resources :users, :only => [:index, :show]  
 end
