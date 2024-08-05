@@ -19,9 +19,7 @@
   </head>
 
 <body>
-     <div class="container">
-	
-	
+    <div class="container">
 	  <div class="row">
          <div class="two-thirds column" style="margin-top: 10px">
 		    <h1><a href="../"><i class="fa fa-balance-scale" aria-hidden="true"></i>
@@ -29,12 +27,12 @@
 	    </div>
 	    <div class="one-third column" style="margin-top: 26px; text-align: right;">
 		<% if user_signed_in? %>
-    <%= button_to "sign out", destroy_user_session_path, method: :delete %>
+      <%= button_to "sign out", destroy_user_session_path, method: :delete %>
 		<% else %>
-			<%= link_to "sign in", new_user_session_path, class: "button" %>  <%= link_to "sign up", new_user_registration_path, class: "button button-primary" %>
+		  <%= link_to "sign in", new_user_session_path, class: "button" %>  <%= link_to "sign up", new_user_registration_path, class: "button button-primary" %>
 		<% end %>
 	    </div>
-       </div>	 
+    </div>	 
 	  
 
 	
