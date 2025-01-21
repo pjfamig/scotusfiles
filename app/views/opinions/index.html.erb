@@ -1,78 +1,109 @@
 <% unless user_signed_in? %>
-<div id="info">
-			<p style="text-align: center; font-size: 20px">A better way to read and discuss Supreme Court opinions!</p>
-			
-		<p style="text-align: center">
-			  <%= form_with url: new_user_registration_path, method: :get, id: 'sign_up_form', local: true do %>
-			    <%= email_field_tag :email, nil, placeholder: "Sign up to receive updates!", class: "", id: "exampleEmailInput" %>
-    
-			    <%= submit_tag "Submit", class: "button-primary" %>
-			  <% end %></p>
- </div>
- <% end %>
-		
-<div>
-<center><table style="width: 100%">
-  <thead>
-    <tr>
-      <th>Case</th>
-      <th>Decision Date</th>
-      <th>Files</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @opinions.each_with_index do |opinion, index| %>
-      <tr>
-        <td>
+  <div id="info" class="mb-8">
+    <!-- Center the text, use a larger font size, and add margin for spacing -->
+    <p class="text-center text-xl mb-4">
+      A better way to read and discuss Supreme Court opinions!
+    </p>
 
+    <!-- Form container (also centered) -->
+    <div class="flex justify-center">
+      <%= form_with url: new_user_registration_path, method: :get, id: 'sign_up_form', local: true do %>
+        <!-- Email field -->
+        <%= email_field_tag :email, nil, 
+            placeholder: "Sign up to receive updates!", 
+            class: "border border-gray-300 rounded px-2 py-1 mr-2", 
+            id: "exampleEmailInput" 
+        %>
 
-          <%= link_to opinion.title, opinion %>
-          <% if index == 0 %> 
-            <span class="badge">New!</span>
-          <% end %> 
-		
-        </td>
-        <td><%= opinion.decision_date.strftime('%B %d, %Y') %></td>
-        <td>
-          <i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i>
-          <%= link_to "HTML", "/opinions/#{opinion.slug}?view=HTML" %>&nbsp;
-          <i class="fa fa-file-pdf-o" style="font-size:16px; color: #CB4335;"></i>
-          <%= link_to "PDF", "/opinions/#{opinion.slug}?view=PDF" %>
-		
-		
-		
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table></center>
-
-</div>
-
-<%= paginate @opinions %>
-
-
-<% if user_signed_in? && current_user.admin? %> 
-	<p><%= link_to "New opinion", new_opinion_path %></p>
-	<p><%= link_to "Users", users_path %></p>
+        <!-- Submit button -->
+        <%= submit_tag "Submit", 
+            class: "button-primary bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700" 
+        %>
+      <% end %>
+    </div>
+  </div>
 <% end %>
 
-<br>
-<% unless user_signed_in? %>
-<div class="row">
-Sign up for updates!
-  <%= form_with url: new_user_registration_path, method: :get, id: 'sign_up_form', local: true do %>
-    <%= email_field_tag :email, nil, placeholder: "test@mailbox.com", class: "", id: "exampleEmailInput" %>
-    
-    <%= submit_tag "Submit", class: "button-primary" %>
-  <% end %>
+<!-- Table Container -->
+<div class="overflow-x-auto mb-4">
+  <!-- Use Tailwind for table styling. 
+       'min-w-full' ensures the table expands if needed, 
+       'border-collapse' for standard table look. -->
+  <table class="min-w-full border-collapse">
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="text-left p-2 font-semibold">Decision Date</th>
+        <th class="text-left p-2 font-semibold">Case</th>
+        <th class="text-left p-2 font-semibold">Files</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @opinions.each_with_index do |opinion, index| %>
+        <tr class="<%= cycle('', 'bg-gray-50') %>">
+              <td class="p-2 whitespace-nowrap">
+                <%= opinion.decision_date.strftime('%B %d, %Y') %>
+              </td>
+          <td class="p-2">
+            <%= link_to opinion.title, opinion, class: "text-blue-600 hover:underline" %>
+            <!-- "New!" badge -->
+            <% if index == 0 %> 
+              <span class="badge bg-green-100 text-green-800 px-2 py-1 rounded text-sm ml-2">
+                New!
+              </span>
+            <% end %> 
+          </td>
+
+          <td class="p-2">
+            <!-- Using Font Awesome icons, no inline styling needed. 
+                 Tailwind can handle color & size classes, if using an FA utility or custom classes. -->
+            <i class="fa fa-file-text-o text-green-600"></i>
+            <%= link_to "HTML", "/opinions/#{opinion.slug}?view=HTML", 
+                class: "text-blue-600 hover:underline ml-1 mr-3" 
+            %>
+            
+            <i class="fa fa-file-pdf-o text-red-600"></i>
+            <%= link_to "PDF", "/opinions/#{opinion.slug}?view=PDF", 
+                class: "text-blue-600 hover:underline ml-1" 
+            %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
 
-<script>
-  document.getElementById('sign_up_form').addEventListener('submit', function(e) {
-    var email = document.getElementById('exampleEmailInput').value;
-    this.action = '<%= new_user_registration_path %>' + '?user[email]=' + encodeURIComponent(email);
-  });
-</script>
+<!-- Pagination -->
+<div class="mb-4">
+  <%= paginate @opinions %>
+</div>
 
+<!-- Admin Links -->
+<% if user_signed_in? && current_user.admin? %> 
+  <div class="mb-4">
+    <p><%= link_to "New opinion", new_opinion_path, class: "text-blue-600 hover:underline" %></p>
+    <p><%= link_to "Users", users_path, class: "text-blue-600 hover:underline" %></p>
+  </div>
+<% end %>
+
+<!-- Additional Signup Form (Repeated) -->
+<% unless user_signed_in? %>
+  <div class="row mb-8">
+    <p class="font-semibold mb-2">Sign up for updates!</p>
+    <%= form_with url: new_user_registration_path, method: :get, id: 'sign_up_form_2', local: true do %>
+      <%= email_field_tag :email, nil, 
+          placeholder: "test@mailbox.com", 
+          class: "border border-gray-300 rounded px-2 py-1 mr-2", 
+          id: "exampleEmailInput2" 
+      %>
+      <%= submit_tag "Submit", class: "button-primary bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700" %>
+    <% end %>
+  </div>
+
+  <script>
+    // If you have multiple sign-up forms, give them unique IDs
+    document.getElementById('sign_up_form_2').addEventListener('submit', function(e) {
+      var email = document.getElementById('exampleEmailInput2').value;
+      this.action = '<%= new_user_registration_path %>' + '?user[email]=' + encodeURIComponent(email);
+    });
+  </script>
 <% end %>

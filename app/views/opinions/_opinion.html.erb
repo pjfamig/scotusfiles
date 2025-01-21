@@ -1,72 +1,96 @@
-<div id="<%= dom_id opinion %>">
+<div id="<%= dom_id(opinion) %>" class="max-w-7xl mx-auto px-4 py-6">
+  <!-- Title and PDF/HTML links -->
+  <h3 class="text-xl font-semibold flex items-center gap-2 mb-2">
+    <%= opinion.title %>
+    <span class="text-base flex items-center gap-3">
+      <i class="fa fa-file-text-o text-green-700"></i>
+      <%= link_to "HTML", "?view=HTML" %>
 
-<h3><%= opinion.title %> 
-	<span style="font-size:16px;">
-	     <i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i>
-	     <%= link_to "HTML", "?view=HTML" %>&nbsp;
-		<i class="fa fa-file-pdf-o" style="color: #CB4335;"></i> 
-  <%= link_to "PDF", "?view=PDF", onclick: "embedPDF('#{opinion.scotus_filename}')", id: "pdf-link" %>
-  	
-	</span>
-</h3>
-  
-Decided: <%= opinion.decision_date.strftime('%B %d, %Y') %> | 
-	<a href="#syllabus">Syllabus</a> | 
-	<a href="#majority">Majority Opinion</a> 
-	<% if opinion.concurrence.present? %>
-	| <a href="#concurrence">Concurrence</a> 
-	<% end %>
-	
-	<% if opinion.dissent.present? %>
-	| <a href="#dissent">Dissent</a> 
-	<% end %>
-	
-	<% if user_signed_in? && current_user.admin? %> 
-	   | <i class="fa fa-pencil" aria-hidden="true"></i> <%= link_to "Edit opinion", edit_opinion_path(@opinion) %>
-	<% end %>
-	
-<div class="row">
-	<div class="ten columns">
+      <i class="fa fa-file-pdf-o text-red-600"></i>
+      <%= link_to "PDF",
+                  "?view=PDF",
+                  onclick: "embedPDF('#{opinion.scotus_filename}')",
+                  id: "pdf-link" %>
+    </span>
+  </h3>
 
-<% if params[:view].present? && params[:view] == "PDF" %>
+  <!-- Decision date and jump links -->
+  <p class="text-sm text-gray-700 mb-4">
+    Decided: <%= opinion.decision_date.strftime('%B %d, %Y') %> |
+    <a href="#syllabus" class="text-blue-600 hover:underline">Syllabus</a> |
+    <a href="#majority" class="text-blue-600 hover:underline">Majority Opinion</a>
+    <% if opinion.concurrence.present? %>
+      | <a href="#concurrence" class="text-blue-600 hover:underline">Concurrence</a>
+    <% end %>
 
-<div id="pdf-viewer" style="margin-top: 10px; background-color: #444">
-  <embed src="<%= opinion.scotus_filename %>" type="application/pdf" width="100%" height="1080px" />
-</div>
+    <% if opinion.dissent.present? %>
+      | <a href="#dissent" class="text-blue-600 hover:underline">Dissent</a>
+    <% end %>
 
-<% else %>
+    <% if user_signed_in? && current_user.admin? %>
+      | <i class="fa fa-pencil text-gray-500" aria-hidden="true"></i>
+      <%= link_to "Edit opinion",
+                  edit_opinion_path(opinion),
+                  class: "text-blue-600 hover:underline" %>
+    <% end %>
+  </p>
 
-<% if opinion.syllabus.present? %>
-	<div id="syllabus" class="syllabus"><%= opinion.syllabus.html_safe %></div>
-<% end %>
+  <!-- Main content + sidebar layout -->
+  <div class="flex flex-col md:flex-row gap-8">
+    <!-- Left/main column -->
+    <div class="flex-1">
+      <!-- PDF vs. HTML content condition -->
+      <% if params[:view] == "PDF" %>
+        <div id="pdf-viewer" class="mt-3 bg-gray-700">
+          <embed src="<%= opinion.scotus_filename %>"
+                 type="application/pdf"
+                 width="100%"
+                 height="1080px" />
+        </div>
+      <% else %>
+        <!-- Show Syllabus -->
+        <% if opinion.syllabus.present? %>
+          <div id="syllabus" class="prose mb-8">
+            <%= opinion.syllabus.html_safe %>
+          </div>
+        <% end %>
 
-<% if opinion.majority_opinion.present? %>
-	<div id="majority" class="majority-opinion"><%= opinion.majority_opinion.html_safe %></div>
-<% end %>
+        <!-- Show Majority Opinion -->
+        <% if opinion.majority_opinion.present? %>
+          <div id="majority" class="prose mb-8">
+            <%= opinion.majority_opinion.html_safe %>
+          </div>
+        <% end %>
 
-<% if opinion.concurrence.present? %>
-	<div id="concurrence" class="concurrence"><%= opinion.concurrence.html_safe %></div>
-<% end %>
+        <!-- Show Concurrence -->
+        <% if opinion.concurrence.present? %>
+          <div id="concurrence" class="prose mb-8">
+            <%= opinion.concurrence.html_safe %>
+          </div>
+        <% end %>
 
+        <!-- Show Dissent -->
+        <% if opinion.dissent.present? %>
+          <div id="dissent" class="prose mb-8">
+            <%= opinion.dissent.html_safe %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
 
-<% if opinion.dissent.present? %>
-	<div id="dissent" class="dissent"><%= opinion.dissent.html_safe %></div>
-<% end %>
-	
-<% end %>
-
-
-</div> 
-
-	<div class="two columns sticky">
-			<h5>Comments</h5>
-			<% if user_signed_in? %>
-				<%= render "opinions/comments", opinion: @opinion %>
-			<% else %>
-			    <%= link_to "Login", new_user_session_path %> or <%= link_to "Sign Up", new_user_registration_path %> to comment.
-			<% end %>
-	</div>
-
-</div>
-
+    <!-- Right/Sidebar column -->
+    <div class="md:w-1/4 sticky top-4 self-start">
+      <h5 class="text-lg font-semibold mb-2">Comments</h5>
+      <% if user_signed_in? %>
+        <%= render "opinions/comments", opinion: @opinion %>
+      <% else %>
+        <p class="text-gray-700">
+          <%= link_to "Login", new_user_session_path, class: "text-blue-600 hover:underline" %>
+          or
+          <%= link_to "Sign Up", new_user_registration_path, class: "text-blue-600 hover:underline" %>
+          to comment.
+        </p>
+      <% end %>
+    </div>
+  </div>
 </div>

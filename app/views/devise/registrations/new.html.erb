@@ -1,30 +1,43 @@
-<div id="sign-up">
-	
-	<h4>Sign up</h4>
+<div id="sign-up" class="mt-10">
+  <h4 class="text-xl font-semibold mb-4">Sign up</h4>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <!-- Devise Error Messages -->
+    <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :email %>
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", value: params[:email] || '' %>
-  </div>
+    <!-- Email Field -->
+    <div class="mb-4">
+      <%= f.label :email, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.email_field :email,
+                        autofocus: true,
+                        autocomplete: "email",
+                        value: params[:email] || '',
+                        class: "block w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
 
-  <div class="field">
-    <%= f.label "Password (6 characters minimum)" %>
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
+    <!-- Password Field -->
+    <div class="mb-4">
+      <%= f.label :password, "Password (6 characters minimum)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.password_field :password,
+                           autocomplete: "new-password",
+                           class: "block w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %>
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+    <!-- Password Confirmation Field -->
+    <div class="mb-4">
+      <%= f.label :password_confirmation, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.password_field :password_confirmation,
+                           autocomplete: "new-password",
+                           class: "block w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
 
-  <div class="actions">
-    <%= f.submit "Sign up", class: "button button-primary" %>
-  </div>
-<% end %>
+    <!-- Submit Button -->
+    <div>
+      <%= f.submit "Sign up",
+                   class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors" %>
+    </div>
+  <% end %>
 
-<%= render "devise/shared/links" %>
-
+  <!-- Devise Links (e.g., Already have an account? Sign in) -->
+  <%= render "devise/shared/links" %>
 </div>
