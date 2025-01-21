@@ -60,8 +60,6 @@ gem 'kaminari'
 
 gem 'bootstrap', '~> 5.3.1'
 
-gem 'sassc-rails'
-
 gem 'jquery-rails'
 
 gem 'popper_js', '~> 2.11.8'
