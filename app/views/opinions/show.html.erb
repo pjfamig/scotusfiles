@@ -17,7 +17,7 @@
     <% @opinions.each do |opinion| %>
       <tr>
         <td><%= link_to opinion.title, opinion %></td>
-        <td><%= opinion.decision_date.strftime('%B %d, %Y') %></td>
+        <td></td>
         <td>
           <i class="fa fa-file-text-o" style="font-size:16px; color: #008000;"></i>
           <%= link_to "HTML", "/opinions/#{opinion.slug}?view=HTML" %>&nbsp;

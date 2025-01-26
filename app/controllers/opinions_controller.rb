@@ -12,6 +12,7 @@ class OpinionsController < ApplicationController
   def show
     @opinion = Opinion.friendly.find(params[:id])
     @opinions = Opinion.order(decision_date: :desc).page(params[:page]).per(10)
+    @synopsis = @opinion.synopses.last
 
     # Find and load HTML file for opinion
     # @full_decision = File.read(Rails.root.join('public', 'opinions', @opinion.filename))
@@ -20,11 +21,13 @@ class OpinionsController < ApplicationController
 
   # GET /opinions/new
   def new
-    @opinion = Opinion.new
+    @opinion = Opinion.create!
+    redirect_to edit_opinion_path(@opinion.id)
   end
 
   # GET /opinions/1/edit
   def edit
+    @synopsis = @opinion.synopses.last
   end
 
   # POST /opinions or /opinions.json
@@ -63,22 +66,18 @@ class OpinionsController < ApplicationController
   # PATCH/PUT /opinions/1 or /opinions/1.json
   def update
     params[:opinion][:user_id] = current_user.id
+    @synopsis = Synopsis.new(opinion: @opinion)
+    message_creator = MessageCreator.new(params: synopsis_params)
+    response = message_creator.call
     
-    respond_to do |format|
-      if @opinion.update(opinion_params)
-        # Convert the updated rich text content to HTML format
-        # full_decision_html = @opinion.full_decision.html_safe
-  
-        # Save the HTML content to the existing file
-        # File.write(Rails.root.join('public', 'opinions', @opinion.filename), full_decision_html)
-
-        format.html { redirect_to opinion_url(@opinion), notice: "Opinion successfully updated!" }
-        format.json { render :show, status: :ok, location: @opinion }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @opinion.errors, status: :unprocessable_entity }
-      end
+    ActiveRecord::Base.transaction do
+      @opinion.update!(synopsis_params)
+      @synopsis.assign_attributes(body: response)
+      @synopsis.save!
     end
+
+    redirect_to opinion_path(@opinion)
+    
   end
 
   # DELETE /opinions/1 or /opinions/1.json
@@ -106,6 +105,12 @@ class OpinionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def opinion_params
+      params.require(:opinion).permit(:title, :holding, :full_decision, 
+      :filename, :decision_date, :user_id, :syllabus, :majority_opinion, 
+      :dissent, :concurrence, files: [])
+    end
+    
+    def synopsis_params
       params.require(:opinion).permit(:title, :holding, :full_decision, 
       :filename, :decision_date, :user_id, :syllabus, :majority_opinion, 
       :dissent, :concurrence, files: [])

@@ -1,56 +1,119 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>SCOTUSfiles</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en" class="h-full">
+<head>
+  <title>SCOTUSfiles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    
-  </head>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+</head>
 
-<body class="prose mx-auto">
-    <div class="container">
-	 <!-- Header Container -->
-	 <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-	   <!-- Left Section -->
-	   <div class="flex items-center">
-	     <!-- Replace `../` with your actual root path, e.g., `root_path` if appropriate -->
-	     <h1 class="text-2xl font-bold">
-	       <%= link_to "SCOTUSfiles", root_path, class: "hover:underline" %>
-	     </h1>
-	   </div>
+<body class="bg-gray-100 dark:bg-gray-900 dark:text-gray-100 h-screen">
+
+  <!-- Main Layout Container -->
+  <div class="h-full flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-md w-full">
+      <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <!-- Left Section -->
+        <h1 class="text-2xl font-bold">
+          <%= link_to "SCOTUSfiles", root_path, class: "hover:underline" %>
+        </h1>
+
+        <!-- Right Section -->
+        <div class="flex items-center space-x-4">
+          <!-- Dark Mode Toggle -->
+          <button id="dark-mode-toggle" class="p-2 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
+            <span id="theme-icon">🌞</span>
+          </button>
+
+          <!-- User Authentication -->
+          <% if user_signed_in? %>
+            <%= button_to "Sign out",
+                          destroy_user_session_path,
+                          method: :delete,
+                          class: "px-4 py-2 text-white bg-gray-800 dark:bg-gray-600 rounded hover:bg-gray-700" %>
+          <% else %>
+            <%= link_to "Sign in",
+                        new_user_session_path,
+                        class: "inline-block px-4 py-2 mr-2 border border-gray-400 rounded text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600" %>
+            <%= link_to "Sign up",
+                        new_user_registration_path,
+                        class: "inline-block px-4 py-2 text-white bg-blue-600 dark:bg-blue-500 rounded hover:bg-blue-700 dark:hover:bg-blue-600" %>
+          <% end %>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="flex flex-1 overflow-hidden">
+
+      <!-- Sidebar -->
+      <aside class="bg-white dark:bg-gray-800 w-80 p-6 flex-shrink-0">
+        <nav>
+          <ul class="space-y-4">
+            <li>
+              <%= link_to "Dashboard", root_path, class: "block px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-700 hover:text-white rounded" %>
+            </li>
+            <li>
+              <%= link_to "Cases", opinions_path, class: "block px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-700 hover:text-white rounded" %>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 bg-white dark:bg-gray-900 p-6 overflow-y-auto">
+        <%= yield %>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- JavaScript for Dark Mode Toggle -->
+  <script>
+	  document.addEventListener("turbo:load", () => {
+	    const toggleButton = document.getElementById("dark-mode-toggle");
+	    const themeIcon = document.getElementById("theme-icon");
+	    const html = document.documentElement;
+
+	    // Function to apply the theme
+	    function applyTheme(theme) {
+	      if (theme === "dark") {
+	        html.classList.add("dark");
+	        themeIcon.textContent = "🌙"; // Dark mode icon
+	      } else {
+	        html.classList.remove("dark");
+	        themeIcon.textContent = "🌞"; // Light mode icon
+	      }
+	    }
+
+	    // Load and apply the saved theme preference on page load
+	    const savedTheme = localStorage.getItem("theme") || "light"; // Default to light mode
+	    applyTheme(savedTheme);
+
+	    // Attach event listener only once
+	    if (toggleButton) {
+	      toggleButton.addEventListener("click", () => {
+	        const currentTheme = html.classList.contains("dark") ? "dark" : "light";
+	        const newTheme = currentTheme === "dark" ? "light" : "dark";
+	        localStorage.setItem("theme", newTheme); // Save the new preference
+	        applyTheme(newTheme); // Apply the new theme
+	      });
+	    }
+	  });
   
-	   <!-- Right Section -->
-	   <div class="text-right">
-	     <% if user_signed_in? %>
-	       <%= button_to "Sign out",
-	                     destroy_user_session_path,
-	                     method: :delete,
-	                     class: "px-4 py-2 text-white bg-gray-800 rounded hover:bg-gray-700" %>
-	     <% else %>
-	       <%= link_to "Sign in",
-	                   new_user_session_path,
-	                   class: "inline-block px-4 py-2 mr-2 border border-gray-400 rounded text-gray-700 hover:bg-gray-100" %>
-	       <%= link_to "Sign up",
-	                   new_user_registration_path,
-	                   class: "inline-block px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700" %>
-	     <% end %>
-	   </div>
-	 </div>
-	 
-	
-	  
-	<%= yield %>  
+  </script>
+    
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js"></script>
+    <script async data-id="101399487" src="//static.getclicky.com/js"></script>
+    <noscript>
+      <p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101399487ns.gif" /></p>
+    </noscript>
 
-     </div>
-	   
-<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js"></script>
-<script async data-id="101399487" src="//static.getclicky.com/js"></script>
-<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101399487ns.gif" /></p></noscript>
-
-  </body>
+</body>
 </html>

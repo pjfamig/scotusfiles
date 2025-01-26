@@ -41,7 +41,6 @@
       <% @opinions.each_with_index do |opinion, index| %>
         <tr class="<%= cycle('', 'bg-gray-50') %>">
               <td class="p-2 whitespace-nowrap">
-                <%= opinion.decision_date.strftime('%B %d, %Y') %>
               </td>
           <td class="p-2">
             <%= link_to opinion.title, opinion, class: "text-blue-600 hover:underline" %>

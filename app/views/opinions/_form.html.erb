@@ -1,9 +1,11 @@
-<%= form_with(model: opinion) do |form| %>
-  <% if opinion.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(opinion.errors.count, "error") %>:</h2>
+<div class="flex flex-row justify-center w-full gap-10">
+  <div class="flex flex-col">
 
-      <ul>
+<%= form_with(model: opinion, class: "space-y-6") do |form| %>
+  <% if opinion.errors.any? %>
+    <div class="text-red-500 bg-red-100 p-4 rounded-md">
+      <h2 class="text-lg font-semibold"><%= pluralize(opinion.errors.count, "error") %>:</h2>
+      <ul class="list-disc list-inside">
         <% opinion.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -11,67 +13,77 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
+  <div class="flex flex-col mb-4">
+    <%= form.label :title, class: "text-gray-800" %>
+    <%= form.text_field :title, class: "text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" %>
   </div>
 
-  <div>
-    <%= form.label :holding, style: "display: block" %>
-    <%= form.text_area :holding %>
+  <div class="space-y-2">
+    <%= form.label :holding, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :holding, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
   </div>
 
-  <!--<div>
-    <%= form.label :full_decision, style: "display: block" %>
-    <%= form.text_area :full_decision, style: "width: 100%; height: 20em;" %>
+  <!--<div class="space-y-2">
+    <%= form.label :full_decision, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :full_decision, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm h-80" %>
   </div>-->
 
-  <div>
-    <%= form.label :syllabus, style: "display: block" %>
-    <%= form.text_area :syllabus, style: "width: 100%; height: 10em;" %>
-  </div>
-  
-  <div>
-    <%= form.label :majority_opinion, style: "display: block" %>
-    <%= form.text_area :majority_opinion, style: "width: 100%; height: 10em;" %>
-  </div>
-  
-  <div>
-    <%= form.label :concurrence, style: "display: block" %>
-    <%= form.text_area :concurrence, style: "width: 100%; height: 10em;" %>
-  </div>
-  
-  <div>
-    <%= form.label :dissent, style: "display: block" %>
-    <%= form.text_area :dissent, style: "width: 100%; height: 10em;" %>
-  </div>
-  <div>
-    <%= form.label :decision_date, style: "display: block" %>
-    <%= form.date_field :decision_date %>
-  </div>
-  
-  <%= form.hidden_field :user_id, value: current_user.id %>
-  
-  
-  <div>
-	  <strong>Attachments:</strong>
-  <ul>
-  <% opinion.files.each do |file| %>
-    <li>
-      <%= link_to file.filename, rails_blob_path(file, disposition: :attachment) %>
-	 <%# link_to 'Remove', delete_file_opinion_url(file.id), data: { "turbo-method": :delete, confirm: 'Are you sure?' } %>
-	 
-    </li>
-  <% end %>
-  </ul>
-  </div>
-  
-  <div>
-       <%= form.label :files %>
-       <%= form.file_field :files, multiple: true %>
+  <div class="space-y-2">
+    <%= form.label :syllabus, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :syllabus, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm h-40" %>
   </div>
 
+  <div class="space-y-2">
+    <%= form.label :majority_opinion, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :majority_opinion, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm h-40" %>
+  </div>
+
+  <div class="space-y-2">
+    <%= form.label :concurrence, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :concurrence, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm h-40" %>
+  </div>
+
+  <div class="space-y-2">
+    <%= form.label :dissent, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :dissent, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm h-40" %>
+  </div>
+
+  <div class="space-y-2">
+    <%= form.label :decision_date, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.date_field :decision_date, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+  </div>
+
+  <%= form.hidden_field :user_id, value: current_user.id %>
+
   <div>
-    <%= form.submit %>
+    <strong class="text-sm font-medium text-gray-700">Attachments:</strong>
+    <ul class="list-disc list-inside">
+      <% opinion.files.each do |file| %>
+        <li>
+          <%= link_to file.filename, rails_blob_path(file, disposition: :attachment), class: "text-blue-500 hover:underline" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="space-y-2">
+    <%= form.label :files, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.file_field :files, multiple: true, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+  </div>
+  <div class="mt-6">
+    <%= form.submit "Save", class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
   </div>
 <% end %>
+
+</div>
+
+   <div class="flex flex-col">
+    <h2 class="mb-4 text-2xl">Preview</h2>
+    <div class="flex flex-col max-w-xl p-6 border border-gray-300 border-solid rounded-xl">
+      <div class="whitespace-pre-line">
+    <%= @synopsis&.body.presence || "Here you will preview your synopsis" %>
+      </div>
+    </div>
+  </div>
+  
+</div>
