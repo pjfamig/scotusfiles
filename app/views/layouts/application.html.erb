@@ -28,6 +28,17 @@
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <% if Rails.env.production? %>
+      <script async data-id="101399487" src="https://static.getclicky.com/js"></script>
+      <script>
+        // Clicky only sees full page loads, so report Turbo navigations after the first one.
+        window.clickyTurboVisits ??= 0
+        addEventListener("turbo:load", () => {
+          if (window.clickyTurboVisits++ > 0) window.clicky?.log(location.pathname + location.search, document.title)
+        })
+      </script>
+    <% end %>
   </head>
 
   <body class="min-h-full bg-paper font-sans text-stone-900 dark:bg-navy-950 dark:text-stone-100">
@@ -74,5 +85,9 @@
       <%= link_to "Supreme Court of the United States", "https://www.supremecourt.gov", class: "underline decoration-stone-300 underline-offset-4 hover:text-stone-900 dark:hover:text-white" %>
       and are in the public domain. SCOTUSfiles is free and open source.
     </footer>
+
+    <% if Rails.env.production? %>
+      <noscript><p><img alt="Clicky" width="1" height="1" src="https://in.getclicky.com/101399487ns.gif"></p></noscript>
+    <% end %>
   </body>
 </html>
