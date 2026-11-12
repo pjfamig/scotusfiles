@@ -5,8 +5,8 @@ A better way to read and discuss Supreme Court decisions. SCOTUSfiles pulls opin
 into clean, readable HTML, and lets readers click any sentence to comment on it in the margin.
 
 Built on Rails 8.1 with Hotwire (Turbo Frames, Turbo Streams, morphing page refreshes, Stimulus),
-Tailwind CSS 4, SQLite, Solid Queue / Cache / Cable, Propshaft, import maps, and the built-in
-Rails authentication generator. Deploys with Kamal.
+Tailwind CSS 4, PostgreSQL, Solid Queue / Cache / Cable, Propshaft, import maps, and the built-in
+Rails authentication generator. Deploys to Heroku.
 
 ## Getting started
 
@@ -15,7 +15,7 @@ Requirements:
 - Ruby 4.0.9 (see `.ruby-version`; `mise install` or `rbenv install` will pick it up)
 - [Poppler](https://poppler.freedesktop.org/) for `pdftohtml`: `brew install poppler` on macOS,
   `sudo apt install poppler-utils` on Debian/Ubuntu
-- SQLite 3 (preinstalled on macOS and most Linux distributions)
+- PostgreSQL running locally (`brew install postgresql@17 && brew services start postgresql@17`)
 
 ```bash
 bin/setup
@@ -93,10 +93,23 @@ and the sentence's comment-count badge updates.
 
 ## Deploying
 
-The Dockerfile already installs `poppler-utils`. Create your own credentials before the first deploy
-(`bin/rails credentials:edit` writes a new `config/master.key`), then configure `config/deploy.yml`
-and run `bin/kamal setup`. Password-reset emails need Action Mailer SMTP settings in
-`config/environments/production.rb`.
+Production runs on Heroku (heroku-24 stack) with Heroku Postgres. The `Procfile` runs migrations in
+the release phase, and the `Aptfile` installs Poppler through the apt buildpack, which must come
+before the Ruby buildpack:
+
+```bash
+heroku buildpacks:clear
+heroku buildpacks:add heroku-community/apt
+heroku buildpacks:add heroku/ruby
+heroku config:set SOLID_QUEUE_IN_PUMA=true SECRET_KEY_BASE=$(bin/rails secret)
+git push heroku main
+heroku run ADMIN_EMAIL=you@example.com ADMIN_PASSWORD=... bin/rails db:seed
+```
+
+Solid Queue, Solid Cache, and Solid Cable keep their tables in the main database, and
+`SOLID_QUEUE_IN_PUMA` runs the job workers (including the hourly sync) inside the web dyno. Set
+`APP_HOST` if the site moves off www.scotusfiles.com, and `SMTP_ADDRESS`, `SMTP_PORT`,
+`SMTP_USERNAME`, `SMTP_PASSWORD`, and `MAILER_FROM` to send password-reset emails.
 
 ## Known limitations
 

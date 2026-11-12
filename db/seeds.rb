@@ -7,7 +7,10 @@
 
 admin = User.find_or_create_by!(email_address: ENV.fetch("ADMIN_EMAIL", "admin@example.com")) do |user|
   user.name = "Admin"
-  user.password = ENV.fetch("ADMIN_PASSWORD", "password123")
+  user.password = ENV.fetch("ADMIN_PASSWORD") do
+    abort "Set ADMIN_PASSWORD to seed the production admin account." if Rails.env.production?
+    "password123"
+  end
   user.admin = true
 end
 puts "Admin account: #{admin.email_address}"

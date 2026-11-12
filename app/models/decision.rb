@@ -22,7 +22,7 @@ class Decision < ApplicationRecord
   scope :in_term, ->(term) { where(term: term) }
   scope :search, ->(query) {
     pattern = "%#{sanitize_sql_like(query.to_s.strip)}%"
-    where("title LIKE :pattern OR docket_number LIKE :pattern OR holding LIKE :pattern", pattern: pattern)
+    where("title ILIKE :pattern OR docket_number ILIKE :pattern OR holding ILIKE :pattern", pattern: pattern)
   }
 
   def self.terms = distinct.order(term: :desc).pluck(:term)
