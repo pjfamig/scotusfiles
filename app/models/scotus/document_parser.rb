@@ -49,16 +49,39 @@ class Scotus::DocumentParser
         start.(header_label) if header_label && !same_label?(groups.last&.first, header_label) && !continues_previous_page?(body)
         start.(header_label || UNTITLED) if groups.empty?
 
+        first_on_page = groups.size - 1
+        lines_on_page = Hash.new { |hash, group_index| hash[group_index] = [] }
         body.each_with_index do |line, index|
           if (label = opening_label(body, index)) && !same_label?(groups.last.first, label)
             start.(label)
           end
           groups.last[1] << line
+          lines_on_page[groups.size - 1] << line
         end
-        groups.last[2].concat(notes)
+        distribute_notes(notes, groups[first_on_page..].zip(lines_on_page.values_at(*(first_on_page...groups.size))))
       end
 
       label_leading_syllabus(groups)
+    end
+
+    # When one opinion ends and another begins on the same page, the footnotes at the
+    # bottom can belong to either; each goes to the section that cites its number there.
+    # Unnumbered lines continue the previous note, and the first ones continue a note
+    # carried over from the previous page.
+    def distribute_notes(notes, candidates)
+      return candidates.last.first[2].concat(notes) if candidates.one?
+
+      target = candidates.first.first
+      claimed = Hash.new { |hash, group| hash[group] = [] }
+      notes.each do |line|
+        if (number = line.html[/\A\s*#{Scotus::PdfLayout::FOOTNOTE_OPEN}(\d+)#{Scotus::PdfLayout::FOOTNOTE_CLOSE}/o, 1])
+          marker = "#{Scotus::PdfLayout::FOOTNOTE_OPEN}#{number}#{Scotus::PdfLayout::FOOTNOTE_CLOSE}"
+          citing = candidates.find { |group, lines| !claimed[group.object_id].include?(number) && lines.any? { |body_line| body_line.html.include?(marker) } }
+          target = citing&.first || candidates.last.first
+          claimed[target.object_id] << number
+        end
+        target[2] << line
+      end
     end
 
     # Bound-volume prints give the syllabus's first page no running header.

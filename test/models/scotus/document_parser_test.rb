@@ -32,6 +32,15 @@ class Scotus::DocumentParserTest < ActiveSupport::TestCase
     assert sections.second.blocks.any? { |block| block.type == :flush_right && block.html.include?("It is so ordered") }
   end
 
+  test "keeps footnotes with the opinion that cites them when the next opinion starts on the same page" do
+    sections = parse("lombardo_v_st_louis_preliminary_print.pdf")
+
+    assert_equal [ "Syllabus", "Per Curiam", "ALITO, J., dissenting" ], sections.map(&:label)
+    assert_equal [ 1, 2, 3 ], sections.second.footnotes.map(&:number)
+    assert_equal [ nil ], sections.third.footnotes.map(&:number)
+    assert sections.third.footnotes.first.paragraphs.first.start_with?("*The Eighth Circuit wrote")
+  end
+
   private
     def parse(name)
       @parsed ||= {}
