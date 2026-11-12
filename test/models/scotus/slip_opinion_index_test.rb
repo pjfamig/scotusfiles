@@ -16,6 +16,13 @@ class Scotus::SlipOpinionIndexTest < ActiveSupport::TestCase
     assert_match(/Eighth Amendment/, goldey.holding)
   end
 
+  test "reads four-digit years in the listing's dates" do
+    html = file_fixture("slip_opinions_ot2024.html").read.sub(">6/30/25<", ">6/30/2025<")
+    entries = Scotus::SlipOpinionIndex.new(2024, html).entries
+
+    assert_equal Date.new(2025, 6, 30), entries.first.decided_on
+  end
+
   test "computes the current October Term" do
     assert_equal 2026, Scotus::SlipOpinionIndex.current_term(on: Date.new(2026, 10, 5))
     assert_equal 2025, Scotus::SlipOpinionIndex.current_term(on: Date.new(2026, 6, 30))

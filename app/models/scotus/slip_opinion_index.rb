@@ -46,8 +46,9 @@ class Scotus::SlipOpinionIndex
       )
     end
 
+    # The listing writes two-digit years ("11/09/26") but occasionally four ("10/14/2026").
     def parse_date(text)
-      Date.strptime(text, "%m/%d/%y")
+      Date.strptime(text, text.match?(%r{/\d{4}\z}) ? "%m/%d/%Y" : "%m/%d/%y")
     rescue Date::Error
       nil
     end
