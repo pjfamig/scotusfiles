@@ -1,13 +1,7 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  title: MyString
-  holding: MyText
-  full_decision: MyText
-  decision_date: 2023-01-15
-
-two:
-  title: MyString
-  holding: MyText
-  full_decision: MyText
-  decision_date: 2023-01-15
+paxton_majority:
+  decision: paxton
+  kind: <%= Opinion.kinds[:majority] %>
+  label: Opinion of the Court
+  author: Thomas
+  position: 1
+  body_html: <p><span class="sentence" id="s-1-1" data-key="1-1">We hold that they do not.</span> <span class="sentence" id="s-1-2" data-key="1-2">The judgment is affirmed.</span></p>

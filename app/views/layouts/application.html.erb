@@ -1,119 +1,78 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
-<head>
-  <title>SCOTUSfiles</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en" class="h-full scroll-pt-24 scroll-smooth">
+  <head>
+    <title><%= content_for?(:title) ? "#{yield(:title)} · SCOTUSfiles" : "SCOTUSfiles — Read and discuss Supreme Court opinions" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Clean, readable Supreme Court opinions you can discuss sentence by sentence.">
+    <meta name="application-name" content="SCOTUSfiles">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="current-user-id" content="<%= current_user&.id %>">
+    <meta name="current-user-admin" content="<%= current_user&.admin? %>">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
 
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
-  <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-  <%= javascript_importmap_tags %>
-  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-</head>
+    <script>
+      if (localStorage.theme === "dark" || (!("theme" in localStorage) && matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark")
+      }
+    </script>
 
-<body class="bg-gray-100 dark:bg-gray-900 dark:text-gray-100 h-screen">
+    <%= yield :head %>
 
-  <!-- Main Layout Container -->
-  <div class="h-full flex flex-col">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
 
-    <!-- Header -->
-    <header class="bg-white dark:bg-gray-800 shadow-md w-full">
-      <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-        <!-- Left Section -->
-        <h1 class="text-2xl font-bold">
-          <%= link_to "SCOTUSfiles", root_path, class: "hover:underline" %>
-        </h1>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
 
-        <!-- Right Section -->
-        <div class="flex items-center space-x-4">
-          <!-- Dark Mode Toggle -->
-          <button id="dark-mode-toggle" class="p-2 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
-            <span id="theme-icon">🌞</span>
+  <body class="min-h-full bg-paper font-sans text-stone-900 dark:bg-navy-950 dark:text-stone-100">
+    <header class="sticky top-0 z-30 border-b border-stone-200/80 bg-paper/85 backdrop-blur dark:border-white/10 dark:bg-navy-950/85">
+      <div class="mx-auto flex h-16 max-w-[90rem] items-center gap-6 px-4 lg:px-8">
+        <%= link_to root_path, class: "group flex items-center gap-2.5" do %>
+          <%= render "layouts/logo" %>
+          <span class="font-serif text-xl font-semibold tracking-tight">SCOTUS<span class="text-gold-600 dark:text-gold-400">files</span></span>
+        <% end %>
+
+        <nav class="hidden items-center gap-1 text-sm font-medium text-stone-600 sm:flex dark:text-stone-300">
+          <%= link_to "Decisions", decisions_path, class: "rounded-md px-3 py-1.5 hover:bg-stone-200/60 dark:hover:bg-white/10" %>
+          <%= link_to "Supreme Court", "https://www.supremecourt.gov/opinions/slipopinions.aspx", target: "_blank", rel: "noopener", class: "rounded-md px-3 py-1.5 hover:bg-stone-200/60 dark:hover:bg-white/10" %>
+        </nav>
+
+        <div class="ml-auto flex items-center gap-2">
+          <button type="button" data-controller="theme" data-action="theme#toggle" class="rounded-md p-2 text-stone-500 hover:bg-stone-200/60 hover:text-stone-900 dark:text-stone-400 dark:hover:bg-white/10 dark:hover:text-white" aria-label="Toggle dark mode">
+            <svg class="size-5 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9-5.998Z"/></svg>
+            <svg class="hidden size-5 dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg>
           </button>
 
-          <!-- User Authentication -->
-          <% if user_signed_in? %>
-            <%= button_to "Sign out",
-                          destroy_user_session_path,
-                          method: :delete,
-                          class: "px-4 py-2 text-white bg-gray-800 dark:bg-gray-600 rounded hover:bg-gray-700" %>
+          <% if current_user %>
+            <span class="hidden items-center gap-2 text-sm text-stone-600 md:flex dark:text-stone-300">
+              <span class="flex size-8 items-center justify-center rounded-full bg-navy-700 text-xs font-semibold text-white"><%= current_user.initials %></span>
+              <%= current_user.name %>
+            </span>
+            <%= button_to "Sign out", session_path, method: :delete, class: "rounded-md px-3 py-1.5 text-sm font-medium text-stone-600 hover:bg-stone-200/60 dark:text-stone-300 dark:hover:bg-white/10" %>
           <% else %>
-            <%= link_to "Sign in",
-                        new_user_session_path,
-                        class: "inline-block px-4 py-2 mr-2 border border-gray-400 rounded text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600" %>
-            <%= link_to "Sign up",
-                        new_user_registration_path,
-                        class: "inline-block px-4 py-2 text-white bg-blue-600 dark:bg-blue-500 rounded hover:bg-blue-700 dark:hover:bg-blue-600" %>
+            <%= link_to "Sign in", new_session_path, class: "rounded-md px-3 py-1.5 text-sm font-medium text-stone-600 hover:bg-stone-200/60 dark:text-stone-300 dark:hover:bg-white/10" %>
+            <%= link_to "Join the discussion", new_registration_path, class: "rounded-md bg-navy-800 px-3.5 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-navy-700 dark:bg-gold-400 dark:text-navy-950 dark:hover:bg-gold-300" %>
           <% end %>
         </div>
       </div>
     </header>
 
-    <!-- Content Area -->
-    <div class="flex flex-1 overflow-hidden">
+    <%= render "layouts/flash" %>
 
-      <!-- Sidebar -->
-      <aside class="bg-white dark:bg-gray-800 w-80 p-6 flex-shrink-0">
-        <nav>
-          <ul class="space-y-4">
-            <li>
-              <%= link_to "Dashboard", root_path, class: "block px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-700 hover:text-white rounded" %>
-            </li>
-            <li>
-              <%= link_to "Cases", opinions_path, class: "block px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-700 hover:text-white rounded" %>
-            </li>
-          </ul>
-        </nav>
-      </aside>
+    <main>
+      <%= yield %>
+    </main>
 
-      <!-- Main Content -->
-      <main class="flex-1 bg-white dark:bg-gray-900 p-6 overflow-y-auto">
-        <%= yield %>
-      </main>
-
-    </div>
-  </div>
-
-  <!-- JavaScript for Dark Mode Toggle -->
-  <script>
-	  document.addEventListener("turbo:load", () => {
-	    const toggleButton = document.getElementById("dark-mode-toggle");
-	    const themeIcon = document.getElementById("theme-icon");
-	    const html = document.documentElement;
-
-	    // Function to apply the theme
-	    function applyTheme(theme) {
-	      if (theme === "dark") {
-	        html.classList.add("dark");
-	        themeIcon.textContent = "🌙"; // Dark mode icon
-	      } else {
-	        html.classList.remove("dark");
-	        themeIcon.textContent = "🌞"; // Light mode icon
-	      }
-	    }
-
-	    // Load and apply the saved theme preference on page load
-	    const savedTheme = localStorage.getItem("theme") || "light"; // Default to light mode
-	    applyTheme(savedTheme);
-
-	    // Attach event listener only once
-	    if (toggleButton) {
-	      toggleButton.addEventListener("click", () => {
-	        const currentTheme = html.classList.contains("dark") ? "dark" : "light";
-	        const newTheme = currentTheme === "dark" ? "light" : "dark";
-	        localStorage.setItem("theme", newTheme); // Save the new preference
-	        applyTheme(newTheme); // Apply the new theme
-	      });
-	    }
-	  });
-  
-  </script>
-    
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js"></script>
-    <script async data-id="101399487" src="//static.getclicky.com/js"></script>
-    <noscript>
-      <p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101399487ns.gif" /></p>
-    </noscript>
-
-</body>
+    <footer class="mt-24 border-t border-stone-200 py-10 text-center text-sm text-stone-500 dark:border-white/10 dark:text-stone-400">
+      Opinions are published by the
+      <%= link_to "Supreme Court of the United States", "https://www.supremecourt.gov", class: "underline decoration-stone-300 underline-offset-4 hover:text-stone-900 dark:hover:text-white" %>
+      and are in the public domain. SCOTUSfiles is free and open source.
+    </footer>
+  </body>
 </html>

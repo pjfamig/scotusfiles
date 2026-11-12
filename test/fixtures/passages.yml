@@ -1,0 +1,14 @@
+paxton_holding:
+  decision: paxton
+  opinion: paxton_majority
+  key: 1-1
+  position: 1
+  text: We hold that they do not.
+  comments_count: 1
+
+paxton_judgment:
+  decision: paxton
+  opinion: paxton_majority
+  key: 1-2
+  position: 2
+  text: The judgment is affirmed.

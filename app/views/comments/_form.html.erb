@@ -1,0 +1,15 @@
+<%= form_with model: [ decision, comment ], id: "comment_form", class: "mt-5",
+      data: { controller: "comment-form", action: "keydown.meta+enter->comment-form#submit keydown.ctrl+enter->comment-form#submit" } do |form| %>
+  <%= hidden_field_tag :passage_key, passage&.key %>
+  <label for="comment_body" class="sr-only">Your comment</label>
+  <%= form.textarea :body, rows: 3, required: true, maxlength: 5000, placeholder: "What do you make of this passage?",
+        data: { comment_form_target: "body" },
+        class: "block w-full resize-y rounded-lg border-0 bg-stone-50 px-3 py-2.5 text-sm text-stone-900 ring-1 ring-stone-300 placeholder:text-stone-400 focus:ring-2 focus:ring-navy-600 focus:outline-none dark:bg-white/5 dark:text-white dark:ring-white/15 dark:focus:ring-gold-400" %>
+  <% if comment.errors.any? %>
+    <p class="mt-2 text-xs text-red-600"><%= comment.errors.full_messages.to_sentence %></p>
+  <% end %>
+  <div class="mt-2 flex items-center justify-between">
+    <span class="text-xs text-stone-400">⌘/Ctrl + Enter to post</span>
+    <%= form.submit "Post comment", class: "cursor-pointer rounded-md bg-navy-800 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-navy-700 disabled:opacity-50 dark:bg-gold-400 dark:text-navy-950 dark:hover:bg-gold-300" %>
+  </div>
+<% end %>

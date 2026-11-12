@@ -1,0 +1,9 @@
+<div id="flash" class="pointer-events-none fixed inset-x-0 top-20 z-40 flex flex-col items-center gap-2 px-4">
+  <% flash.each do |type, message| %>
+    <div data-controller="flash" data-action="animationend->flash#dismiss"
+         class="pointer-events-auto rounded-full px-4 py-2 text-sm font-medium shadow-lg ring-1 animate-[fade-out_0.4s_ease-in_5s_forwards]
+                <%= type.to_s == "alert" ? "bg-red-50 text-red-700 ring-red-200 dark:bg-red-950 dark:text-red-200 dark:ring-red-900" : "bg-white text-navy-800 ring-stone-200 dark:bg-navy-800 dark:text-white dark:ring-white/10" %>">
+      <%= message %>
+    </div>
+  <% end %>
+</div>

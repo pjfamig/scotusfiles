@@ -1,0 +1,3 @@
+<template id="annotation_counts"
+          data-controller="annotation-counts"
+          data-annotation-counts-counts-value="<%= decision.passages.where("comments_count > 0").pluck(:key, :comments_count).to_h.to_json %>"></template>

@@ -10,123 +10,92 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_01_26_013150) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  create_table "action_text_rich_texts", force: :cascade do |t|
-    t.string "name", null: false
-    t.text "body"
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
-  end
-
-  create_table "active_storage_attachments", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
-    t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
-    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
-  end
-
-  create_table "active_storage_blobs", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "filename", null: false
-    t.string "content_type"
-    t.text "metadata"
-    t.string "service_name", null: false
-    t.bigint "byte_size", null: false
-    t.string "checksum"
-    t.datetime "created_at", null: false
-    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
-
-  create_table "active_storage_variant_records", force: :cascade do |t|
-    t.bigint "blob_id", null: false
-    t.string "variation_digest", null: false
-    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
-
+ActiveRecord::Schema[8.1].define(version: 2026_11_12_213926) do
   create_table "comments", force: :cascade do |t|
-    t.bigint "opinion_id", null: false
-    t.bigint "user_id", null: false
-    t.text "content"
+    t.integer "decision_id", null: false
+    t.integer "passage_id"
+    t.integer "user_id", null: false
+    t.text "body", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["opinion_id"], name: "index_comments_on_opinion_id"
+    t.index ["decision_id", "created_at"], name: "index_comments_on_decision_id_and_created_at"
+    t.index ["decision_id"], name: "index_comments_on_decision_id"
+    t.index ["passage_id"], name: "index_comments_on_passage_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
-  create_table "friendly_id_slugs", force: :cascade do |t|
+  create_table "decisions", force: :cascade do |t|
+    t.integer "term", null: false
+    t.string "docket_number", null: false
+    t.string "title", null: false
     t.string "slug", null: false
-    t.integer "sluggable_id", null: false
-    t.string "sluggable_type", limit: 50
-    t.string "scope"
-    t.datetime "created_at"
-    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
-    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
-    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+    t.date "decided_on"
+    t.string "citation"
+    t.text "holding"
+    t.string "author_code"
+    t.string "pdf_url", null: false
+    t.integer "status", default: 0, null: false
+    t.text "import_error"
+    t.datetime "imported_at"
+    t.integer "comments_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pdf_url"], name: "index_decisions_on_pdf_url", unique: true
+    t.index ["slug"], name: "index_decisions_on_slug", unique: true
+    t.index ["term", "decided_on"], name: "index_decisions_on_term_and_decided_on"
   end
 
   create_table "opinions", force: :cascade do |t|
-    t.string "title"
-    t.text "holding"
-    t.text "full_decision"
-    t.date "decision_date"
+    t.integer "decision_id", null: false
+    t.integer "kind", default: 0, null: false
+    t.string "label", null: false
+    t.string "author"
+    t.integer "position", null: false
+    t.text "body_html", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id", default: 1, null: false
-    t.string "filename"
-    t.string "scotus_filename"
-    t.string "slug"
-    t.text "syllabus"
-    t.text "majority_opinion"
-    t.text "dissent"
-    t.text "concurrence"
-    t.index ["slug"], name: "index_opinions_on_slug", unique: true
-    t.index ["user_id"], name: "index_opinions_on_user_id"
+    t.index ["decision_id", "position"], name: "index_opinions_on_decision_id_and_position", unique: true
+    t.index ["decision_id"], name: "index_opinions_on_decision_id"
   end
 
-  create_table "quotes", force: :cascade do |t|
-    t.text "content"
-    t.bigint "opinion_id", null: false
+  create_table "passages", force: :cascade do |t|
+    t.integer "decision_id", null: false
+    t.integer "opinion_id"
+    t.string "key", null: false
+    t.integer "position", null: false
+    t.text "text", null: false
+    t.integer "comments_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["opinion_id"], name: "index_quotes_on_opinion_id"
+    t.index ["decision_id", "key"], name: "index_passages_on_decision_id_and_key", unique: true
+    t.index ["decision_id"], name: "index_passages_on_decision_id"
+    t.index ["opinion_id"], name: "index_passages_on_opinion_id"
   end
 
-  create_table "synopses", force: :cascade do |t|
-    t.string "title"
-    t.string "body"
-    t.bigint "opinion_id", null: false
+  create_table "sessions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "ip_address"
+    t.string "user_agent"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["opinion_id"], name: "index_synopses_on_opinion_id"
+    t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.string "email_address", null: false
+    t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name", default: "", null: false
     t.boolean "admin", default: false, null: false
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
-  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "comments", "opinions"
+  add_foreign_key "comments", "decisions"
+  add_foreign_key "comments", "passages"
   add_foreign_key "comments", "users"
-  add_foreign_key "opinions", "users"
-  add_foreign_key "quotes", "opinions"
-  add_foreign_key "synopses", "opinions"
+  add_foreign_key "opinions", "decisions"
+  add_foreign_key "passages", "decisions"
+  add_foreign_key "passages", "opinions", on_delete: :nullify
+  add_foreign_key "sessions", "users"
 end

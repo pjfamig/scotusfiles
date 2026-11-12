@@ -1,76 +1,10 @@
-h1 a {
-	color: #000;
-	text-decoration: none;
-	font-weight: bold;
-}
-
-h1 a:hover {
-	
-}
-
-#alert {
-      background-color: #e6f9e6;
-      padding: 12px;
-	border-radius: 4px;
-	margin: auto;
-	margin-bottom: 10px;
-      color: #006400; /* dark green color */
-      box-shadow: 0 1px 3px rgba(0,0,0,.1); /* adding a little shadow */
-      border: 1px solid #4caf50; /* green color */
-}
-
-.badge {
-      background-color: #e6f9e6;
-      padding: 2px;
-	border-radius: 4px;
-	margin: auto;
-	margin-bottom: 10px;
-      color: #006400; 
-      box-shadow: 0 1px 3px rgba(0,0,0,.1);
-      border: 1px solid #4caf50;
-	font-weight: bold;
-	font-size: 12px;
-}
-
-#info {
-      background-color: #253b47;
-      padding: 20px 24px;
-	border-radius: 6px;
-	margin: auto;
-	margin-bottom: 10px;
-      color: #FFF; /* dark green color */
-	text-align: center;	
-}
-
-.sticky {
-    position: -webkit-sticky; /* Safari */
-    position: sticky;
-    margin-top: 45px;
-    top: 0; /* Adjust this value based on your requirements */
-}
-
-#exampleEmailInput {
-	width: 320px;
-}
-
-#topBtn {
-      display: none; /* Hidden by default */
-      position: fixed; /* Fixed/sticky position */
-      bottom: 20px; /* Place the button at the bottom of the page */
-      right: 30px; /* Place the button 30px from the right */
-      z-index: 99; /* Make sure it does not overlap */
-      border: none; /* Remove borders */
-      outline: none; /* Remove outline */
-      background-color: black; /* Set a background color */
-      color: white; /* Text color */
-      cursor: pointer; /* Add a mouse pointer on hover */
-      padding: 6px 10px; /* Some padding */
-      border-radius: 50%; /* Rounded corners */
-      font-size: 18px; /* Increase font size */
-      height: 40px;
-      width: 40px;
-}
-
-#topBtn:hover {
-      background-color: #555; /* Add a dark-grey background on hover */
-}
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */

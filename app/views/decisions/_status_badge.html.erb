@@ -1,0 +1,9 @@
+<% case decision.status %>
+<% when "pending", "importing" %>
+  <span class="inline-flex items-center gap-1.5 rounded-full bg-navy-50 px-2.5 py-1 text-xs font-medium text-navy-700 dark:bg-white/10 dark:text-stone-200">
+    <span class="size-1.5 animate-pulse rounded-full bg-navy-600 dark:bg-gold-400"></span>
+    Formatting
+  </span>
+<% when "failed" %>
+  <span class="inline-flex items-center rounded-full bg-red-50 px-2.5 py-1 text-xs font-medium text-red-700 dark:bg-red-950 dark:text-red-200">Import failed</span>
+<% end %>

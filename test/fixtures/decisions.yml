@@ -1,0 +1,22 @@
+paxton:
+  term: 2024
+  docket_number: 23-1122
+  title: Free Speech Coalition, Inc. v. Paxton
+  slug: free-speech-coalition-inc-v-paxton-23-1122
+  decided_on: 2025-06-27
+  citation: 606 U.S. 461
+  holding: H. B. 1181 survives intermediate scrutiny.
+  author_code: T
+  pdf_url: https://www.supremecourt.gov/opinions/24pdf/23-1122_3e04.pdf
+  status: <%= Decision.statuses[:imported] %>
+  comments_count: 1
+
+pending:
+  term: 2025
+  docket_number: 25-100
+  title: Example v. Pending
+  slug: example-v-pending-25-100
+  decided_on: 2026-03-02
+  author_code: PC
+  pdf_url: https://www.supremecourt.gov/opinions/25pdf/25-100_abcd.pdf
+  status: <%= Decision.statuses[:pending] %>

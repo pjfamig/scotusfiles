@@ -1,0 +1,15 @@
+<div class="p-5">
+  <div class="flex items-center justify-between">
+    <h2 class="font-semibold">Discussion</h2>
+    <span class="text-xs text-stone-500 dark:text-stone-400"><%= pluralize(decision.comments_count, "comment") %></span>
+  </div>
+  <p class="mt-1 text-sm text-stone-500 dark:text-stone-400">Select any sentence in the opinion to read its comments or add your own.</p>
+
+  <ol id="decision_discussion" class="mt-5 space-y-4 empty:hidden"><%= render partial: "comments/discussion_item", collection: comments, as: :comment %></ol>
+
+  <% if comments.empty? %>
+    <div class="mt-5 rounded-xl border border-dashed border-stone-300 px-4 py-8 text-center text-sm text-stone-500 dark:border-white/15 dark:text-stone-400">
+      No one has commented yet. Be the first to mark up this opinion.
+    </div>
+  <% end %>
+</div>

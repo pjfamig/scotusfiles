@@ -1,0 +1,10 @@
+<% content_for :title, "Reset your password" %>
+<%= auth_card title: "Forgot your password?", subtitle: "We’ll email you a link to choose a new one." do %>
+  <%= form_with url: passwords_path, class: "space-y-5" do |form| %>
+    <div>
+      <%= form.label :email_address, "Email", class: "text-sm font-medium" %>
+      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", value: params[:email_address], class: field_classes %>
+    </div>
+    <%= form.submit "Email reset instructions", class: primary_button_classes %>
+  <% end %>
+<% end %>
