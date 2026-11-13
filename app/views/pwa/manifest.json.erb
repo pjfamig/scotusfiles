@@ -1,5 +1,9 @@
 {
-  "name": "Scotusfiles",
+  "name": "SCOTUSfiles",
+  "short_name": "SCOTUSfiles",
+  "description": <%= raw SeoHelper::DEFAULT_DESCRIPTION.to_json %>,
+  "lang": "en-US",
+  "categories": ["news", "education", "reference"],
   "icons": [
     {
       "src": "/icon.png",
@@ -11,12 +15,16 @@
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "maskable"
+    },
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
     }
   ],
   "start_url": "/",
   "display": "standalone",
   "scope": "/",
-  "description": "Scotusfiles.",
-  "theme_color": "red",
-  "background_color": "red"
+  "theme_color": "#1b2a52",
+  "background_color": "#fbfaf7"
 }

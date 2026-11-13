@@ -2,7 +2,7 @@ require "test_helper"
 
 class DecisionsControllerTest < ActionDispatch::IntegrationTest
   test "lists decisions for a term" do
-    get decisions_path(term: 2024)
+    get term_path(2024)
 
     assert_response :success
     assert_select "h3", text: "Free Speech Coalition, Inc. v. Paxton"
@@ -38,7 +38,7 @@ class DecisionsControllerTest < ActionDispatch::IntegrationTest
     assert_enqueued_with(job: SyncTermJob, args: [ 2025 ]) do
       post admin_term_sync_path(2025)
     end
-    assert_redirected_to decisions_path(term: 2025)
+    assert_redirected_to term_path(2025)
   end
 
   test "non-admins cannot sync or re-import" do

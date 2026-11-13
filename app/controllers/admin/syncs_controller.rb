@@ -4,6 +4,6 @@ class Admin::SyncsController < ApplicationController
   def create
     term = params[:term_id].to_i
     SyncTermJob.perform_later(term)
-    redirect_to decisions_path(term: term), notice: "Checking supremecourt.gov for October Term #{term} opinions…"
+    redirect_to term_path(term), notice: "Checking supremecourt.gov for October Term #{term} opinions…"
   end
 end

@@ -108,7 +108,9 @@ heroku run ADMIN_EMAIL=you@example.com ADMIN_PASSWORD=... bin/rails db:seed
 
 Solid Queue, Solid Cache, and Solid Cable keep their tables in the main database, and
 `SOLID_QUEUE_IN_PUMA` runs the job workers (including the hourly sync) inside the web dyno. Set
-`APP_HOST` if the site moves off www.scotusfiles.com, and `SMTP_ADDRESS`, `SMTP_PORT`,
+`APP_HOST` if the site moves off www.scotusfiles.com: it is the canonical host used in canonical links,
+`/sitemap.xml`, `/robots.txt`, and `/feed`, and requests to the bare domain or `*.herokuapp.com` are
+301-redirected to it. Set `SMTP_ADDRESS`, `SMTP_PORT`,
 `SMTP_USERNAME`, `SMTP_PASSWORD`, and `MAILER_FROM` to send password-reset emails.
 
 ## Known limitations

@@ -1,4 +1,5 @@
 <% content_for :title, "Sign in" %>
+<% noindex! %>
 <%= auth_card title: "Welcome back", subtitle: "Sign in to join the discussion." do %>
   <%= form_with url: session_path, class: "space-y-5" do |form| %>
     <div>

@@ -1,11 +1,34 @@
 <!DOCTYPE html>
 <html lang="en" class="h-full scroll-pt-24 scroll-smooth">
   <head>
-    <title><%= content_for?(:title) ? "#{yield(:title)} · SCOTUSfiles" : "SCOTUSfiles — Read and discuss Supreme Court opinions" %></title>
+    <meta charset="utf-8">
+    <title><%= page_title %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="description" content="Clean, readable Supreme Court opinions you can discuss sentence by sentence.">
+    <meta name="description" content="<%= meta_description %>">
+    <meta name="robots" content="<%= robots_directive %>">
+    <link rel="canonical" href="<%= canonical_url %>">
+
+    <meta property="og:site_name" content="<%= SeoHelper::SITE_NAME %>">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="<%= content_for?(:og_type) ? yield(:og_type) : "website" %>">
+    <meta property="og:title" content="<%= social_title %>">
+    <meta property="og:description" content="<%= meta_description %>">
+    <meta property="og:url" content="<%= canonical_url %>">
+    <meta property="og:image" content="<%= og_image_url %>">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:alt" content="SCOTUSfiles logo">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="<%= social_title %>">
+    <meta name="twitter:description" content="<%= meta_description %>">
+    <meta name="twitter:image" content="<%= og_image_url %>">
+
     <meta name="application-name" content="SCOTUSfiles">
+    <meta name="apple-mobile-web-app-title" content="SCOTUSfiles">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0b1124" media="(prefers-color-scheme: dark)">
+    <meta name="format-detection" content="telephone=no">
     <meta name="current-user-id" content="<%= current_user&.id %>">
     <meta name="current-user-admin" content="<%= current_user&.admin? %>">
     <%= csrf_meta_tags %>
@@ -20,8 +43,12 @@
 
     <%= yield :head %>
 
+    <link rel="icon" href="/icon.png" type="image/png" sizes="512x512">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="manifest" href="<%= pwa_manifest_path(format: :json) %>">
+    <link rel="alternate" type="application/atom+xml" title="New Supreme Court opinions · SCOTUSfiles" href="<%= absolute_url(feed_path) %>">
+    <link rel="sitemap" type="application/xml" href="<%= sitemap_path %>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
@@ -50,7 +77,7 @@
         <% end %>
 
         <nav class="hidden items-center gap-1 text-sm font-medium text-stone-600 sm:flex dark:text-stone-300">
-          <%= link_to "Decisions", decisions_path, class: "rounded-md px-3 py-1.5 hover:bg-stone-200/60 dark:hover:bg-white/10" %>
+          <%= link_to "Decisions", root_path, class: "rounded-md px-3 py-1.5 hover:bg-stone-200/60 dark:hover:bg-white/10" %>
           <%= link_to "Supreme Court", "https://www.supremecourt.gov/opinions/slipopinions.aspx", target: "_blank", rel: "noopener", class: "rounded-md px-3 py-1.5 hover:bg-stone-200/60 dark:hover:bg-white/10" %>
         </nav>
 
@@ -81,6 +108,14 @@
     </main>
 
     <footer class="mt-24 border-t border-stone-200 py-10 text-center text-sm text-stone-500 dark:border-white/10 dark:text-stone-400">
+      <% if (terms = cached_terms).any? %>
+        <nav aria-label="Browse opinions by term" class="mx-auto mb-6 flex max-w-3xl flex-wrap justify-center gap-x-4 gap-y-2 px-4">
+          <% terms.each do |term| %>
+            <%= link_to "October Term #{term}", term_listing_path(term), class: "hover:text-stone-900 dark:hover:text-white" %>
+          <% end %>
+          <%= link_to "Opinion feed", feed_path, class: "hover:text-stone-900 dark:hover:text-white" %>
+        </nav>
+      <% end %>
       Opinions are published by the
       <%= link_to "Supreme Court of the United States", "https://www.supremecourt.gov", class: "underline decoration-stone-300 underline-offset-4 hover:text-stone-900 dark:hover:text-white" %>
       and are in the public domain. SCOTUSfiles is free and open source.
