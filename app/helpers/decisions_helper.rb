@@ -80,11 +80,9 @@ module DecisionsHelper
 
   def opinion_kind_classes(opinion)
     case opinion.kind
-    when "syllabus" then "bg-stone-200 text-stone-700 dark:bg-white/10 dark:text-stone-300"
-    when "majority", "per_curiam", "plurality" then "bg-navy-100 text-navy-800 dark:bg-navy-600/40 dark:text-navy-100"
-    when "dissent" then "bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-200"
-    when "concurrence" then "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200"
-    else "bg-gold-200 text-gold-600 dark:bg-gold-400/20 dark:text-gold-300"
+    when "majority", "per_curiam", "plurality" then "border-neutral-950 bg-neutral-950 text-white dark:border-white dark:bg-white dark:text-neutral-950"
+    when "dissent" then "border-neutral-950 text-neutral-950 dark:border-white dark:text-white"
+    else "border-neutral-300 text-neutral-500 dark:border-neutral-700 dark:text-neutral-400"
     end
   end
 end
