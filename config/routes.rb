@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resource :registration, only: %i[ new create ]
+  resource :highlight_color, only: :update
 
   resources :decisions, only: %i[ index show ] do
     resources :passages, only: :show
