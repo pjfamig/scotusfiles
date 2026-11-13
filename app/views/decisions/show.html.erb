@@ -1,4 +1,18 @@
-<% content_for :title, @decision.title %>
+<% content_for :title, decision_page_title(@decision) %>
+<% content_for :description, decision_meta_description(@decision, @opinions) %>
+<% content_for :canonical, absolute_url(decision_path(@decision)) %>
+<% content_for :og_type, "article" %>
+<% noindex! if @decision.failed? %>
+<% content_for :head do %>
+  <% if @decision.decided_on %>
+    <meta property="article:published_time" content="<%= @decision.decided_on.iso8601 %>">
+  <% end %>
+  <meta property="article:modified_time" content="<%= (@decision.imported_at || @decision.updated_at).iso8601 %>">
+  <meta property="article:section" content="<%= @decision.term_label %>">
+  <meta property="article:tag" content="Supreme Court">
+  <%= json_ld decision_schema(@decision, @opinions) %>
+  <%= json_ld breadcrumb_schema([ [ "Decisions", root_path ], [ @decision.term_label, term_listing_path(@decision.term) ], [ @decision.title, decision_path(@decision) ] ]) %>
+<% end %>
 <%= turbo_stream_from @decision %>
 
 <div class="mx-auto max-w-[90rem] px-4 lg:px-8"
@@ -8,16 +22,18 @@
      data-action="keydown.esc@window->reader#close">
 
   <header class="border-b border-neutral-950 pt-10 pb-8 dark:border-neutral-700">
-    <%= link_to decisions_path(term: @decision.term), class: "inline-flex items-center gap-1 text-sm font-medium text-neutral-500 hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white" do %>
-      <svg class="size-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.8 4.2a.75.75 0 0 1 0 1.06L8.06 10l4.74 4.74a.75.75 0 1 1-1.06 1.06l-5.27-5.27a.75.75 0 0 1 0-1.06l5.27-5.27a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/></svg>
-      <%= @decision.term_label %>
-    <% end %>
+    <nav aria-label="Breadcrumb">
+      <%= link_to term_listing_path(@decision.term), class: "inline-flex items-center gap-1 text-sm font-medium text-neutral-500 hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white" do %>
+        <svg class="size-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M12.8 4.2a.75.75 0 0 1 0 1.06L8.06 10l4.74 4.74a.75.75 0 1 1-1.06 1.06l-5.27-5.27a.75.75 0 0 1 0-1.06l5.27-5.27a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/></svg>
+        <%= @decision.term_label %> opinions
+      <% end %>
+    </nav>
 
     <h1 class="mt-4 max-w-4xl text-3xl leading-[1.1] font-bold tracking-tight sm:text-4xl lg:text-5xl"><%= @decision.title %></h1>
 
     <dl class="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-neutral-600 dark:text-neutral-400">
       <% if @decision.decided_on %>
-        <div class="flex gap-1.5"><dt class="font-semibold text-neutral-950 dark:text-white">Decided</dt><dd><%= @decision.decided_on.strftime("%B %-d, %Y") %></dd></div>
+        <div class="flex gap-1.5"><dt class="font-semibold text-neutral-950 dark:text-white">Decided</dt><dd><time datetime="<%= @decision.decided_on.iso8601 %>"><%= @decision.decided_on.strftime("%B %-d, %Y") %></time></dd></div>
       <% end %>
       <div class="flex gap-1.5"><dt class="font-semibold text-neutral-950 dark:text-white">Docket</dt><dd>No. <%= @decision.docket_number %></dd></div>
       <div class="flex gap-1.5"><dt class="font-semibold text-neutral-950 dark:text-white"><%= @decision.per_curiam? ? "Opinion" : "Author" %></dt><dd><%= @decision.per_curiam? ? "Per curiam" : "Justice #{@decision.author_name}" %></dd></div>
@@ -34,7 +50,7 @@
     <% end %>
 
     <div class="mt-6 flex flex-wrap items-center gap-3">
-      <%= link_to @decision.pdf_url, target: "_blank", rel: "noopener", class: "inline-flex items-center gap-2 border border-neutral-950 px-3 py-1.5 text-sm font-medium hover:bg-neutral-950 hover:text-white dark:border-neutral-700 dark:hover:bg-white dark:hover:text-neutral-950" do %>
+      <%= link_to @decision.pdf_url, target: "_blank", rel: "noopener", type: "application/pdf", class: "inline-flex items-center gap-2 border border-neutral-950 px-3 py-1.5 text-sm font-medium hover:bg-neutral-950 hover:text-white dark:border-neutral-700 dark:hover:bg-white dark:hover:text-neutral-950" do %>
         <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z M14 3v5h5"/></svg>
         Official PDF
       <% end %>
@@ -102,5 +118,27 @@
         <p class="mt-2 text-neutral-500 dark:text-neutral-400">We’re converting the Court’s PDF into readable text. This page will update on its own.</p>
       <% end %>
     </div>
+  <% end %>
+
+  <% if @related_decisions.any? %>
+    <section class="border-t border-neutral-950 pt-10 dark:border-neutral-700" aria-labelledby="related-decisions">
+      <div class="flex flex-wrap items-baseline justify-between gap-3">
+        <h2 id="related-decisions" class="text-2xl font-bold tracking-tight">More from <%= @decision.term_label %></h2>
+        <%= link_to "All #{@decision.term_label} opinions", term_listing_path(@decision.term), class: "text-sm font-medium text-neutral-500 underline underline-offset-4 hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white" %>
+      </div>
+      <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <% @related_decisions.each do |decision| %>
+          <li class="border border-neutral-200 p-5 hover:border-neutral-950 dark:border-neutral-800 dark:hover:border-neutral-500">
+            <h3 class="text-lg leading-snug font-semibold"><%= link_to decision.title, decision_path(decision), class: "underline-offset-4 hover:underline" %></h3>
+            <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+              No. <%= decision.docket_number %><% if decision.decided_on %> · <time datetime="<%= decision.decided_on.iso8601 %>"><%= decision.decided_on.strftime("%b %-d, %Y") %></time><% end %>
+            </p>
+            <% if decision.holding %>
+              <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300"><%= decision.holding %></p>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </section>
   <% end %>
 </div>

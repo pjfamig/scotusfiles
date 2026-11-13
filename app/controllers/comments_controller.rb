@@ -4,6 +4,7 @@ class CommentsController < ApplicationController
   rate_limit to: 20, within: 1.minute, only: :create, with: -> { head :too_many_requests }
 
   def index
+    response.headers["X-Robots-Tag"] = "noindex"
     @recent_comments = @decision.comments.latest_first.includes(:user, :passage).limit(50)
   end
 

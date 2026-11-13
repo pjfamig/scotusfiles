@@ -1,10 +1,31 @@
+<% home = @query.empty? && request.path == root_path %>
+<% if @query.present? %>
+  <% content_for :title, "Search results for “#{@query}”" %>
+  <% noindex! %>
+<% elsif !home %>
+  <% content_for :title, "October Term #{@term} Supreme Court Opinions" %>
+  <% content_for :description, term_meta_description(@term, @decisions.size) %>
+  <% noindex! if @decisions.empty? %>
+<% end %>
+<% content_for :canonical, absolute_url(@query.present? ? decisions_path : term_listing_path(@term)) %>
+<% content_for :head do %>
+  <% if home %>
+    <%= json_ld website_schema %>
+  <% elsif @query.empty? %>
+    <%= json_ld breadcrumb_schema([ [ "Decisions", root_path ], [ "October Term #{@term}", term_listing_path(@term) ] ]) %>
+  <% end %>
+<% end %>
 <%= turbo_stream_from :decisions %>
 
 <section class="border-b border-neutral-200 dark:border-neutral-800">
   <div class="mx-auto max-w-[90rem] px-4 py-16 lg:px-8 lg:py-20">
     <p class="text-xs font-semibold tracking-[0.2em] text-neutral-500 uppercase dark:text-neutral-400">Supreme Court of the United States</p>
     <h1 class="mt-4 max-w-3xl text-4xl leading-[1.1] font-bold tracking-tight sm:text-5xl">
-      Read the Court’s opinions, then talk about them one sentence at a time.
+      <% if home || @query.present? %>
+        Read the Court’s opinions, then talk about them one sentence at a time.
+      <% else %>
+        Supreme Court opinions from October Term <%= @term %>
+      <% end %>
     </h1>
     <p class="mt-5 max-w-2xl text-lg text-neutral-600 dark:text-neutral-400">
       Every decision, converted from the official PDF into clean, readable text. Click any sentence to see what others think, or add your own note in the margin.
@@ -30,11 +51,13 @@
         <h2 class="text-lg font-semibold">
           <%= pluralize(@decisions.size, "result") %> for “<%= @query %>”
         </h2>
-        <%= link_to "Clear search", decisions_path, class: "text-sm text-neutral-500 underline underline-offset-4 hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white" %>
+        <%= link_to "Clear search", root_path, class: "text-sm text-neutral-500 underline underline-offset-4 hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white" %>
       <% else %>
         <nav class="flex flex-wrap" aria-label="Terms">
           <% (@terms.presence || [ @term ]).each do |term| %>
-            <%= link_to "OT #{term}", decisions_path(term: term),
+            <%= link_to "OT #{term}", term_listing_path(term),
+                  title: "October Term #{term} opinions", aria: { current: ("page" if term == @term) },
+                  data: { turbo_frame: "_top" },
                   class: class_names("-ml-px border border-neutral-950 px-3.5 py-1.5 text-sm font-medium first:ml-0 dark:border-neutral-700",
                     "bg-neutral-950 text-white dark:bg-white dark:text-neutral-950": term == @term,
                     "text-neutral-950 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-900": term != @term) %>
@@ -50,6 +73,14 @@
         <% end %>
       <% end %>
     </div>
+
+    <% if @query.empty? && @decisions.any? %>
+      <p class="mt-4 max-w-3xl text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+        <%= pluralize(@decisions.size, "opinion") %> from the Supreme Court’s October Term <%= @term %>
+        (<%= @term %>–<%= (@term + 1).to_s.last(2) %>), newest first, each converted from the Court’s official PDF
+        into searchable text with its holding, majority opinion, concurrences, and dissents.
+      </p>
+    <% end %>
 
     <% if @decisions.empty? %>
       <div class="mt-10 border border-dashed border-neutral-300 px-6 py-16 text-center dark:border-neutral-700">

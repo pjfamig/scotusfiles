@@ -56,8 +56,12 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
 
+  # The one host search engines should index: canonical links, sitemaps, and feeds use it, and the bare
+  # domain and *.herokuapp.com redirect to it.
+  config.x.canonical_host = ENV.fetch("APP_HOST", "www.scotusfiles.com")
+
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: ENV.fetch("APP_HOST", "www.scotusfiles.com"), protocol: "https" }
+  config.action_mailer.default_url_options = { host: config.x.canonical_host, protocol: "https" }
 
   # Password reset emails need an SMTP provider; configure one with SMTP_* environment variables.
   if ENV["SMTP_ADDRESS"].present?

@@ -1,4 +1,5 @@
 <% content_for :title, "Choose a new password" %>
+<% noindex! %>
 <%= auth_card title: "Choose a new password" do %>
   <%= form_with url: password_path(params[:token]), method: :put, class: "space-y-5" do |form| %>
     <div>

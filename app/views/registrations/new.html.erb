@@ -1,4 +1,5 @@
 <% content_for :title, "Create an account" %>
+<% noindex! %>
 <%= auth_card title: "Join SCOTUSfiles", subtitle: "Comment on any sentence of any Supreme Court opinion." do %>
   <%= form_with model: @user, url: registration_path, class: "space-y-5" do |form| %>
     <% if @user.errors.any? %>
