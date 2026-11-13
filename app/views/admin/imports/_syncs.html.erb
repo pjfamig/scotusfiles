@@ -1,0 +1,19 @@
+<% if syncs.any? %>
+  <ul class="mt-2 divide-y divide-neutral-200 dark:divide-neutral-800">
+    <% syncs.each do |sync| %>
+      <li class="flex items-center gap-3 py-2 text-sm">
+        <span class="font-medium">OT <%= sync.term %></span>
+        <span class="min-w-0 flex-1 truncate <%= sync.failed? ? "text-red-700 dark:text-red-300" : "text-neutral-600 dark:text-neutral-400" %>">
+          <% if sync.failed? %>
+            <%= sync.error %>
+          <% else %>
+            <%= pluralize(sync.listed_count, "opinion") %> listed, <%= sync.queued_count %> new or revised
+          <% end %>
+        </span>
+        <span class="shrink-0 text-xs text-neutral-500 dark:text-neutral-400"><%= admin_time sync.created_at %></span>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p class="mt-2 text-sm text-neutral-500">No syncs recorded yet.</p>
+<% end %>

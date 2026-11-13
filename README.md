@@ -42,7 +42,9 @@ bin/rails test                    # run the test suite
 ```
 
 Admins also get a "Sync from supremecourt.gov" button on the decisions list and a "Re-import"
-button on each decision. In production, `SyncTermJob` runs hourly (see `config/recurring.yml`) so new
+button on each decision, plus an admin panel at `/admin` with signups, comments (with moderation),
+newly added decisions, and a log of every import, refresh, and term sync. Admin times show in Pacific
+time; set `ADMIN_TIME_ZONE` (a Rails time zone name) to change it. In production, `SyncTermJob` runs hourly (see `config/recurring.yml`) so new
 opinions appear on their own.
 
 ## How it works

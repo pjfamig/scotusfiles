@@ -1,0 +1,14 @@
+<% noindex! %>
+<% content_for :title, "Admin · #{title}" %>
+<div class="flex flex-wrap items-end justify-between gap-4">
+  <div>
+    <p class="text-xs font-semibold tracking-[0.2em] text-accent-600 uppercase dark:text-accent-400">Admin</p>
+    <h1 class="mt-2 text-3xl font-bold tracking-tight"><%= title %></h1>
+  </div>
+  <nav class="-mx-1 flex flex-wrap gap-1" aria-label="Admin sections">
+    <%= admin_nav_link "Overview", admin_root_path %>
+    <%= admin_nav_link "Users", admin_users_path %>
+    <%= admin_nav_link "Comments", admin_comments_path %>
+    <%= admin_nav_link "Imports & syncs", admin_imports_path %>
+  </nav>
+</div>

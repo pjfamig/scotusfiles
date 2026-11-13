@@ -23,6 +23,10 @@ Rails.application.routes.draw do
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
   namespace :admin do
+    root "dashboards#show"
+    resources :users, only: :index
+    resources :comments, only: :index
+    resources :imports, only: :index
     resources :terms, only: [] do
       resource :sync, only: :create
     end

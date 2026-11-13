@@ -1,0 +1,53 @@
+<div class="mx-auto max-w-[90rem] px-4 py-10 lg:px-8">
+  <%= render "admin/header", title: "Imports & syncs" %>
+
+  <% if @recent_syncs %>
+    <section class="<%= admin_card_classes %> mt-8 p-5">
+      <h2 class="font-semibold">Recent term syncs</h2>
+      <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">Each check of supremecourt.gov’s opinion listing, hourly and from the sync button.</p>
+      <%= render "admin/imports/syncs", syncs: @recent_syncs %>
+    </section>
+  <% end %>
+
+  <div class="mt-8 flex flex-wrap items-center gap-2 text-sm">
+    <span class="text-neutral-500 dark:text-neutral-400">Show:</span>
+    <% [ [ "All", nil ], [ "First imports", "first" ], [ "Refreshes", "refresh" ], [ "Failures", "failed" ] ].each do |label, filter| %>
+      <%= link_to label, admin_imports_path(filter: filter),
+            class: class_names("rounded-full border px-3 py-1 font-medium transition-colors duration-150",
+              "border-neutral-950 bg-neutral-950 text-white dark:border-white dark:bg-white dark:text-neutral-950": @filter == filter,
+              "border-neutral-300 hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900": @filter != filter) %>
+    <% end %>
+  </div>
+
+  <div class="<%= admin_card_classes %> mt-4 overflow-x-auto">
+    <table class="w-full text-left text-sm">
+      <thead class="border-b border-neutral-200 text-xs text-neutral-500 uppercase dark:border-neutral-800 dark:text-neutral-400">
+        <tr>
+          <th class="px-4 py-3 font-medium">Decision</th>
+          <th class="px-4 py-3 font-medium">Type</th>
+          <th class="px-4 py-3 font-medium">Sentences</th>
+          <th class="px-4 py-3 font-medium">Took</th>
+          <th class="px-4 py-3 font-medium">When</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-neutral-200 dark:divide-neutral-800">
+        <% @imports.each do |import| %>
+          <tr class="align-top">
+            <td class="px-4 py-3">
+              <%= link_to import.decision.title, import.decision, class: "font-medium hover:underline underline-offset-4" %>
+              <span class="block text-xs text-neutral-500 dark:text-neutral-400">OT <%= import.decision.term %> · No. <%= import.decision.docket_number %></span>
+              <% if import.error %><span class="mt-1 block text-xs text-red-700 dark:text-red-300"><%= import.error %></span><% end %>
+            </td>
+            <td class="px-4 py-3"><%= import_pill import %></td>
+            <td class="px-4 py-3 tabular-nums"><%= import.passages_count ? number_with_delimiter(import.passages_count) : "—" %></td>
+            <td class="px-4 py-3 tabular-nums"><%= import.duration_ms ? "#{(import.duration_ms / 1000.0).round(1)}s" : "—" %></td>
+            <td class="px-4 py-3 whitespace-nowrap text-neutral-500 dark:text-neutral-400"><%= admin_time import.created_at %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% if @imports.empty? %><p class="px-4 py-8 text-center text-sm text-neutral-500">No imports recorded yet.</p><% end %>
+  </div>
+
+  <%= render "admin/pagination" %>
+</div>

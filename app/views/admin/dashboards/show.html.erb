@@ -1,0 +1,115 @@
+<div class="mx-auto max-w-[90rem] px-4 py-10 lg:px-8">
+  <%= render "admin/header", title: "Overview" %>
+
+  <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <%= render "admin/dashboards/stat", label: "Users", value: @stats[:users], detail: "+#{@stats[:users_this_week]} in the last 7 days" %>
+    <%= render "admin/dashboards/stat", label: "Comments", value: @stats[:comments], detail: "+#{@stats[:comments_this_week]} in the last 7 days" %>
+    <%= render "admin/dashboards/stat", label: "Decisions", value: @stats[:decisions],
+          detail: @stats[:failed_decisions].positive? ? "#{@stats[:failed_decisions]} failed to import" : "+#{@stats[:decisions_this_week]} in the last 7 days",
+          alert: @stats[:failed_decisions].positive? %>
+    <%= render "admin/dashboards/stat", label: "Refreshes this week", value: @stats[:refreshes_this_week],
+          detail: "#{pluralize(@stats[:failed_imports_this_week], "failed import")} in the last 7 days",
+          alert: @stats[:failed_imports_this_week].positive? %>
+  </div>
+
+  <div class="mt-4 grid gap-4 lg:grid-cols-2">
+    <%= render "admin/dashboards/chart", title: "Signups", counts: @daily_signups %>
+    <%= render "admin/dashboards/chart", title: "Comments", counts: @daily_comments %>
+  </div>
+
+  <% if @failed_decisions.any? %>
+    <section class="mt-4 rounded-2xl border border-red-200 bg-red-50/50 p-5 dark:border-red-900 dark:bg-red-950/30">
+      <h2 class="font-semibold text-red-800 dark:text-red-200">Decisions that failed to import</h2>
+      <ul class="mt-3 divide-y divide-red-200/70 dark:divide-red-900/60">
+        <% @failed_decisions.each do |decision| %>
+          <li class="flex flex-wrap items-center gap-3 py-2.5 text-sm">
+            <%= link_to decision.title, decision, class: "font-medium hover:underline underline-offset-4" %>
+            <span class="min-w-0 flex-1 truncate text-red-700 dark:text-red-300"><%= decision.import_error %></span>
+            <%= button_to "Re-import", decision_import_path(decision),
+                  class: "cursor-pointer rounded-md border border-red-300 px-2.5 py-1 text-xs font-medium text-red-800 transition-colors duration-150 hover:bg-red-100 dark:border-red-800 dark:text-red-200 dark:hover:bg-red-900/50" %>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
+  <div class="mt-4 grid gap-4 lg:grid-cols-2">
+    <section class="<%= admin_card_classes %> p-5">
+      <div class="flex items-baseline justify-between">
+        <h2 class="font-semibold">New signups</h2>
+        <%= link_to "All users →", admin_users_path, class: "text-sm text-accent-600 hover:underline underline-offset-4 dark:text-accent-400" %>
+      </div>
+      <ul class="mt-3 divide-y divide-neutral-200 dark:divide-neutral-800">
+        <% @recent_users.each do |user| %>
+          <li class="flex items-center gap-3 py-2.5 text-sm">
+            <span class="<%= avatar_classes(user) %> flex size-7 shrink-0 items-center justify-center rounded-full text-[0.65rem] font-semibold"><%= user.initials %></span>
+            <span class="min-w-0 flex-1">
+              <span class="font-medium"><%= user.name %></span>
+              <% if user.admin? %><%= admin_pill "Admin", :blue %><% end %>
+              <span class="block truncate text-xs text-neutral-500 dark:text-neutral-400"><%= user.email_address %></span>
+            </span>
+            <span class="shrink-0 text-xs text-neutral-500 dark:text-neutral-400"><%= admin_time user.created_at %></span>
+          </li>
+        <% end %>
+      </ul>
+      <% if @recent_users.empty? %><p class="mt-3 text-sm text-neutral-500">No users yet.</p><% end %>
+    </section>
+
+    <section class="<%= admin_card_classes %> p-5">
+      <div class="flex items-baseline justify-between">
+        <h2 class="font-semibold">Latest comments</h2>
+        <%= link_to "All comments →", admin_comments_path, class: "text-sm text-accent-600 hover:underline underline-offset-4 dark:text-accent-400" %>
+      </div>
+      <ul class="mt-3 divide-y divide-neutral-200 dark:divide-neutral-800">
+        <% @recent_comments.each do |comment| %>
+          <li class="py-2.5 text-sm">
+            <p class="flex flex-wrap items-center gap-x-2 text-xs text-neutral-500 dark:text-neutral-400">
+              <span class="font-semibold text-neutral-950 dark:text-white"><%= comment.user.name %></span>
+              on <%= link_to comment.decision.title, decision_path(comment.decision, anchor: comment.passage&.anchor), class: "truncate hover:underline underline-offset-4" %>
+              · <%= admin_time comment.created_at %>
+            </p>
+            <p class="mt-1 line-clamp-2 text-neutral-800 dark:text-neutral-300"><%= comment.body %></p>
+          </li>
+        <% end %>
+      </ul>
+      <% if @recent_comments.empty? %><p class="mt-3 text-sm text-neutral-500">No comments yet.</p><% end %>
+    </section>
+
+    <section class="<%= admin_card_classes %> p-5">
+      <h2 class="font-semibold">Newly added decisions</h2>
+      <ul class="mt-3 divide-y divide-neutral-200 dark:divide-neutral-800">
+        <% @recent_decisions.each do |decision| %>
+          <li class="flex items-center gap-3 py-2.5 text-sm">
+            <span class="min-w-0 flex-1">
+              <%= link_to decision.title, decision, class: "block truncate font-medium hover:underline underline-offset-4" %>
+              <span class="text-xs text-neutral-500 dark:text-neutral-400">No. <%= decision.docket_number %> · decided <%= decision.decided_on&.strftime("%b %-d, %Y") || "—" %></span>
+            </span>
+            <%= decision_status_pill decision %>
+            <span class="shrink-0 text-xs text-neutral-500 dark:text-neutral-400"><%= admin_time decision.created_at %></span>
+          </li>
+        <% end %>
+      </ul>
+      <% if @recent_decisions.empty? %><p class="mt-3 text-sm text-neutral-500">No decisions yet.</p><% end %>
+    </section>
+
+    <section class="<%= admin_card_classes %> p-5">
+      <div class="flex items-baseline justify-between">
+        <h2 class="font-semibold">Imports &amp; refreshes</h2>
+        <%= link_to "All imports →", admin_imports_path, class: "text-sm text-accent-600 hover:underline underline-offset-4 dark:text-accent-400" %>
+      </div>
+      <ul class="mt-3 divide-y divide-neutral-200 dark:divide-neutral-800">
+        <% @recent_imports.each do |import| %>
+          <li class="flex items-center gap-3 py-2.5 text-sm">
+            <%= link_to import.decision.title, import.decision, class: "min-w-0 flex-1 truncate font-medium hover:underline underline-offset-4" %>
+            <%= import_pill import %>
+            <span class="shrink-0 text-xs text-neutral-500 dark:text-neutral-400"><%= admin_time import.created_at %></span>
+          </li>
+        <% end %>
+      </ul>
+      <% if @recent_imports.empty? %><p class="mt-3 text-sm text-neutral-500">No imports recorded yet.</p><% end %>
+
+      <h3 class="mt-5 text-xs font-semibold tracking-[0.15em] text-neutral-500 uppercase dark:text-neutral-400">Term syncs</h3>
+      <%= render "admin/imports/syncs", syncs: @recent_syncs %>
+    </section>
+  </div>
+</div>

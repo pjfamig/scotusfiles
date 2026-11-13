@@ -1,0 +1,19 @@
+<% peak = [ counts.map(&:last).max.to_i, 1 ].max %>
+<div class="<%= admin_card_classes %> p-5">
+  <div class="flex items-baseline justify-between">
+    <h2 class="font-semibold"><%= title %></h2>
+    <p class="text-xs text-neutral-500 dark:text-neutral-400"><%= number_with_delimiter(counts.sum(&:last)) %> in the last <%= counts.size %> days</p>
+  </div>
+  <div class="mt-4 flex h-28 items-end gap-[3px]" role="img" aria-label="<%= title %> per day">
+    <% counts.each do |day, count| %>
+      <div class="group relative flex h-full flex-1 items-end" title="<%= day.strftime("%b %-d") %>: <%= count %>">
+        <div class="w-full rounded-sm <%= count.zero? ? "bg-neutral-100 dark:bg-neutral-800" : "bg-accent-500 group-hover:bg-accent-600 dark:bg-accent-400" %>"
+             style="height: <%= count.zero? ? 3 : [ (count * 100.0 / peak).round, 6 ].max %>%"></div>
+      </div>
+    <% end %>
+  </div>
+  <div class="mt-2 flex justify-between text-[0.7rem] text-neutral-400">
+    <span><%= counts.first.first.strftime("%b %-d") %></span>
+    <span>Today</span>
+  </div>
+</div>

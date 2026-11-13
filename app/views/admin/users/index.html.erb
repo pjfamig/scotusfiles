@@ -1,0 +1,49 @@
+<div class="mx-auto max-w-[90rem] px-4 py-10 lg:px-8">
+  <%= render "admin/header", title: "Users" %>
+
+  <%= form_with url: admin_users_path, method: :get, class: "mt-8 max-w-md" do |form| %>
+    <label for="q" class="sr-only">Search users</label>
+    <%= form.search_field :q, value: @query, id: "q", placeholder: "Search by name or email…", autocomplete: "off", class: field_classes %>
+  <% end %>
+
+  <div class="<%= admin_card_classes %> mt-4 overflow-x-auto">
+    <table class="w-full text-left text-sm">
+      <thead class="border-b border-neutral-200 text-xs text-neutral-500 uppercase dark:border-neutral-800 dark:text-neutral-400">
+        <tr>
+          <th class="px-4 py-3 font-medium">User</th>
+          <th class="px-4 py-3 font-medium">Comments</th>
+          <th class="px-4 py-3 font-medium">Signed up</th>
+          <th class="px-4 py-3 font-medium">Last sign-in</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-neutral-200 dark:divide-neutral-800">
+        <% @users.each do |user| %>
+          <tr>
+            <td class="px-4 py-3">
+              <div class="flex items-center gap-3">
+                <span class="<%= avatar_classes(user) %> flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold"><%= user.initials %></span>
+                <span>
+                  <span class="font-medium"><%= user.name %></span>
+                  <% if user.admin? %><%= admin_pill "Admin", :blue %><% end %>
+                  <span class="block text-xs text-neutral-500 dark:text-neutral-400"><%= user.email_address %></span>
+                </span>
+              </div>
+            </td>
+            <td class="px-4 py-3 tabular-nums">
+              <% if user.comments_total.positive? %>
+                <%= link_to number_with_delimiter(user.comments_total), admin_comments_path(user_id: user.id), class: "font-medium text-accent-600 hover:underline underline-offset-4 dark:text-accent-400" %>
+              <% else %>
+                <span class="text-neutral-400">0</span>
+              <% end %>
+            </td>
+            <td class="px-4 py-3 whitespace-nowrap text-neutral-500 dark:text-neutral-400"><%= admin_time user.created_at %></td>
+            <td class="px-4 py-3 whitespace-nowrap text-neutral-500 dark:text-neutral-400"><%= admin_time user.last_signed_in_at %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% if @users.empty? %><p class="px-4 py-8 text-center text-sm text-neutral-500">No users found.</p><% end %>
+  </div>
+
+  <%= render "admin/pagination" %>
+</div>

@@ -76,6 +76,9 @@
         <nav class="hidden items-center gap-6 text-sm text-neutral-600 sm:flex dark:text-neutral-400">
           <%= link_to "Decisions", root_path, class: "transition-colors duration-150 hover:text-neutral-950 dark:hover:text-white" %>
           <%= link_to "Supreme Court", "https://www.supremecourt.gov/opinions/slipopinions.aspx", target: "_blank", rel: "noopener", class: "transition-colors duration-150 hover:text-neutral-950 dark:hover:text-white" %>
+          <% if current_user&.admin? %>
+            <%= link_to "Admin", admin_root_path, class: "transition-colors duration-150 hover:text-neutral-950 dark:hover:text-white" %>
+          <% end %>
         </nav>
 
         <div class="ml-auto flex items-center gap-2">
