@@ -17,9 +17,9 @@
 <% end %>
 <%= turbo_stream_from :decisions %>
 
-<section class="border-b border-neutral-200 dark:border-neutral-800">
+<section class="border-b border-neutral-200 bg-gradient-to-b from-accent-50/70 to-white dark:border-neutral-800 dark:from-accent-500/10 dark:to-neutral-950">
   <div class="mx-auto max-w-[90rem] px-4 py-16 lg:px-8 lg:py-20">
-    <p class="text-xs font-semibold tracking-[0.2em] text-neutral-500 uppercase dark:text-neutral-400">Supreme Court of the United States</p>
+    <p class="text-xs font-semibold tracking-[0.2em] text-accent-600 uppercase dark:text-accent-400">Supreme Court of the United States</p>
     <h1 class="mt-4 max-w-3xl text-4xl leading-[1.1] font-bold tracking-tight sm:text-5xl">
       <% if home || @query.present? %>
         Read the Court’s opinions, then talk about them one sentence at a time.
@@ -38,7 +38,7 @@
         <svg class="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-neutral-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="m21 21-4.35-4.35M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"/></svg>
         <%= form.search_field :q, value: @query, id: "q", placeholder: "Search by case name, docket number, or holding…", autocomplete: "off",
               data: { action: "input->search#submit" },
-              class: "w-full border border-neutral-950 bg-white py-3.5 pr-4 pl-12 text-base text-neutral-950 placeholder:text-neutral-400 focus:border-accent-600 focus:ring-1 focus:ring-accent-600 focus:outline-none dark:border-neutral-700 dark:bg-neutral-950 dark:text-white dark:focus:border-accent-400 dark:focus:ring-accent-400" %>
+              class: "w-full rounded-xl border border-neutral-300 bg-white py-3.5 pr-4 pl-12 text-base text-neutral-950 shadow-sm transition-shadow duration-150 placeholder:text-neutral-400 focus:border-accent-500 focus:ring-4 focus:ring-accent-500/15 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:focus:border-accent-400 dark:focus:ring-accent-400/20" %>
       </div>
     <% end %>
   </div>
@@ -51,23 +51,23 @@
         <h2 class="text-lg font-semibold">
           <%= pluralize(@decisions.size, "result") %> for “<%= @query %>”
         </h2>
-        <%= link_to "Clear search", root_path, class: "text-sm text-neutral-500 underline underline-offset-4 hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white" %>
+        <%= link_to "Clear search", root_path, class: "text-sm text-accent-600 underline-offset-4 hover:underline dark:text-accent-400" %>
       <% else %>
-        <nav class="flex flex-wrap" aria-label="Terms">
+        <nav class="-mx-1 flex flex-wrap gap-1" aria-label="Terms">
           <% (@terms.presence || [ @term ]).each do |term| %>
             <%= link_to "OT #{term}", term_listing_path(term),
                   title: "October Term #{term} opinions", aria: { current: ("page" if term == @term) },
                   data: { turbo_frame: "_top" },
-                  class: class_names("-ml-px border border-neutral-950 px-3.5 py-1.5 text-sm font-medium first:ml-0 dark:border-neutral-700",
+                  class: class_names("rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors duration-150",
                     "bg-neutral-950 text-white dark:bg-white dark:text-neutral-950": term == @term,
-                    "text-neutral-950 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-900": term != @term) %>
+                    "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-950 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white": term != @term) %>
           <% end %>
         </nav>
       <% end %>
 
       <% if current_user&.admin? %>
         <%= button_to admin_term_sync_path(@term), data: { turbo_frame: "_top" },
-              class: "ml-auto inline-flex cursor-pointer items-center gap-2 border border-neutral-950 px-3 py-1.5 text-sm font-medium hover:bg-neutral-950 hover:text-white dark:border-neutral-700 dark:hover:bg-white dark:hover:text-neutral-950" do %>
+              class: "ml-auto inline-flex cursor-pointer items-center gap-2 rounded-md border border-neutral-300 px-3 py-1.5 text-sm font-medium transition-colors duration-150 hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900" do %>
           <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 4h4v4M20 4l-6 6M8 20H4v-4M4 20l6-6"/></svg>
           Sync OT <%= @term %> from supremecourt.gov
         <% end %>
@@ -83,20 +83,20 @@
     <% end %>
 
     <% if @decisions.empty? %>
-      <div class="mt-10 border border-dashed border-neutral-300 px-6 py-16 text-center dark:border-neutral-700">
+      <div class="mt-10 rounded-2xl border border-dashed border-neutral-300 px-6 py-16 text-center dark:border-neutral-700">
         <p class="text-lg font-semibold">No decisions here yet.</p>
         <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
           <% if @query.present? %>
             Try a different case name or docket number.
           <% else %>
-            Run <code class="bg-neutral-100 px-1.5 py-0.5 text-xs dark:bg-neutral-900">bin/rails db:seed</code> or sign in as an admin and sync a term to import opinions.
+            Run <code class="rounded bg-neutral-100 px-1.5 py-0.5 text-xs dark:bg-neutral-900">bin/rails db:seed</code> or sign in as an admin and sync a term to import opinions.
           <% end %>
         </p>
       </div>
     <% else %>
       <% @decisions.group_by { |decision| decision.decided_on&.beginning_of_month }.each do |month, decisions| %>
         <section class="mt-10">
-          <h2 class="sticky top-14 z-10 border-b border-neutral-950 bg-white py-2 text-xs font-semibold tracking-[0.2em] uppercase dark:border-neutral-700 dark:bg-neutral-950">
+          <h2 class="sticky top-14 z-10 border-b border-neutral-200 bg-white/90 py-2 text-xs font-semibold tracking-[0.2em] text-neutral-500 uppercase backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-950/90 dark:text-neutral-400">
             <%= month ? month.strftime("%B %Y") : "Undated" %>
           </h2>
           <ul class="divide-y divide-neutral-200 dark:divide-neutral-800">

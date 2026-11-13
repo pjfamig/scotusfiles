@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full scroll-pt-24 scroll-smooth">
+<html lang="en" class="h-full scroll-pt-24 scroll-smooth" data-highlight="<%= current_user&.highlight_color || "yellow" %>">
   <head>
     <meta charset="utf-8">
     <title><%= page_title %></title>
@@ -66,7 +66,7 @@
   </head>
 
   <body class="min-h-full bg-white font-sans text-neutral-950 dark:bg-neutral-950 dark:text-neutral-100">
-    <header class="sticky top-0 z-30 border-b border-neutral-950 bg-white dark:border-neutral-800 dark:bg-neutral-950">
+    <header class="sticky top-0 z-30 border-b border-neutral-200 bg-white/85 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-950/85">
       <div class="mx-auto flex h-14 max-w-[90rem] items-center gap-8 px-4 lg:px-8">
         <%= link_to root_path, class: "flex items-center gap-2.5" do %>
           <%= render "layouts/logo" %>
@@ -74,25 +74,26 @@
         <% end %>
 
         <nav class="hidden items-center gap-6 text-sm text-neutral-600 sm:flex dark:text-neutral-400">
-          <%= link_to "Decisions", root_path, class: "hover:text-neutral-950 dark:hover:text-white" %>
-          <%= link_to "Supreme Court", "https://www.supremecourt.gov/opinions/slipopinions.aspx", target: "_blank", rel: "noopener", class: "hover:text-neutral-950 dark:hover:text-white" %>
+          <%= link_to "Decisions", root_path, class: "transition-colors duration-150 hover:text-neutral-950 dark:hover:text-white" %>
+          <%= link_to "Supreme Court", "https://www.supremecourt.gov/opinions/slipopinions.aspx", target: "_blank", rel: "noopener", class: "transition-colors duration-150 hover:text-neutral-950 dark:hover:text-white" %>
         </nav>
 
         <div class="ml-auto flex items-center gap-2">
-          <button type="button" data-controller="theme" data-action="theme#toggle" class="cursor-pointer p-2 text-neutral-500 hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white" aria-label="Toggle dark mode">
+          <button type="button" data-controller="theme" data-action="theme#toggle" class="cursor-pointer rounded-md p-2 text-neutral-500 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-950 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white" aria-label="Toggle dark mode">
             <svg class="size-5 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9-5.998Z"/></svg>
             <svg class="hidden size-5 dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg>
           </button>
 
           <% if current_user %>
+            <%= render "highlight_colors/picker" %>
             <span class="hidden items-center gap-2 text-sm text-neutral-600 md:flex dark:text-neutral-400">
-              <span class="flex size-7 items-center justify-center rounded-full bg-neutral-950 text-[0.65rem] font-semibold text-white dark:bg-white dark:text-neutral-950"><%= current_user.initials %></span>
+              <span class="<%= avatar_classes(current_user) %> flex size-7 items-center justify-center rounded-full text-[0.65rem] font-semibold"><%= current_user.initials %></span>
               <%= current_user.name %>
             </span>
-            <%= button_to "Sign out", session_path, method: :delete, class: "cursor-pointer px-2 py-1.5 text-sm text-neutral-600 hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white" %>
+            <%= button_to "Sign out", session_path, method: :delete, class: "cursor-pointer rounded-md px-2.5 py-1.5 text-sm text-neutral-600 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-950 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white" %>
           <% else %>
-            <%= link_to "Sign in", new_session_path, class: "px-2 py-1.5 text-sm text-neutral-600 hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white" %>
-            <%= link_to "Join the discussion", new_registration_path, class: "bg-accent-600 px-3.5 py-1.5 text-sm font-medium text-white hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-400" %>
+            <%= link_to "Sign in", new_session_path, class: "rounded-md px-2.5 py-1.5 text-sm text-neutral-600 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-950 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white" %>
+            <%= link_to "Join the discussion", new_registration_path, class: "rounded-md bg-accent-600 px-3.5 py-1.5 text-sm font-medium text-white shadow-sm transition-colors duration-150 hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-400" %>
           <% end %>
         </div>
       </div>
@@ -108,13 +109,13 @@
       <% if (terms = cached_terms).any? %>
         <nav aria-label="Browse opinions by term" class="mx-auto mb-6 flex max-w-3xl flex-wrap justify-center gap-x-4 gap-y-2 px-4">
           <% terms.each do |term| %>
-            <%= link_to "October Term #{term}", term_listing_path(term), class: "hover:text-neutral-950 dark:hover:text-white" %>
+            <%= link_to "October Term #{term}", term_listing_path(term), class: "transition-colors duration-150 hover:text-neutral-950 dark:hover:text-white" %>
           <% end %>
-          <%= link_to "Opinion feed", feed_path, class: "hover:text-neutral-950 dark:hover:text-white" %>
+          <%= link_to "Opinion feed", feed_path, class: "transition-colors duration-150 hover:text-neutral-950 dark:hover:text-white" %>
         </nav>
       <% end %>
       Opinions are published by the
-      <%= link_to "Supreme Court of the United States", "https://www.supremecourt.gov", class: "underline underline-offset-4 hover:text-neutral-950 dark:hover:text-white" %>
+      <%= link_to "Supreme Court of the United States", "https://www.supremecourt.gov", class: "underline underline-offset-4 transition-colors duration-150 hover:text-neutral-950 dark:hover:text-white" %>
       and are in the public domain. SCOTUSfiles is free and open source.
     </footer>
 

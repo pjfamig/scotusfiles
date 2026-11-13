@@ -1,14 +1,14 @@
 <div class="p-5">
   <div class="flex items-center justify-between">
-    <h2 class="text-sm font-bold tracking-[0.1em] uppercase">Discussion</h2>
-    <span class="text-xs font-semibold text-accent-600 dark:text-accent-400"><%= pluralize(decision.comments_count, "comment") %></span>
+    <h2 class="font-semibold">Discussion</h2>
+    <span class="rounded-full bg-accent-50 px-2 py-0.5 text-xs font-semibold text-accent-700 dark:bg-accent-500/15 dark:text-accent-300"><%= pluralize(decision.comments_count, "comment") %></span>
   </div>
   <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">Select any sentence in the opinion to read its comments or add your own.</p>
 
   <ol id="decision_discussion" class="mt-5 space-y-4 empty:hidden"><%= render partial: "comments/discussion_item", collection: comments, as: :comment %></ol>
 
   <% if comments.empty? %>
-    <div class="mt-5 border border-dashed border-neutral-300 px-4 py-8 text-center text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400">
+    <div class="mt-5 rounded-xl border border-dashed border-neutral-300 px-4 py-8 text-center text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400">
       No one has commented yet. Be the first to mark up this opinion.
     </div>
   <% end %>

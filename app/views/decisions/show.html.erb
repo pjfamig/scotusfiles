@@ -21,9 +21,9 @@
      data-reader-discussion-url-value="<%= decision_comments_path(@decision) %>"
      data-action="keydown.esc@window->reader#close">
 
-  <header class="border-b border-neutral-950 pt-10 pb-8 dark:border-neutral-700">
+  <header class="border-b border-neutral-200 pt-10 pb-8 dark:border-neutral-800">
     <nav aria-label="Breadcrumb">
-      <%= link_to term_listing_path(@decision.term), class: "inline-flex items-center gap-1 text-sm font-medium text-neutral-500 hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white" do %>
+      <%= link_to term_listing_path(@decision.term), class: "inline-flex items-center gap-1 text-sm font-medium text-neutral-500 transition-colors duration-150 hover:text-accent-600 dark:text-neutral-400 dark:hover:text-accent-400" do %>
         <svg class="size-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M12.8 4.2a.75.75 0 0 1 0 1.06L8.06 10l4.74 4.74a.75.75 0 1 1-1.06 1.06l-5.27-5.27a.75.75 0 0 1 0-1.06l5.27-5.27a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/></svg>
         <%= @decision.term_label %> opinions
       <% end %>
@@ -43,19 +43,19 @@
     </dl>
 
     <% if @decision.holding %>
-      <div class="mt-7 max-w-4xl border-l-4 border-neutral-950 py-1 pl-5 dark:border-white">
-        <p class="text-xs font-semibold tracking-[0.2em] text-neutral-500 uppercase dark:text-neutral-400">Holding</p>
+      <div class="mt-7 max-w-4xl rounded-xl border-l-4 border-accent-500 bg-accent-50/60 px-5 py-4 dark:border-accent-400 dark:bg-accent-500/10">
+        <p class="text-xs font-semibold tracking-[0.2em] text-accent-700 uppercase dark:text-accent-300">Holding</p>
         <p class="mt-1.5 text-lg leading-relaxed"><%= @decision.holding %></p>
       </div>
     <% end %>
 
     <div class="mt-6 flex flex-wrap items-center gap-3">
-      <%= link_to @decision.pdf_url, target: "_blank", rel: "noopener", type: "application/pdf", class: "inline-flex items-center gap-2 border border-neutral-950 px-3 py-1.5 text-sm font-medium hover:bg-neutral-950 hover:text-white dark:border-neutral-700 dark:hover:bg-white dark:hover:text-neutral-950" do %>
-        <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z M14 3v5h5"/></svg>
+      <%= link_to @decision.pdf_url, target: "_blank", rel: "noopener", type: "application/pdf", class: "inline-flex items-center gap-2 rounded-md border border-neutral-300 bg-white px-3 py-1.5 text-sm font-medium shadow-sm transition-colors duration-150 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800" do %>
+        <svg class="size-4 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z M14 3v5h5"/></svg>
         Official PDF
       <% end %>
       <% if current_user&.admin? %>
-        <%= button_to "Re-import", decision_import_path(@decision), class: "cursor-pointer px-3 py-1.5 text-sm font-medium text-neutral-500 underline-offset-4 hover:text-neutral-950 hover:underline dark:text-neutral-400 dark:hover:text-white" %>
+        <%= button_to "Re-import", decision_import_path(@decision), class: "cursor-pointer rounded-md px-3 py-1.5 text-sm font-medium text-neutral-500 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-950 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white" %>
       <% end %>
     </div>
   </header>
@@ -68,15 +68,15 @@
           <ol class="mt-4 space-y-1 border-l border-neutral-200 dark:border-neutral-800">
             <% @opinions.each do |opinion| %>
               <li>
-                <a href="#<%= opinion.anchor %>" class="-ml-px block border-l-2 border-transparent py-1.5 pl-4 text-sm leading-snug text-neutral-600 hover:border-neutral-950 hover:text-neutral-950 dark:text-neutral-400 dark:hover:border-white dark:hover:text-white">
+                <a href="#<%= opinion.anchor %>" class="-ml-px block border-l-2 border-transparent py-1.5 pl-4 text-sm leading-snug text-neutral-600 transition-colors duration-150 hover:border-accent-500 hover:text-neutral-950 dark:text-neutral-400 dark:hover:border-accent-400 dark:hover:text-white">
                   <span class="block font-medium"><%= opinion.title %></span>
                   <% if opinion.byline %><span class="block text-xs text-neutral-400"><%= opinion.byline %></span><% end %>
                 </a>
               </li>
             <% end %>
           </ol>
-          <p class="mt-8 border-t border-neutral-200 pt-4 text-xs leading-relaxed text-neutral-500 dark:border-neutral-800 dark:text-neutral-400">
-            Tip: click any sentence to open its discussion. Press <kbd class="border border-neutral-300 px-1 font-sans dark:border-neutral-700">Esc</kbd> to close.
+          <p class="mt-8 rounded-lg bg-neutral-50 p-3 text-xs leading-relaxed text-neutral-500 dark:bg-neutral-900 dark:text-neutral-400">
+            Tip: click any sentence to open its discussion. Press <kbd class="rounded border border-neutral-300 bg-white px-1 font-sans dark:border-neutral-700 dark:bg-neutral-800">Esc</kbd> to close.
           </p>
         </div>
       </nav>
@@ -86,7 +86,7 @@
           <% cache opinion do %>
           <section id="<%= opinion.anchor %>" data-kind="<%= opinion.kind %>">
             <div class="mb-8 flex items-center gap-3 font-sans">
-              <span class="<%= opinion_kind_classes(opinion) %> border px-2 py-0.5 text-[0.7rem] font-semibold tracking-[0.1em] uppercase"><%= opinion_kind_name(opinion) %></span>
+              <span class="<%= opinion_kind_classes(opinion) %> rounded-full px-2.5 py-0.5 text-xs font-semibold"><%= opinion_kind_name(opinion) %></span>
               <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400"><%= [ opinion.title, opinion.byline ].compact.join(" · ") %></h2>
             </div>
             <%= sanitize_opinion(opinion.body_html) %>
@@ -98,9 +98,9 @@
       <%= render "decisions/annotation_counts", decision: @decision %>
 
       <aside data-reader-target="panel"
-             class="fixed inset-x-0 bottom-0 z-40 max-h-[70vh] translate-y-full overflow-y-auto border-t border-neutral-950 bg-white transition-transform duration-300 data-[open]:translate-y-0
-                    lg:sticky lg:top-24 lg:z-auto lg:max-h-[calc(100vh-7rem)] lg:translate-y-0 lg:self-start lg:border
-                    dark:border-neutral-700 dark:bg-neutral-950">
+             class="fixed inset-x-0 bottom-0 z-40 max-h-[70vh] translate-y-full overflow-y-auto rounded-t-2xl border-t border-neutral-200 bg-white shadow-2xl transition-transform duration-300 ease-out data-[open]:translate-y-0
+                    lg:sticky lg:top-24 lg:z-auto lg:max-h-[calc(100vh-7rem)] lg:translate-y-0 lg:self-start lg:rounded-2xl lg:border lg:shadow-sm
+                    dark:border-neutral-800 dark:bg-neutral-900">
         <%= turbo_frame_tag "passage_panel", data: { reader_target: "frame" } do %>
           <%= render "comments/discussion", decision: @decision, comments: @recent_comments %>
         <% end %>
@@ -111,9 +111,9 @@
       <% if @decision.failed? %>
         <p class="text-2xl font-semibold">We couldn’t format this opinion.</p>
         <p class="mt-3 text-neutral-500 dark:text-neutral-400"><%= @decision.import_error %></p>
-        <p class="mt-6"><%= link_to "Read the official PDF instead", @decision.pdf_url, class: "font-medium underline underline-offset-4" %></p>
+        <p class="mt-6"><%= link_to "Read the official PDF instead", @decision.pdf_url, class: "font-medium text-accent-600 underline underline-offset-4 dark:text-accent-400" %></p>
       <% else %>
-        <div class="mx-auto size-10 animate-spin rounded-full border-2 border-neutral-200 border-t-neutral-950 dark:border-neutral-800 dark:border-t-white"></div>
+        <div class="mx-auto size-10 animate-spin rounded-full border-2 border-neutral-200 border-t-accent-500 dark:border-neutral-800 dark:border-t-accent-400"></div>
         <p class="mt-6 text-2xl font-semibold">Formatting this opinion…</p>
         <p class="mt-2 text-neutral-500 dark:text-neutral-400">We’re converting the Court’s PDF into readable text. This page will update on its own.</p>
       <% end %>
@@ -121,15 +121,15 @@
   <% end %>
 
   <% if @related_decisions.any? %>
-    <section class="border-t border-neutral-950 pt-10 dark:border-neutral-700" aria-labelledby="related-decisions">
+    <section class="border-t border-neutral-200 pt-10 dark:border-neutral-800" aria-labelledby="related-decisions">
       <div class="flex flex-wrap items-baseline justify-between gap-3">
         <h2 id="related-decisions" class="text-2xl font-bold tracking-tight">More from <%= @decision.term_label %></h2>
-        <%= link_to "All #{@decision.term_label} opinions", term_listing_path(@decision.term), class: "text-sm font-medium text-neutral-500 underline underline-offset-4 hover:text-neutral-950 dark:text-neutral-400 dark:hover:text-white" %>
+        <%= link_to "All #{@decision.term_label} opinions", term_listing_path(@decision.term), class: "text-sm font-medium text-accent-600 underline-offset-4 hover:underline dark:text-accent-400" %>
       </div>
       <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <% @related_decisions.each do |decision| %>
-          <li class="border border-neutral-200 p-5 hover:border-neutral-950 dark:border-neutral-800 dark:hover:border-neutral-500">
-            <h3 class="text-lg leading-snug font-semibold"><%= link_to decision.title, decision_path(decision), class: "underline-offset-4 hover:underline" %></h3>
+          <li class="relative rounded-xl border border-neutral-200 bg-white p-5 transition duration-200 hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700">
+            <h3 class="text-lg leading-snug font-semibold"><%= link_to decision.title, decision_path(decision), class: "after:absolute after:inset-0" %></h3>
             <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
               No. <%= decision.docket_number %><% if decision.decided_on %> · <time datetime="<%= decision.decided_on.iso8601 %>"><%= decision.decided_on.strftime("%b %-d, %Y") %></time><% end %>
             </p>

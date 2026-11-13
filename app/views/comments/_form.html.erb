@@ -4,12 +4,12 @@
   <label for="comment_body" class="sr-only">Your comment</label>
   <%= form.textarea :body, rows: 3, required: true, maxlength: 5000, placeholder: "What do you make of this passage?",
         data: { comment_form_target: "body" },
-        class: "block w-full resize-y border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-950 placeholder:text-neutral-400 focus:border-accent-600 focus:ring-1 focus:ring-accent-600 focus:outline-none dark:border-neutral-700 dark:bg-neutral-950 dark:text-white dark:focus:border-accent-400 dark:focus:ring-accent-400" %>
+        class: "block w-full resize-y rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-950 transition-shadow duration-150 placeholder:text-neutral-400 focus:border-accent-500 focus:ring-4 focus:ring-accent-500/15 focus:outline-none dark:border-neutral-700 dark:bg-neutral-950 dark:text-white dark:focus:border-accent-400 dark:focus:ring-accent-400/20" %>
   <% if comment.errors.any? %>
     <p class="mt-2 text-xs text-red-600"><%= comment.errors.full_messages.to_sentence %></p>
   <% end %>
   <div class="mt-2 flex items-center justify-between">
     <span class="text-xs text-neutral-400">⌘/Ctrl + Enter to post</span>
-    <%= form.submit "Post comment", class: "cursor-pointer bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700 disabled:opacity-50 dark:bg-accent-500 dark:hover:bg-accent-400" %>
+    <%= form.submit "Post comment", class: "cursor-pointer rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition-colors duration-150 hover:bg-accent-700 disabled:opacity-50 dark:bg-accent-500 dark:hover:bg-accent-400" %>
   </div>
 <% end %>

@@ -1,7 +1,7 @@
 <li id="<%= dom_id(comment, :discussion) %>">
   <% if comment.passage %>
     <button type="button" data-action="reader#jump" data-reader-key-param="<%= comment.passage.key %>"
-            class="block w-full cursor-pointer border-l-2 border-accent-500 px-3 py-1.5 text-left text-sm leading-snug text-neutral-600 hover:bg-accent-50 dark:border-accent-400 dark:text-neutral-300 dark:hover:bg-accent-400/10">
+            class="block w-full cursor-pointer rounded-lg border-l-[3px] border-[var(--hl-ink)] bg-neutral-50 px-3 py-2 text-left text-sm leading-snug text-neutral-600 transition-colors duration-150 hover:bg-[color-mix(in_oklab,var(--hl)_30%,transparent)] dark:bg-neutral-800/60 dark:text-neutral-300">
       “<%= truncate(comment.passage.text, length: 140, separator: " ") %>”
     </button>
   <% end %>

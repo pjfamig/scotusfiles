@@ -5,7 +5,6 @@
 @theme {
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-  /* The only color in the UI; reserve it for commenting and interactive states. */
   --color-accent-50: #eef3ff;
   --color-accent-100: #dce6ff;
   --color-accent-200: #bccfff;
@@ -13,6 +12,45 @@
   --color-accent-500: #3f6fff;
   --color-accent-600: #2453e6;
   --color-accent-700: #1b40b8;
+}
+
+/* Sentence highlight colors ---------------------------------------------
+   Set on <html> from the reader's preference, and on picker swatches.
+   --hl fills a selected sentence; --hl-ink marks commented sentences. */
+
+:root,
+[data-highlight="yellow"] {
+  --hl: #fde047;
+  --hl-ink: #a16207;
+}
+
+[data-highlight="green"] {
+  --hl: #86efac;
+  --hl-ink: #15803d;
+}
+
+[data-highlight="blue"] {
+  --hl: #93c5fd;
+  --hl-ink: #1d4ed8;
+}
+
+[data-highlight="pink"] {
+  --hl: #f9a8d4;
+  --hl-ink: #be185d;
+}
+
+[data-highlight="orange"] {
+  --hl: #fdba74;
+  --hl-ink: #c2410c;
+}
+
+[data-highlight="purple"] {
+  --hl: #c4b5fd;
+  --hl-ink: #6d28d9;
+}
+
+html.dark {
+  --hl-ink: var(--hl);
 }
 
 @layer base {
@@ -26,7 +64,7 @@
   }
 
   ::selection {
-    @apply bg-accent-100 text-neutral-950;
+    background: color-mix(in oklab, var(--hl) 70%, transparent);
   }
 }
 
@@ -39,7 +77,7 @@
     hyphens: auto;
 
     & section + section {
-      @apply mt-20 border-t border-neutral-950 pt-14 dark:border-neutral-700;
+      @apply mt-20 border-t border-neutral-200 pt-14 dark:border-neutral-800;
     }
 
     & p {
@@ -47,7 +85,7 @@
     }
 
     & .notice {
-      @apply mb-8 border border-neutral-200 px-4 py-3 text-xs leading-relaxed text-neutral-500 dark:border-neutral-800 dark:text-neutral-400;
+      @apply mb-8 rounded-lg bg-neutral-50 px-4 py-3 text-xs leading-relaxed text-neutral-500 dark:bg-neutral-900 dark:text-neutral-400;
     }
 
     & .court-banner {
@@ -67,7 +105,7 @@
     }
 
     & blockquote {
-      @apply my-6 border-l-2 border-neutral-950 pl-5 text-[0.95em] text-neutral-700 dark:border-neutral-500 dark:text-neutral-300;
+      @apply my-6 border-l-2 border-accent-200 pl-5 text-[0.95em] text-neutral-700 dark:border-accent-500/50 dark:text-neutral-300;
     }
 
     & .flush-right {
@@ -75,7 +113,7 @@
     }
 
     & .footnote-ref a {
-      @apply -my-2 ml-0.5 inline-block px-1 py-1 text-[0.7em] leading-none font-semibold text-neutral-950 no-underline hover:bg-neutral-950 hover:text-white dark:text-white dark:hover:bg-white dark:hover:text-neutral-950;
+      @apply -my-2 ml-0.5 inline-block rounded px-1 py-1 text-[0.7em] leading-none font-semibold text-accent-600 no-underline transition-colors duration-150 hover:bg-accent-50 dark:text-accent-400 dark:hover:bg-accent-400/15;
     }
 
     & .footnotes {
@@ -98,36 +136,59 @@
       }
 
       & li:target {
-        @apply bg-neutral-100 dark:bg-neutral-900;
+        @apply rounded bg-accent-50 dark:bg-accent-400/10;
       }
     }
 
     & .footnote-back {
-      @apply ml-1 text-xs text-neutral-950 underline underline-offset-2 dark:text-white;
+      @apply ml-1 text-xs text-accent-600 no-underline dark:text-accent-400;
     }
 
     & .sentence {
-      @apply cursor-pointer transition-colors duration-100;
+      @apply cursor-pointer rounded-[3px] transition-[background-color,color,text-decoration-color] duration-200 ease-out;
       box-decoration-break: clone;
       -webkit-box-decoration-break: clone;
 
       &:hover {
-        @apply bg-accent-50 dark:bg-accent-400/15;
+        background: color-mix(in oklab, var(--hl) 30%, transparent);
       }
 
       &.has-comments {
-        @apply underline decoration-accent-500 decoration-2 underline-offset-[5px] dark:decoration-accent-400;
+        @apply underline decoration-2 underline-offset-[5px];
+        text-decoration-color: var(--hl-ink);
+        background: color-mix(in oklab, var(--hl) 18%, transparent);
+      }
+
+      &.has-comments:hover {
+        background: color-mix(in oklab, var(--hl) 35%, transparent);
       }
 
       &.has-comments::after {
         content: attr(data-count);
-        @apply relative -top-[0.55em] ml-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-accent-600 px-1 text-[0.6rem] leading-none font-semibold text-white no-underline dark:bg-accent-400 dark:text-neutral-950;
+        @apply relative -top-[0.55em] ml-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[0.6rem] leading-none font-semibold text-white no-underline dark:text-neutral-950;
+        background: var(--hl-ink);
       }
 
-      &.is-selected {
-        @apply bg-accent-100 dark:bg-accent-400/30;
+      &.is-selected,
+      &.is-selected:hover {
+        @apply text-neutral-950;
+        background: var(--hl);
+        box-shadow: 0 0 0 2px var(--hl);
       }
     }
+  }
+
+  .dark .opinion-text .sentence:hover,
+  .dark .opinion-text .sentence.has-comments:hover {
+    background: color-mix(in oklab, var(--hl) 22%, transparent);
+  }
+
+  .dark .opinion-text .sentence.has-comments {
+    background: color-mix(in oklab, var(--hl) 12%, transparent);
+  }
+
+  .dark .opinion-text .sentence.is-selected {
+    background: var(--hl);
   }
 }
 

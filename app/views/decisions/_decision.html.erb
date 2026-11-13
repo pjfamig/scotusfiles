@@ -1,4 +1,4 @@
-<li id="<%= dom_id(decision) %>" class="group relative grid gap-x-8 gap-y-2 py-6 sm:grid-cols-[7rem_minmax(0,1fr)_auto]">
+<li id="<%= dom_id(decision) %>" class="group relative -mx-3 grid gap-x-8 rounded-xl px-3 transition-colors duration-150 hover:bg-neutral-50 dark:hover:bg-neutral-900/60 gap-y-2 py-6 sm:grid-cols-[7rem_minmax(0,1fr)_auto]">
   <div class="text-sm text-neutral-500 tabular-nums dark:text-neutral-400">
     <% if decision.decided_on %>
       <time datetime="<%= decision.decided_on.iso8601 %>"><%= decision.decided_on.strftime("%b %-d, %Y") %></time>
@@ -7,7 +7,7 @@
 
   <div class="min-w-0">
     <h3 class="text-lg leading-snug font-semibold tracking-tight">
-      <%= link_to decision_path(decision), data: { turbo_frame: "_top" }, class: "underline-offset-4 after:absolute after:inset-0 group-hover:underline" do %>
+      <%= link_to decision_path(decision), data: { turbo_frame: "_top" }, class: "transition-colors duration-150 after:absolute after:inset-0 group-hover:text-accent-700 dark:group-hover:text-accent-400" do %>
         <%= decision.title %>
       <% end %>
     </h3>
@@ -28,7 +28,7 @@
   <div class="flex items-start gap-2 sm:justify-end">
     <%= render "decisions/status_badge", decision: decision %>
     <% if decision.comments_count.positive? %>
-      <span class="inline-flex items-center gap-1.5 bg-accent-50 px-2 py-1 text-xs font-semibold text-accent-700 dark:bg-accent-400/15 dark:text-accent-400">
+      <span class="inline-flex items-center gap-1.5 rounded-full bg-accent-50 px-2.5 py-1 text-xs font-semibold text-accent-700 dark:bg-accent-400/15 dark:text-accent-400">
         <svg class="size-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M4.8 3h14.4A1.8 1.8 0 0 1 21 4.8v10.4a1.8 1.8 0 0 1-1.8 1.8H9l-5 4v-4h.8A1.8 1.8 0 0 1 3 15.2V4.8A1.8 1.8 0 0 1 4.8 3Z"/></svg>
         <%= decision.comments_count %>
       </span>

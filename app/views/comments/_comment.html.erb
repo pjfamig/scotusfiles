@@ -1,14 +1,14 @@
 <li id="<%= dom_id(comment) %>" class="group flex gap-3"
     data-controller="ownership" data-ownership-author-id-value="<%= comment.user_id %>">
-  <span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-neutral-950 text-[0.65rem] font-semibold text-white dark:bg-white dark:text-neutral-950"><%= comment.user.initials %></span>
+  <span class="<%= avatar_classes(comment.user) %> flex size-7 shrink-0 items-center justify-center rounded-full text-[0.65rem] font-semibold"><%= comment.user.initials %></span>
   <div class="min-w-0 flex-1">
-    <p class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+    <div class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
       <span class="font-semibold text-neutral-950 dark:text-white"><%= comment.user.name %></span>
       <%= time_tag comment.created_at, "#{time_ago_in_words(comment.created_at)} ago" %>
       <%= button_to "Delete", decision_comment_path(comment.decision, comment), method: :delete,
             form: { hidden: true, data: { turbo_confirm: "Delete this comment?", ownership_target: "control" }, class: "ml-auto" },
-            class: "cursor-pointer text-xs text-neutral-400 opacity-0 group-hover:opacity-100 hover:text-red-600 focus:opacity-100" %>
-    </p>
+            class: "cursor-pointer text-xs text-neutral-400 opacity-0 transition-opacity duration-150 group-hover:opacity-100 hover:text-red-600 focus:opacity-100" %>
+    </div>
     <p class="mt-1 text-sm leading-relaxed whitespace-pre-line text-neutral-900 dark:text-neutral-200"><%= comment.body %></p>
   </div>
 </li>

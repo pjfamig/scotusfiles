@@ -1,8 +1,8 @@
 <div id="flash" class="pointer-events-none fixed inset-x-0 top-20 z-40 flex flex-col items-center gap-2 px-4">
   <% flash.each do |type, message| %>
     <div data-controller="flash" data-action="animationend->flash#dismiss"
-         class="pointer-events-auto border px-4 py-2 text-sm font-medium animate-[fade-out_0.4s_ease-in_5s_forwards]
-                <%= type.to_s == "alert" ? "border-red-600 bg-white text-red-700 dark:bg-neutral-950 dark:text-red-400" : "border-neutral-950 bg-neutral-950 text-white dark:border-white dark:bg-white dark:text-neutral-950" %>">
+         class="pointer-events-auto rounded-full border px-4 py-2 text-sm font-medium shadow-lg animate-[fade-out_0.4s_ease-in_5s_forwards]
+                <%= type.to_s == "alert" ? "border-red-200 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-200" : "border-neutral-950 bg-neutral-950 text-white dark:border-white dark:bg-white dark:text-neutral-950" %>">
       <%= message %>
     </div>
   <% end %>
