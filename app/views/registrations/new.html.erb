@@ -2,7 +2,7 @@
 <%= auth_card title: "Join SCOTUSfiles", subtitle: "Comment on any sentence of any Supreme Court opinion." do %>
   <%= form_with model: @user, url: registration_path, class: "space-y-5" do |form| %>
     <% if @user.errors.any? %>
-      <div class="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-200">
+      <div class="border border-red-600 px-4 py-3 text-sm text-red-700 dark:text-red-400">
         <%= @user.errors.full_messages.to_sentence %>
       </div>
     <% end %>
@@ -24,7 +24,7 @@
     </div>
     <%= form.submit "Create account", class: primary_button_classes %>
   <% end %>
-  <p class="mt-6 text-center text-sm text-stone-500 dark:text-stone-400">
-    Already have an account? <%= link_to "Sign in", new_session_path, class: "font-semibold text-navy-600 hover:underline dark:text-gold-300" %>
+  <p class="mt-6 text-center text-sm text-neutral-500 dark:text-neutral-400">
+    Already have an account? <%= link_to "Sign in", new_session_path, class: "font-semibold text-neutral-950 underline underline-offset-4 dark:text-white" %>
   </p>
 <% end %>
