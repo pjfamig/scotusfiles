@@ -1,11 +1,16 @@
 module Decision::Importable
   extend ActiveSupport::Concern
 
+  included do
+    has_many :imports, class_name: "DecisionImport", dependent: :delete_all
+  end
+
   class_methods do
     # Creates or updates decisions from the Court's listing for a term and
     # queues imports for anything new or revised.
     def sync_term(term, enqueue: true)
-      Scotus::SlipOpinionIndex.fetch(term).filter_map do |entry|
+      entries = Scotus::SlipOpinionIndex.fetch(term)
+      queued = entries.filter_map do |entry|
         decision = find_or_initialize_by(docket_number: entry.docket_number, decided_on: entry.decided_on)
         revised = decision.persisted? && decision.pdf_url != entry.pdf_url
         decision.assign_attributes(entry.to_h.except(:docket_number, :decided_on))
@@ -13,6 +18,11 @@ module Decision::Importable
         decision.save!
         decision if decision.pending?
       end.tap { |decisions| decisions.each(&:import_later) if enqueue }
+      TermSync.create!(term: term, listed_count: entries.size, queued_count: queued.size)
+      queued
+    rescue Scotus::Http::Error => error
+      TermSync.create!(term: term, error: error.message)
+      raise
     end
   end
 
@@ -21,21 +31,30 @@ module Decision::Importable
   end
 
   def import!(pdf_path: nil)
+    refresh = imported_at.present?
+    started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     importing!
     sections = with_pdf(pdf_path) { |path| Scotus::DocumentParser.parse(Scotus::PdfLayout.from_pdf(path)) }
     raise Scotus::PdfLayout::ConversionError, "No opinion text found in PDF" if sections.empty?
 
     store(Scotus::Formatter.format(sections))
     update!(status: :imported, imported_at: Time.current, import_error: nil)
+    record_import(refresh:, started_at:, passages_count: passages.count)
     broadcast_refresh_later
     broadcast_refresh_later_to :decisions
   rescue Scotus::PdfLayout::ConversionError, Scotus::Http::Error => error
     update!(status: :failed, import_error: error.message)
+    record_import(refresh:, started_at:, error: error.message)
     broadcast_refresh_later
     raise
   end
 
   private
+    def record_import(refresh:, started_at:, error: nil, passages_count: nil)
+      duration_ms = ((Process.clock_gettime(Process::CLOCK_MONOTONIC) - started_at) * 1000).round
+      imports.create!(refresh:, succeeded: error.nil?, error:, duration_ms:, passages_count:)
+    end
+
     def with_pdf(path)
       return yield(path) if path
 

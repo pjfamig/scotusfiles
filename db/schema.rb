@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_13_021000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_13_150001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -25,6 +25,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_021000) do
     t.index ["decision_id"], name: "index_comments_on_decision_id"
     t.index ["passage_id"], name: "index_comments_on_passage_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "decision_imports", force: :cascade do |t|
+    t.bigint "decision_id", null: false
+    t.boolean "refresh", default: false, null: false
+    t.boolean "succeeded", null: false
+    t.text "error"
+    t.integer "duration_ms"
+    t.integer "passages_count"
+    t.datetime "created_at", null: false
+    t.index ["created_at"], name: "index_decision_imports_on_created_at"
+    t.index ["decision_id"], name: "index_decision_imports_on_decision_id"
   end
 
   create_table "decisions", force: :cascade do |t|
@@ -254,6 +266,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_021000) do
     t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
   end
 
+  create_table "term_syncs", force: :cascade do |t|
+    t.integer "term", null: false
+    t.integer "listed_count"
+    t.integer "queued_count"
+    t.text "error"
+    t.datetime "created_at", null: false
+    t.index ["created_at"], name: "index_term_syncs_on_created_at"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email_address", null: false
     t.string "password_digest", null: false
@@ -268,6 +289,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_021000) do
   add_foreign_key "comments", "decisions"
   add_foreign_key "comments", "passages"
   add_foreign_key "comments", "users"
+  add_foreign_key "decision_imports", "decisions", on_delete: :cascade
   add_foreign_key "opinions", "decisions"
   add_foreign_key "passages", "decisions"
   add_foreign_key "passages", "opinions", on_delete: :nullify
