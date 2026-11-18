@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :votes, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   normalizes :name, with: ->(name) { name.squish }
@@ -12,6 +13,10 @@ class User < ApplicationRecord
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, length: { minimum: 8 }, allow_nil: true
   validates :highlight_color, inclusion: { in: HIGHLIGHT_COLORS }
+
+  scope :holding_alert_subscribers, -> { where(holding_alerts: true) }
+
+  generates_token_for :holding_alerts
 
   def initials = name.split.first(2).map { |part| part[0] }.join.upcase
 

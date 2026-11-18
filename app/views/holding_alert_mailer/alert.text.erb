@@ -1,0 +1,13 @@
+HOLDING ALERT!
+
+<%= @decision.title %>
+No. <%= @decision.docket_number %><% if @decision.decided_on %> · Decided <%= @decision.decided_on.to_fs(:long) %><% end %>
+
+<%= @decision.holding_summary || "The Supreme Court has released its opinion in this case." %>
+
+Read and comment on the full opinion:
+<%= decision_url(@decision) %>
+
+--
+You're getting this because you have a SCOTUSfiles account.
+Turn off Holding alerts: <%= @preferences_url %>

@@ -9,6 +9,10 @@
     <p class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
       <span class="font-semibold text-neutral-950 dark:text-white"><%= comment.user.name %></span>
       <%= time_tag comment.created_at, "#{time_ago_in_words(comment.created_at)} ago" %>
+      <span class="ml-auto flex items-center gap-0.5" aria-label="Score">
+        <svg class="size-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="<%= CommentsHelper::VOTE_ICONS[:up] %>"/></svg>
+        <%= render "comments/score", comment: comment %>
+      </span>
     </p>
     <p class="mt-1 line-clamp-4 whitespace-pre-line text-neutral-800 dark:text-neutral-300"><%= comment.body %></p>
   </div>

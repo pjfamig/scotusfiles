@@ -17,6 +17,7 @@
             <%= link_to comment.user.name, admin_comments_path(user_id: comment.user_id), class: "font-semibold text-neutral-950 hover:underline underline-offset-4 dark:text-white" %>
             on <%= link_to comment.decision.title, decision_path(comment.decision, anchor: comment.passage&.anchor), class: "hover:underline underline-offset-4" %>
             · <%= admin_time comment.created_at %>
+            · <span title="<%= comment.upvotes_count %> up, <%= comment.downvotes_count %> down">score <%= comment.score %></span>
           </p>
           <% if comment.passage %>
             <p class="mt-2 border-l-2 border-neutral-300 pl-3 text-neutral-500 italic dark:border-neutral-700 dark:text-neutral-400">“<%= truncate(comment.passage.text, length: 160, separator: " ") %>”</p>

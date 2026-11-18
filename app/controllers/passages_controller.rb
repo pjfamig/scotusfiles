@@ -11,6 +11,7 @@ class PassagesController < ApplicationController
     end
 
     session[:return_to_after_authenticating] = decision_url(@decision, s: @passage.key) unless authenticated?
-    @comments = @passage.comments.chronological.includes(:user)
+    @comments = @passage.comments.chronological.includes(:user, :decision)
+    @votes = current_user ? current_user.votes.where(comment: @comments).index_by(&:comment_id) : {}
   end
 end
