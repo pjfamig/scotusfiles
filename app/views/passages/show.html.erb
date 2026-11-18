@@ -15,7 +15,7 @@
     <% end %>
 
     <h3 class="mt-6 text-sm font-semibold">Comments</h3>
-    <ol id="<%= dom_id(@passage, :comments) %>" class="peer mt-3 space-y-4"><%= render partial: "comments/comment", collection: @comments %></ol>
+    <ol id="<%= dom_id(@passage, :comments) %>" class="peer mt-3 space-y-4"><%= render partial: "comments/comment", collection: @comments, locals: { votes: @votes } %></ol>
     <p class="mt-2 hidden text-sm text-neutral-500 peer-empty:block dark:text-neutral-400">No comments on this passage yet.</p>
 
     <% if current_user %>

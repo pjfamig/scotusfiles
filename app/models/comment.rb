@@ -2,6 +2,7 @@ class Comment < ApplicationRecord
   belongs_to :decision, counter_cache: true
   belongs_to :passage, optional: true, counter_cache: true
   belongs_to :user
+  has_many :votes, dependent: :delete_all
 
   validates :body, presence: true, length: { maximum: 5_000 }
   validate :passage_belongs_to_decision
@@ -13,6 +14,19 @@ class Comment < ApplicationRecord
   after_destroy_commit :broadcast_removal
 
   def thread_target = passage ? ActionView::RecordIdentifier.dom_id(passage, :comments) : "decision_#{decision_id}_general_comments"
+
+  # Recounts from the votes table in one statement so concurrent votes can't
+  # leave the cached counts drifting.
+  def tally_votes
+    tallied = Comment.where(id: id).update_all(<<~SQL.squish)
+      upvotes_count = (SELECT COUNT(*) FROM votes WHERE votes.comment_id = comments.id AND votes.direction = 1),
+      downvotes_count = (SELECT COUNT(*) FROM votes WHERE votes.comment_id = comments.id AND votes.direction = -1),
+      score = (SELECT COALESCE(SUM(votes.direction), 0) FROM votes WHERE votes.comment_id = comments.id)
+    SQL
+    broadcast_score if tallied.positive?
+  end
+
+  def score_class = ActionView::RecordIdentifier.dom_id(self, :score)
 
   private
     def passage_belongs_to_decision
@@ -29,6 +43,12 @@ class Comment < ApplicationRecord
       broadcast_remove_to decision
       broadcast_remove_to decision, target: ActionView::RecordIdentifier.dom_id(self, :discussion)
       broadcast_annotation_counts
+    end
+
+    # A comment's score shows in both the passage thread and the discussion
+    # list, so it is targeted by class rather than id.
+    def broadcast_score
+      broadcast_replace_later_to decision, targets: ".#{score_class}", partial: "comments/score", locals: { comment: self }
     end
 
     def broadcast_annotation_counts

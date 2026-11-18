@@ -12,7 +12,9 @@ Rails.application.routes.draw do
 
   resources :decisions, only: %i[ index show ] do
     resources :passages, only: :show
-    resources :comments, only: %i[ index create destroy ]
+    resources :comments, only: %i[ index create destroy ] do
+      resource :vote, only: %i[ update destroy ]
+    end
     resource :import, only: :create, module: :decisions
   end
   get "terms/:term", to: "decisions#index", as: :term, constraints: { term: /\d{4}/ }

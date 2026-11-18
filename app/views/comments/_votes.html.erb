@@ -1,0 +1,7 @@
+<%# Rendered for everyone when broadcast, so `vote` is only the viewer's own when they requested the page. %>
+<% vote = local_assigns[:vote] %>
+<div id="<%= dom_id(comment, :votes) %>" class="mt-1.5 flex items-center gap-0.5 text-xs text-neutral-600 dark:text-neutral-300">
+  <%= vote_button comment, :up, vote %>
+  <%= render "comments/score", comment: comment %>
+  <%= vote_button comment, :down, vote %>
+</div>
