@@ -14,6 +14,10 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 8 }, allow_nil: true
   validates :highlight_color, inclusion: { in: HIGHLIGHT_COLORS }
 
+  scope :holding_alert_subscribers, -> { where(holding_alerts: true) }
+
+  generates_token_for :holding_alerts
+
   def initials = name.split.first(2).map { |part| part[0] }.join.upcase
 
   def can_delete?(comment) = admin? || comment.user_id == id

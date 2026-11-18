@@ -1,0 +1,11 @@
+<% content_for :title, "Holding alerts" %>
+<% noindex! %>
+<%= auth_card title: "Holding alerts", subtitle: "A short email with the holding whenever the Supreme Court decides a new case." do %>
+  <p class="text-sm text-neutral-600 dark:text-neutral-300">
+    Holding alerts for <span class="font-semibold text-neutral-950 dark:text-white"><%= @user.email_address %></span> are
+    <span class="font-semibold text-neutral-950 dark:text-white"><%= @user.holding_alerts? ? "on" : "off" %></span>.
+  </p>
+  <%= button_to @user.holding_alerts? ? "Turn off Holding alerts" : "Turn Holding alerts back on",
+        holding_alert_path(params[:token]), method: :patch, params: { subscribed: !@user.holding_alerts? },
+        form: { class: "mt-6" }, class: primary_button_classes %>
+<% end %>

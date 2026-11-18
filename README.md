@@ -84,13 +84,28 @@ Turbo Frame in the margin (a bottom sheet on phones). Posting a comment broadcas
 everyone reading the decision: the comment is appended to the thread, added to the discussion list,
 and the sentence's comment-count badge updates.
 
+Readers upvote or downvote each other's comments (not their own; clicking the same arrow again takes the
+vote back). Each comment caches `upvotes_count`, `downvotes_count`, and the net `score`, recounted from
+the `votes` table on every change, and the new score is broadcast to everyone reading the decision.
+
+### Holding alerts
+
+When a decision decided within the past week is imported for the first time, `HoldingAlertJob` emails
+every user with `holding_alerts` on: the subject is "Holding alert! *Case name*", and the body is the
+first one to three sentences of the Court's holding plus a link to read and comment on the opinion.
+`holding_alert_sent_at` is claimed atomically, so each decision alerts at most once; re-imports and
+backfills of older terms never alert. Every alert links to `/holding_alerts/:token`, where readers turn
+alerts off or back on without signing in, and carries `List-Unsubscribe` headers for one-click
+unsubscribe in mail clients. Preview the email at `/rails/mailers/holding_alert_mailer/alert`.
+
 ## Data model
 
 - `Decision`: one case on a decision date (docket, title, holding, citation, PDF URL, import status)
 - `Opinion`: a section of a decision (syllabus, majority, per curiam, plurality, concurrence, dissent)
   with its formatted HTML
 - `Passage`: one sentence, identified by a stable `key`
-- `Comment`: a reader's note on a passage
+- `Comment`: a reader's note on a passage, with cached vote counts and score
+- `Vote`: one reader's upvote or downvote on a comment
 - `User` / `Session`: Rails 8 authentication with a self-serve sign-up and an `admin` flag
 
 ## Deploying
@@ -113,7 +128,7 @@ Solid Queue, Solid Cache, and Solid Cable keep their tables in the main database
 `APP_HOST` if the site moves off www.scotusfiles.com: it is the canonical host used in canonical links,
 `/sitemap.xml`, `/robots.txt`, and `/feed`, and requests to the bare domain or `*.herokuapp.com` are
 301-redirected to it. Set `SMTP_ADDRESS`, `SMTP_PORT`,
-`SMTP_USERNAME`, `SMTP_PASSWORD`, and `MAILER_FROM` to send password-reset emails.
+`SMTP_USERNAME`, `SMTP_PASSWORD`, and `MAILER_FROM` to send password-reset emails and Holding alerts.
 
 ## Known limitations
 

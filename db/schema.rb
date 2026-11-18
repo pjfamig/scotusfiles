@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_18_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_18_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -58,6 +58,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_18_000000) do
     t.integer "comments_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "holding_alert_sent_at"
     t.index ["docket_number", "decided_on"], name: "index_decisions_on_docket_number_and_decided_on", unique: true
     t.index ["slug"], name: "index_decisions_on_slug", unique: true
     t.index ["term", "decided_on"], name: "index_decisions_on_term_and_decided_on"
@@ -286,6 +287,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_18_000000) do
     t.string "name", default: "", null: false
     t.boolean "admin", default: false, null: false
     t.string "highlight_color", default: "yellow", null: false
+    t.boolean "holding_alerts", default: true, null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 

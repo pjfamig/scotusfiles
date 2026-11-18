@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
   resource :registration, only: %i[ new create ]
   resource :highlight_color, only: :update
+  resources :holding_alerts, param: :token, only: %i[ show update ]
+  # Mail clients' one-click unsubscribe (RFC 8058) POSTs to the List-Unsubscribe URL.
+  post "holding_alerts/:token", to: "holding_alerts#update"
 
   resources :decisions, only: %i[ index show ] do
     resources :passages, only: :show

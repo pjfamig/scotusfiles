@@ -40,6 +40,7 @@ module Decision::Importable
     store(Scotus::Formatter.format(sections))
     update!(status: :imported, imported_at: Time.current, import_error: nil)
     record_import(refresh:, started_at:, passages_count: passages.count)
+    alert_later unless refresh
     broadcast_refresh_later
     broadcast_refresh_later_to :decisions
   rescue Scotus::PdfLayout::ConversionError, Scotus::Http::Error => error

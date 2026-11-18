@@ -1,5 +1,5 @@
 class Decision < ApplicationRecord
-  include Importable
+  include Alertable, Importable
 
   AUTHORS = {
     "R" => "Roberts", "T" => "Thomas", "A" => "Alito", "SS" => "Sotomayor", "EK" => "Kagan",
