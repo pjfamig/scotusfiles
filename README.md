@@ -129,6 +129,7 @@ Solid Queue, Solid Cache, and Solid Cable keep their tables in the main database
 `/sitemap.xml`, `/robots.txt`, and `/feed`, and requests to the bare domain or `*.herokuapp.com` are
 301-redirected to it. Set `SMTP_ADDRESS`, `SMTP_PORT`,
 `SMTP_USERNAME`, `SMTP_PASSWORD`, and `MAILER_FROM` to send password-reset emails and Holding alerts.
+Until `SMTP_ADDRESS` is set, Holding alerts are skipped and decisions aren't marked as alerted.
 
 ## Known limitations
 

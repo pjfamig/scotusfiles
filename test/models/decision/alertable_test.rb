@@ -40,6 +40,17 @@ class Decision::AlertableTest < ActiveSupport::TestCase
     assert @decision.reload.holding_alert_sent_at
   end
 
+  test "without email delivery configured, alerts are skipped and left unclaimed" do
+    with_holding_alerts_enabled(false) do
+      assert_no_enqueued_jobs(only: HoldingAlertJob) do
+        @decision.import!(pdf_path: file_fixture("free_speech_coalition_v_paxton_slip.pdf"))
+      end
+      assert_no_enqueued_emails { @decision.send_holding_alerts }
+    end
+
+    assert_nil @decision.reload.holding_alert_sent_at
+  end
+
   test "summarizes the holding in at most three sentences" do
     @decision.holding = "Held: The statute is valid. See 597 U. S. 1. The Fifth Circuit was right. It is affirmed. Extra."
     assert_equal "Held: The statute is valid. See 597 U. S. 1. The Fifth Circuit was right.", @decision.holding_summary
@@ -47,4 +58,12 @@ class Decision::AlertableTest < ActiveSupport::TestCase
     @decision.holding = nil
     assert_nil @decision.holding_summary
   end
+
+  private
+    def with_holding_alerts_enabled(enabled)
+      original, Rails.configuration.x.holding_alerts_enabled = Rails.configuration.x.holding_alerts_enabled, enabled
+      yield
+    ensure
+      Rails.configuration.x.holding_alerts_enabled = original
+    end
 end

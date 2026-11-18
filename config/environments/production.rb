@@ -63,7 +63,9 @@ Rails.application.configure do
   # Set host to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: config.x.canonical_host, protocol: "https" }
 
-  # Password reset emails need an SMTP provider; configure one with SMTP_* environment variables.
+  # Password reset emails and Holding alerts need an SMTP provider; configure one with SMTP_* environment variables.
+  # Until then, Holding alerts are skipped rather than queued to fail.
+  config.x.holding_alerts_enabled = ENV["SMTP_ADDRESS"].present?
   if ENV["SMTP_ADDRESS"].present?
     config.action_mailer.smtp_settings = {
       address: ENV["SMTP_ADDRESS"],
